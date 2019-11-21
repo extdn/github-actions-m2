@@ -6,8 +6,10 @@ This repository's aim is to provide a set of open sourced GitHub actions to writ
 ### Magento Coding Standard
 Provides an action that can be used in your GitHub workflow to execute the latest [Magento Coding Standard](https://github.com/magento/magento-coding-standard). 
 
-#### How to use it
+#### Screenshot
+![Screenshot Coding Style Action](magento-coding-standard/screenshot.png?raw=true")
 
+#### How to use it
 In your GitHub repository add the below as 
 `.github/workflows/ci.yml`
 
