@@ -1,0 +1,9 @@
+name: 'Magento Coding Style'
+author: 'ExtDN'
+description: 'performs php static code analysis with the Magento Coding Standard'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'code'  
+  color: 'green'
