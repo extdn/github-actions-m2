@@ -2,10 +2,28 @@ name: 'Install given Magento 2 version'
 author: 'ExtDN'
 description: 'performs installation of Magento 2 open source version'
 inputs:
-  ce-version:  # id of input
+  ce-version:
     description: 'Magento 2 Open Source version number'
     required: true
     default: '2.3.3'
+  db-host:
+    description: 'Database Host'
+    default: 'mysql'
+  db-port:
+    description: 'Database Port'
+    default: '3306'
+  db-name:
+    description: 'Database Name'
+    default: 'magento2'
+  db-user:
+    description: 'Database User'
+    default: 'root'
+  db-user:
+    description: 'Database Password'
+    default: 'password'
+  base-url:
+    description: 'Base URL'
+    default: 'http://magento2.test'
 runs:
   using: 'node12'
   main: 'dist/index.js'
