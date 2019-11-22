@@ -65,7 +65,7 @@ const exec = __webpack_require__(970);
 
 async function run() {
   try { 
-    const ceversion = core.getInput('ceversion');
+    const ceversion = core.getInput('ce-version');
     const options = {};
  	await exec.exec('composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ magento/project-community-edition:${ceversion} m2-folder --no-install --no-interaction');
 	options.cwd = './m2-folder';
