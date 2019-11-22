@@ -1,0 +1,11 @@
+name: 'Install given Magento 2 version'
+author: 'ExtDN'
+description: 'performs installation of Magento 2 open source version'
+inputs:
+  ceversion:  # id of input
+    description: 'Magento 2 Open Source version number'
+    required: true
+    default: '2.3.3'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
