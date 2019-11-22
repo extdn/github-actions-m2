@@ -72,6 +72,7 @@ async function run() {
 	await exec.exec('composer', ['config', '--unset', 'repo.0'], options);
 	await exec.exec('composer', ['config', 'repo.foomanmirror', 'composer', 'https://repo-magento-mirror.fooman.co.nz/'], options);
 	await exec.exec('composer', ['install', ' --prefer-dist'], options);
+	await exec.exec('bin/magento', [], options);
   } 
   catch (error) {
     core.setFailed(error.message);
