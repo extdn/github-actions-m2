@@ -18,7 +18,7 @@ inputs:
   db-user:
     description: 'Database User'
     default: 'root'
-  db-user:
+  db-password:
     description: 'Database Password'
     default: 'password'
   base-url:
