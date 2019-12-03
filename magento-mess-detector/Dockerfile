@@ -7,9 +7,6 @@ RUN composer install --prefer-dist
 
 
 FROM php:7.3-cli-alpine3.9
-
-RUN curl -L https://phar.phpunit.de/phpunit-6.5.9.phar -o /usr/local/bin/phpunit
-RUN chmod +x /usr/local/bin/phpunit
 COPY --from=builder /var/www/magento2ce/ /m2/
 RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
 ADD phpunit.phpmd.xml /m2/dev/tests/static/phpunit.phpmd.xml
