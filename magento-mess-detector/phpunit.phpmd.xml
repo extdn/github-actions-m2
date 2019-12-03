@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.2/phpunit.xsd"
+         colors="true"
+         columns="max"
+         beStrictAboutTestsThatDoNotTestAnything="false"
+         bootstrap="./framework/bootstrap.php"
+>
+    <testsuites>
+        <testsuite name="phpmd-m2">
+            <file>testsuite/Magento/Test/Php/PhpmdRunner.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
