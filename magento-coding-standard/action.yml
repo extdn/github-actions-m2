@@ -3,7 +3,7 @@ author: 'ExtDN'
 description: 'performs php static code analysis with the Magento Coding Standard'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://extdn/magento-coding-standard-action:latest'
 branding:
   icon: 'code'  
   color: 'green'

@@ -3,7 +3,7 @@ author: 'ExtDN'
 description: 'performs php static code analysis with the Magento Mess Detector ruleset'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://extdn/magento-mess-detector-action:latest'
 branding:
   icon: 'code'  
   color: 'green'

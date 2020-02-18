@@ -1,0 +1,46 @@
+name: Docker Build
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: "Build and deploy"
+
+    runs-on: "ubuntu-latest"
+
+    strategy:
+      matrix:
+        actions-with-docker-image:
+          - "magento-coding-standard"
+          - "magento-mess-detector"
+
+    env:
+      DOCKER_USERNAME: "extdn"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2.0.0"
+
+      - name: "Grab version number"
+        id: "get_version"
+        run: "echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}"
+
+      - name: "Build Docker image"
+        run: "docker build --tag extdn/${{ matrix.actions-with-docker-image }}-action:latest ${{ matrix.actions-with-docker-image }}/."
+
+      - name: "Docker Login"
+        run: "echo ${{ secrets.DOCKER_PASSWORD }} | $(which docker) login --password-stdin --username ${{ env.DOCKER_USERNAME }}"
+
+      - name: "Push Docker image (latest)"
+        run: "docker push extdn/${{ matrix.actions-with-docker-image }}-action:latest"
+
+      - name: "Tag Docker image (versioned)"
+        run: "docker tag extdn/${{ matrix.actions-with-docker-image }}-action extdn/${{ matrix.actions-with-docker-image }}-action:${{steps.get_version.outputs.name}}"
+
+      - name: "Push Docker image (versioned)"
+        run: "docker push extdn/${{ matrix.actions-with-docker-image }}-action:${{steps.get_version.outputs.name}}"
+
+      - name: "Docker Logout"
+        run: "docker logout"
