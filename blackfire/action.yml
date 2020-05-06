@@ -1,0 +1,37 @@
+name: 'Blackfire'
+author: 'ExtDN'
+description: 'Uses Blackfire to profile a given url'
+runs:
+  using: 'docker'
+  image: 'docker://blackfire/blackfire:latest'
+  env:
+    BLACKFIRE_CLIENT_ID: ${{ inputs.client-id }}
+    BLACKFIRE_CLIENT_TOKEN: ${{ inputs.client-token }}
+    BLACKFIRE_SERVER_ID: ${{ inputs.server-id }}
+    BLACKFIRE_SERVER_TOKEN: ${{ inputs.server-token }}
+  args:
+    - --json
+    - curl
+    - ${{ inputs.url }}
+inputs:
+  client-id:
+    description: 'BLACKFIRE_CLIENT_ID'
+    required: true
+  client-token:
+    description: 'BLACKFIRE_CLIENT_TOKEN'
+    required: true
+  server-id:
+    description: 'BLACKFIRE_SERVER_ID'
+    required: true
+  server-token:
+    description: 'BLACKFIRE_SERVER_TOKEN'
+    required: true
+  url:
+    description: 'url to profile'
+    required: true
+outputs:
+  jsonresult:
+    description: 'Blackfire Profile Result as JSON'
+branding:
+  icon: 'code'  
+  color: 'green'
