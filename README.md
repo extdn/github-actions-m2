@@ -3,7 +3,7 @@
 This repository's aim is to provide a set of open sourced GitHub actions to write better tested Magento 2 extensions.
 
 # Available Actions
-### Magento Coding Standard
+## Magento Coding Standard
 Provides an action that can be used in your GitHub workflow to execute the latest [Magento Coding Standard](https://github.com/magento/magento-coding-standard). 
 
 #### Screenshot
@@ -26,7 +26,9 @@ jobs:
       - uses: extdn/github-actions-m2/magento-coding-standard@master
 ```
 
-### Magento Mess Detector
+---
+
+## Magento Mess Detector
 Provides an action that can be used in your GitHub workflow to execute the PHP Mess Detector rules included in Magento 2 ([link](https://github.com/magento/magento2/blob/2.3.4/dev/tests/static/framework/Magento/TestFramework/CodingStandard/Tool/CodeMessDetector.php)).
 
 #### Screenshot
@@ -48,7 +50,9 @@ jobs:
       - uses: extdn/github-actions-m2/magento-mess-detector@master
 ```
 
-### Magento PHPStan
+---
+
+## Magento PHPStan
 Provides an action that can be used in your GitHub workflow to execute the PHPStan rules included in Magento 2 ([link](https://github.com/magento/magento2/blob/2.3.5-p1/dev/tests/static/framework/Magento/TestFramework/CodingStandard/Tool/PhpStan.php)).
 
 #### Screenshot
