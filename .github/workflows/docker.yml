@@ -1,9 +1,6 @@
 name: Docker Build
 
 on:
-  push:
-    branches:
-      - master
   release:
     types: [published]
 
@@ -16,8 +13,8 @@ jobs:
     strategy:
       matrix:
         actions-with-docker-image:
-         # - "magento-coding-standard"
-         # - "magento-mess-detector"
+          - "magento-coding-standard"
+          - "magento-mess-detector"
           - "magento-phpstan"
 
     env:
@@ -25,7 +22,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v2.0.0"
+        uses: "actions/checkout@v2"
 
       - name: "Grab version number"
         uses: "olegtarasov/get-tag@v1"
