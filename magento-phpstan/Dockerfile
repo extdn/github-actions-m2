@@ -10,8 +10,8 @@ FROM php:7.3-cli-alpine3.9
 COPY --from=builder /var/www/magento2ce/ /m2/
 RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
 ADD phpunit.phpmd.xml /m2/dev/tests/static/phpunit.phpmd.xml
-ADD PhpmdRunner.php /m2/dev/tests/static/testsuite/Magento/Test/Php/PhpStanRunner.php
-ADD LiveCodePhpmdRunner.php /m2/dev/tests/static/framework/Magento/TestFramework/CodingStandard/Tool/LiveCodePhpStanRunner.php
+ADD PhpStanRunner.php /m2/dev/tests/static/testsuite/Magento/Test/Php/PhpStanRunner.php
+ADD LiveCodePhpStanRunner.php /m2/dev/tests/static/framework/Magento/TestFramework/CodingStandard/Tool/LiveCodePhpStanRunner.php
 
 ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
