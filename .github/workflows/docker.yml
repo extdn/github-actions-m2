@@ -1,6 +1,9 @@
 name: Docker Build
 
 on:
+  push:
+    branches:
+      - master
   release:
     types: [published]
 
@@ -13,8 +16,8 @@ jobs:
     strategy:
       matrix:
         actions-with-docker-image:
-          - "magento-coding-standard"
-          - "magento-mess-detector"
+         # - "magento-coding-standard"
+         # - "magento-mess-detector"
           - "magento-phpstan"
 
     env:
