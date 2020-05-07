@@ -15,7 +15,8 @@ jobs:
         actions-with-docker-image:
           - "magento-coding-standard"
           - "magento-mess-detector"
-
+          - "magento-phpstan"
+          -
     env:
       DOCKER_USERNAME: "extdn"
 

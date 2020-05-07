@@ -1,0 +1,9 @@
+name: 'Magento 2 PhpStan'
+author: 'ExtDN'
+description: 'performs php static code analysis with the Magento 2 PhpStan ruleset'
+runs:
+  using: 'docker'
+  image: 'docker://extdn/magento-phpstan-action:latest'
+branding:
+  icon: 'code'  
+  color: 'green'

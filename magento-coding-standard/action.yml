@@ -1,6 +1,6 @@
-name: 'Magento Coding Style'
+name: 'Magento 2 Coding Style'
 author: 'ExtDN'
-description: 'performs php static code analysis with the Magento Coding Standard'
+description: 'performs php static code analysis with the Magento 2 Coding Standard'
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-coding-standard-action:latest'
