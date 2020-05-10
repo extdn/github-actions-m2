@@ -1,0 +1,34 @@
+name: 'Performance Comparison for M2 Extensions'
+author: 'ExtDN'
+description: 'compares performance before and after installing a Magento 2 extension'
+inputs:
+  extension-name:
+    description: 'Module Name of Magento 2 Extension'
+    required: true
+  extension-package-name:
+    description: Composer package name of extension'
+    required: true
+  php-version:
+    required: false
+    description: PHP Version
+    default: '7.3'
+  client-id:
+    description: 'BLACKFIRE_CLIENT_ID'
+    required: true
+  client-token:
+    description: 'BLACKFIRE_CLIENT_TOKEN'
+    required: true
+  server-id:
+    description: 'BLACKFIRE_SERVER_ID'
+    required: true
+  server-token:
+    description: 'BLACKFIRE_SERVER_TOKEN'
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+  env:
+    BLACKFIRE_CLIENT_ID: ${{ inputs.client-id }}
+    BLACKFIRE_CLIENT_TOKEN: ${{ inputs.client-token }}
+    BLACKFIRE_SERVER_ID: ${{ inputs.server-id }}
+    BLACKFIRE_SERVER_TOKEN: ${{ inputs.server-token }}
