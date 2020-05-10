@@ -12,6 +12,10 @@ inputs:
     required: false
     description: 'PHP Version'
     default: '7.3'
+  threshold:
+    required: false
+    description: 'Performance threshold'
+    default: '25'
 runs:
   using: 'node12'
   main: 'dist/index.js'

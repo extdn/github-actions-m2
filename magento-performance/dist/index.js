@@ -642,6 +642,7 @@ async function run() {
 try {
     const ceversion = '2.3.5';
     const phpVersion = core.getInput('php-version');
+    const threshold = core.getInput('threshold');
     const extName = core.getInput('extension-name');
 
     if (!fs.existsSync(process.env.GITHUB_WORKSPACE+'/extension')) {
@@ -676,7 +677,18 @@ try {
     await exec.exec('composer', ['config', 'repo.foomanmirror', 'composer', 'https://repo-magento-mirror.fooman.co.nz/'], options);
     await exec.exec('composer', ['install', '--prefer-dist'], options);
 
+    await exec.exec('docker-compose', ['ps']);
+
     //Install Magento
+    await exec.exec('docker-compose',
+        [
+            'exec',
+            '-T',
+            'php-fpm',
+            "bash -c 'cd /var/www/html/m2 && sudo chown www-data: -R /var/www/html/m2 && ls -al && id'"
+        ]
+    );
+
     await exec.exec('docker-compose',
         [
             'exec',
