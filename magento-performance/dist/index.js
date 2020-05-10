@@ -636,6 +636,8 @@ module.exports = require("os");
 
 const core = __webpack_require__(470);
 const exec = __webpack_require__(986);
+const io = __webpack_require__(679);
+
 const fs = __webpack_require__(747);
 
 async function run() {
@@ -662,9 +664,9 @@ try {
     }
 
     //Ensure Nginx Document Root exists
-    fs.mkdirSync(process.env.GITHUB_WORKSPACE+'/m2', { recursive: true })
+    io.mkdirP(process.env.GITHUB_WORKSPACE+'/m2', { recursive: true })
 
-    fs.copyFileSync(__webpack_require__.ab + "docker-compose.yml", process.env.GITHUB_WORKSPACE+'/docker-compose.yml');
+    io.cp(__webpack_require__.ab + "docker-compose.yml", process.env.GITHUB_WORKSPACE+'/docker-compose.yml');
 
     await exec.exec('docker-compose', ['up', '-d']);
     //await exec.exec('docker-compose', ['ps']);
@@ -678,6 +680,8 @@ try {
     await exec.exec('composer', ['install', '--prefer-dist'], options);
 
     await exec.exec('docker-compose', ['ps']);
+
+    await exec.exec('docker', ['inspect','$(docker-compose ps -q php-fpm)']);
 
     //Install Magento
     await exec.exec('docker-compose',
@@ -721,6 +725,8 @@ try {
             process.env.GITHUB_WORKSPACE+'/baseline.json'
         ]
     );
+
+    let baseline = JSON.parse(fs.readFileSync(process.env.GITHUB_WORKSPACE+'/baseline.json'));
 
 }
     catch (error) {
@@ -1025,6 +1031,14 @@ module.exports = require("events");
 /***/ (function(module) {
 
 module.exports = require("path");
+
+/***/ }),
+
+/***/ 679:
+/***/ (function() {
+
+eval("require")("@actions/io");
+
 
 /***/ }),
 
