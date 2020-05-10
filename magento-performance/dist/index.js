@@ -639,11 +639,25 @@ const exec = __webpack_require__(986);
 const fs = __webpack_require__(747);
 
 async function run() {
-try { 
+try {
+    const ceversion = '2.3.5';
+    const phpVersion = core.getInput('php-version');
     const extName = core.getInput('extension-name');
 
     if (!fs.existsSync(process.env.GITHUB_WORKSPACE+'/extension')) {
         throw Error("Expected checked out code in 'extension' folder");
+    }
+    if(!process.env.BLACKFIRE_CLIENT_ID) {
+        throw Error("Expected environment variable 'BLACKFIRE_CLIENT_ID'");
+    }
+    if(!process.env.BLACKFIRE_CLIENT_TOKEN) {
+        throw Error("Expected environment variable 'BLACKFIRE_CLIENT_TOKEN'");
+    }
+    if(!process.env.BLACKFIRE_SERVER_ID) {
+        throw Error("Expected environment variable 'BLACKFIRE_SERVER_ID'");
+    }
+    if(!process.env.BLACKFIRE_SERVER_TOKEN) {
+        throw Error("Expected environment variable 'BLACKFIRE_SERVER_TOKEN'");
     }
 
     //Ensure Nginx Document Root exists
@@ -652,8 +666,51 @@ try {
     fs.copyFileSync(__webpack_require__.ab + "docker-compose.yml", process.env.GITHUB_WORKSPACE+'/docker-compose.yml');
 
     await exec.exec('docker-compose', ['up', '-d']);
-    await exec.exec('docker-compose', ['ps']);
-    } 
+    //await exec.exec('docker-compose', ['ps']);
+
+    const options = {};
+    await exec.exec(`composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ magento/project-community-edition:${ceversion} m2 --no-install --no-interaction`);
+    options.cwd = './m2';
+    await exec.exec('composer', ['config', 'platform.php', phpVersion], options);
+    await exec.exec('composer', ['config', '--unset', 'repo.0'], options);
+    await exec.exec('composer', ['config', 'repo.foomanmirror', 'composer', 'https://repo-magento-mirror.fooman.co.nz/'], options);
+    await exec.exec('composer', ['install', '--prefer-dist'], options);
+
+    //Install Magento
+    await exec.exec('docker-compose',
+        [
+            'exec',
+            '-T',
+            'php-fpm',
+            "bash -c 'cd /var/www/html/m2 && sudo chown www-data: -R /var/www/html/m2 && ls -al && id && php -f bin/magento setup:install --base-url=http://magento2.test/ --backend-frontname=admin --db-host=mysql --db-name=magento_performance_tests --db-user=root --db-password=123123q --admin-user=admin@example.com --admin-password=password1 --admin-email=admin@example.com --admin-firstname=firstname --admin-lastname=lastname'"
+        ]
+    );
+
+    //Generate Performance Fixtures
+    await exec.exec('docker-compose',
+        [
+            'exec',
+            '-T',
+            'php-fpm',
+            "bash -c 'cd /var/www/html/m2 && php -f bin/magento setup:performance:generate-fixtures setup/performance-toolkit/profiles/ce/small.xml && php -f bin/magento cache:enable && php -f bin/magento cache:disable block_html full_page'"
+        ]
+    );
+
+    //Run Blackfire
+    await exec.exec('docker-compose',
+        [
+            'run',
+            'blackfire-agent',
+            'blackfire',
+            '--json',
+            'curl',
+            'http://magento2.test/category-1/category-1-1.html',
+            '>',
+            process.env.GITHUB_WORKSPACE+'/baseline.json'
+        ]
+    );
+
+}
     catch (error) {
         core.setFailed(error.message);
     }
