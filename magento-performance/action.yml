@@ -6,11 +6,11 @@ inputs:
     description: 'Module Name of Magento 2 Extension'
     required: true
   extension-package-name:
-    description: Composer package name of extension'
+    description: 'Composer package name of extension'
     required: true
   php-version:
     required: false
-    description: PHP Version
+    description: 'PHP Version'
     default: '7.3'
   client-id:
     description: 'BLACKFIRE_CLIENT_ID'
