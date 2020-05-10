@@ -27,8 +27,3 @@ inputs:
 runs:
   using: 'node12'
   main: 'dist/index.js'
-  env:
-    BLACKFIRE_CLIENT_ID: ${{ inputs.client-id }}
-    BLACKFIRE_CLIENT_TOKEN: ${{ inputs.client-token }}
-    BLACKFIRE_SERVER_ID: ${{ inputs.server-id }}
-    BLACKFIRE_SERVER_TOKEN: ${{ inputs.server-token }}
