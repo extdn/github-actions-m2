@@ -2517,7 +2517,7 @@ try {
             'exec',
             '-T',
             'php-fpm',
-            "bash -c 'cd /var/www/html && ls -al && id'"
+            'bash -c \'cd /var/www/html && ls -al && id\''
         ]
     );
 
