@@ -968,17 +968,25 @@ try {
     await exec.exec('docker-compose', ['up', '-d']);
     //await exec.exec('docker-compose', ['ps']);
 
-    const options = {};
+    const m2Options = {};
     await exec.exec(`composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ magento/project-community-edition:${ceversion} m2 --no-install --no-interaction`);
-    options.cwd = './m2';
-    await exec.exec('composer', ['config', 'platform.php', phpVersion], options);
-    await exec.exec('composer', ['config', '--unset', 'repo.0'], options);
-    await exec.exec('composer', ['config', 'repo.foomanmirror', 'composer', 'https://repo-magento-mirror.fooman.co.nz/'], options);
-    await exec.exec('composer', ['install', '--prefer-dist'], options);
+    m2Options.cwd = './m2';
+    await exec.exec('composer', ['config', 'platform.php', phpVersion], m2Options);
+    await exec.exec('composer', ['config', '--unset', 'repo.0'], m2Options);
+    await exec.exec('composer', ['config', 'repo.foomanmirror', 'composer', 'https://repo-magento-mirror.fooman.co.nz/'], m2Options);
+    await exec.exec('composer', ['install', '--prefer-dist'], m2Options);
 
     await exec.exec('docker-compose', ['ps']);
 
-    await exec.exec('docker', ['inspect','`$(docker-compose ps -q php-fpm)`']);
+    const options = {};
+    let phpFpmContainerId = '';
+    options.listeners = {
+        stdout: (data) => {
+            phpFpmContainerId += data.toString();
+        }
+    }
+    await exec.exec('docker-compose', ['ps','-q','php-fpm'], options);
+    await exec.exec('docker', ['inspect', phpFpmContainerId]);
 
     //Install Magento
     await exec.exec('docker-compose',
