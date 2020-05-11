@@ -934,6 +934,7 @@ module.exports = require("os");
 const core = __webpack_require__(470);
 const exec = __webpack_require__(986);
 const io = __webpack_require__(1);
+const github = __webpack_require__(690);
 
 const fs = __webpack_require__(747);
 
@@ -978,7 +979,7 @@ try {
 
     await exec.exec('docker-compose', ['ps']);
 
-    const options = {};
+    /*const options = {};
     let phpFpmContainerId = '';
     options.listeners = {
         stdout: (data) => {
@@ -1031,7 +1032,7 @@ try {
         ]
     );
 
-    let baseline = JSON.parse(fs.readFileSync(process.env.GITHUB_WORKSPACE+'/baseline.json'));
+    let baseline = JSON.parse(fs.readFileSync(process.env.GITHUB_WORKSPACE+'/baseline.json'));*/
 
 }
     catch (error) {
@@ -1552,6 +1553,14 @@ function isUnixExecutable(stats) {
         ((stats.mode & 64) > 0 && stats.uid === process.getuid()));
 }
 //# sourceMappingURL=io-util.js.map
+
+/***/ }),
+
+/***/ 690:
+/***/ (function() {
+
+eval("require")("@actions/github");
+
 
 /***/ }),
 
