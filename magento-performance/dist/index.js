@@ -2511,6 +2511,7 @@ try {
     await exec.exec('composer', ['config', 'repo.foomanmirror', 'composer', 'https://repo-magento-mirror.fooman.co.nz/'], m2Options);
     await exec.exec('composer', ['install', '--prefer-dist'], m2Options);
     await exec.exec('pwd', [], m2Options);
+    await exec.exec('id', [], m2Options);
     await exec.exec('ls', ['-al'], m2Options);
 
     //List folder
@@ -2531,7 +2532,7 @@ try {
         }
     }
     await exec.exec('docker-compose', ['ps','-q','php-fpm'], options);
-    await exec.exec('docker', ['inspect', phpFpmContainerId]);*/
+    await exec.exec('docker', ['inspect', phpFpmContainerId]);
 
     //Install Magento
     await exec.exec('docker-compose',
@@ -2576,7 +2577,7 @@ try {
         ]
     );
 
-    let baseline = JSON.parse(fs.readFileSync(process.env.GITHUB_WORKSPACE+'/baseline.json'));
+    let baseline = JSON.parse(fs.readFileSync(process.env.GITHUB_WORKSPACE+'/baseline.json'));*/
 
 }
     catch (error) {
