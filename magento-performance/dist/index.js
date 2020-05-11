@@ -978,7 +978,7 @@ try {
 
     await exec.exec('docker-compose', ['ps']);
 
-    await exec.exec('docker', ['inspect','$(docker-compose ps -q php-fpm)']);
+    await exec.exec('docker', ['inspect','`$(docker-compose ps -q php-fpm)`']);
 
     //Install Magento
     await exec.exec('docker-compose',
