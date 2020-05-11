@@ -2474,118 +2474,25 @@ const fs = __webpack_require__(747);
 
 async function run() {
 try {
-    const ceversion = '2.3.5';
-    const phpVersion = core.getInput('php-version');
+
     const threshold = core.getInput('threshold');
-    const extName = core.getInput('extension-name');
+    const baselineFileName = core.getInput('baseline-file');
+    const afterFileName = core.getInput('after-file');
 
-    if (!fs.existsSync(process.env.GITHUB_WORKSPACE+'/extension')) {
-        throw Error("Expected checked out code in 'extension' folder");
+    if(!fs.existsSync(process.env.GITHUB_WORKSPACE + baselineFileName) && !fs.existsSync(process.env.GITHUB_WORKSPACE + afterFileName)) {
+        core.setFailed("Can't find blackfire profiles to compare");
     }
-    if(!process.env.BLACKFIRE_CLIENT_ID) {
-        throw Error("Expected environment variable 'BLACKFIRE_CLIENT_ID'");
-    }
-    if(!process.env.BLACKFIRE_CLIENT_TOKEN) {
-        throw Error("Expected environment variable 'BLACKFIRE_CLIENT_TOKEN'");
-    }
-    if(!process.env.BLACKFIRE_SERVER_ID) {
-        throw Error("Expected environment variable 'BLACKFIRE_SERVER_ID'");
-    }
-    if(!process.env.BLACKFIRE_SERVER_TOKEN) {
-        throw Error("Expected environment variable 'BLACKFIRE_SERVER_TOKEN'");
-    }
-
-    //Ensure Nginx Document Root exists
-    fs.mkdirSync(process.env.GITHUB_WORKSPACE+'/m2', { recursive: true })
-
-    fs.copyFileSync(__webpack_require__.ab + "docker-compose.yml", process.env.GITHUB_WORKSPACE+'/docker-compose.yml');
-
-    await exec.exec('docker-compose', ['up', '-d']);
-    //await exec.exec('docker-compose', ['ps']);
-
-    const m2Options = {};
-    await exec.exec(`composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ magento/project-community-edition:${ceversion} ${process.env.GITHUB_WORKSPACE}/m2 --no-install --no-interaction`);
-    m2Options.cwd = process.env.GITHUB_WORKSPACE+'/m2';
-    await exec.exec('composer', ['config', 'platform.php', phpVersion], m2Options);
-    await exec.exec('composer', ['config', '--unset', 'repo.0'], m2Options);
-    await exec.exec('composer', ['config', 'repo.foomanmirror', 'composer', 'https://repo-magento-mirror.fooman.co.nz/'], m2Options);
-    await exec.exec('composer', ['install', '--prefer-dist'], m2Options);
-    await exec.exec('pwd', [], m2Options);
-    await exec.exec('id', [], m2Options);
-    await exec.exec('ls', ['-al'], m2Options);
-
-    //List folder
-    /*await exec.exec('docker-compose',
-        [
-            'exec',
-            '-T',
-            'php-fpm',
-            '"bash -c \'ls -al && id\'"'
-        ]
-    );
-
-    const options = {};
-    let phpFpmContainerId = '';
-    options.listeners = {
-        stdout: (data) => {
-            phpFpmContainerId += data.toString();
-        }
-    }
-    await exec.exec('docker-compose', ['ps','-q','php-fpm'], options);
-    await exec.exec('docker', ['inspect', phpFpmContainerId]);
-
-    //Install Magento
-    await exec.exec('docker-compose',
-        [
-            'exec',
-            '-T',
-            'php-fpm',
-            "bash -c 'cd /var/www/html/m2 && sudo chown www-data: -R /var/www/html/m2 && ls -al && id'"
-        ]
-    );
-
-    await exec.exec('docker-compose',
-        [
-            'exec',
-            '-T',
-            'php-fpm',
-            "bash -c 'cd /var/www/html/m2 && sudo chown www-data: -R /var/www/html/m2 && ls -al && id && php -f bin/magento setup:install --base-url=http://magento2.test/ --backend-frontname=admin --db-host=mysql --db-name=magento_performance_tests --db-user=root --db-password=123123q --admin-user=admin@example.com --admin-password=password1 --admin-email=admin@example.com --admin-firstname=firstname --admin-lastname=lastname'"
-        ]
-    );
-
-    //Generate Performance Fixtures
-    await exec.exec('docker-compose',
-        [
-            'exec',
-            '-T',
-            'php-fpm',
-            "bash -c 'cd /var/www/html/m2 && php -f bin/magento setup:performance:generate-fixtures setup/performance-toolkit/profiles/ce/small.xml && php -f bin/magento cache:enable && php -f bin/magento cache:disable block_html full_page'"
-        ]
-    );
-
-    //Run Blackfire
-    await exec.exec('docker-compose',
-        [
-            'run',
-            'blackfire-agent',
-            'blackfire',
-            '--json',
-            'curl',
-            'http://magento2.test/category-1/category-1-1.html',
-            '>',
-            process.env.GITHUB_WORKSPACE+'/baseline.json'
-        ]
-    );
-
-    let baseline = JSON.parse(fs.readFileSync(process.env.GITHUB_WORKSPACE+'/baseline.json'));*/
-
+    let baseline = JSON.parse(fs.readFileSync(process.env.GITHUB_WORKSPACE + baselineFileName));
+    console.log(baseline._links.graph_url.href);
+    let after = JSON.parse(fs.readFileSync(process.env.GITHUB_WORKSPACE + afterFileName));
+    console.log("Time Difference" + Number(((baseline.envelope.wt-after.envelope.wt)/baseline.envelope.wt)*100).toFixed(2));
+    console.log("Memory Difference" + Number(((baseline.envelope.pmu-after.envelope.pmu)/baseline.envelope.wt)*100).toFixed(2).toFixed(2));
+    console.log("Number of SQL Queries" + Number(((baseline["io.db.query"]["*"].ct-after["io.db.query"]["*"].ct)/baseline["io.db.query"]["*"].ct)*100).toFixed(2));
 }
     catch (error) {
         core.setFailed(error.message);
     }
 }
-
-run()
 
 /***/ }),
 
@@ -4103,7 +4010,7 @@ module.exports = require("https");
 /***/ 215:
 /***/ (function(module) {
 
-module.exports = {"_from":"@octokit/rest@^16.43.1","_id":"@octokit/rest@16.43.1","_inBundle":false,"_integrity":"sha512-gfFKwRT/wFxq5qlNjnW2dh+qh74XgTQ2B179UX5K1HYCluioWj8Ndbgqw2PVqa1NnVJkGHp2ovMpVn/DImlmkw==","_location":"/@octokit/rest","_phantomChildren":{"@octokit/types":"2.15.0","deprecation":"2.3.1","once":"1.4.0","os-name":"3.1.0"},"_requested":{"type":"range","registry":true,"raw":"@octokit/rest@^16.43.1","name":"@octokit/rest","escapedName":"@octokit%2frest","scope":"@octokit","rawSpec":"^16.43.1","saveSpec":null,"fetchSpec":"^16.43.1"},"_requiredBy":["/@actions/github"],"_resolved":"https://registry.npmjs.org/@octokit/rest/-/rest-16.43.1.tgz","_shasum":"3b11e7d1b1ac2bbeeb23b08a17df0b20947eda6b","_spec":"@octokit/rest@^16.43.1","_where":"/Users/kristof/Projects/EXT006_GithubActions/code_M2/magento-performance/node_modules/@actions/github","author":{"name":"Gregor Martynus","url":"https://github.com/gr2m"},"bugs":{"url":"https://github.com/octokit/rest.js/issues"},"bundleDependencies":false,"bundlesize":[{"path":"./dist/octokit-rest.min.js.gz","maxSize":"33 kB"}],"contributors":[{"name":"Mike de Boer","email":"info@mikedeboer.nl"},{"name":"Fabian Jakobs","email":"fabian@c9.io"},{"name":"Joe Gallo","email":"joe@brassafrax.com"},{"name":"Gregor Martynus","url":"https://github.com/gr2m"}],"dependencies":{"@octokit/auth-token":"^2.4.0","@octokit/plugin-paginate-rest":"^1.1.1","@octokit/plugin-request-log":"^1.0.0","@octokit/plugin-rest-endpoint-methods":"2.4.0","@octokit/request":"^5.2.0","@octokit/request-error":"^1.0.2","atob-lite":"^2.0.0","before-after-hook":"^2.0.0","btoa-lite":"^1.0.0","deprecation":"^2.0.0","lodash.get":"^4.4.2","lodash.set":"^4.3.2","lodash.uniq":"^4.5.0","octokit-pagination-methods":"^1.1.0","once":"^1.4.0","universal-user-agent":"^4.0.0"},"deprecated":false,"description":"GitHub REST API client for Node.js","devDependencies":{"@gimenete/type-writer":"^0.1.3","@octokit/auth":"^1.1.1","@octokit/fixtures-server":"^5.0.6","@octokit/graphql":"^4.2.0","@types/node":"^13.1.0","bundlesize":"^0.18.0","chai":"^4.1.2","compression-webpack-plugin":"^3.1.0","cypress":"^3.0.0","glob":"^7.1.2","http-proxy-agent":"^4.0.0","lodash.camelcase":"^4.3.0","lodash.merge":"^4.6.1","lodash.upperfirst":"^4.3.1","lolex":"^5.1.2","mkdirp":"^1.0.0","mocha":"^7.0.1","mustache":"^4.0.0","nock":"^11.3.3","npm-run-all":"^4.1.2","nyc":"^15.0.0","prettier":"^1.14.2","proxy":"^1.0.0","semantic-release":"^17.0.0","sinon":"^8.0.0","sinon-chai":"^3.0.0","sort-keys":"^4.0.0","string-to-arraybuffer":"^1.0.0","string-to-jsdoc-comment":"^1.0.0","typescript":"^3.3.1","webpack":"^4.0.0","webpack-bundle-analyzer":"^3.0.0","webpack-cli":"^3.0.0"},"files":["index.js","index.d.ts","lib","plugins"],"homepage":"https://github.com/octokit/rest.js#readme","keywords":["octokit","github","rest","api-client"],"license":"MIT","name":"@octokit/rest","nyc":{"ignore":["test"]},"publishConfig":{"access":"public"},"release":{"publish":["@semantic-release/npm",{"path":"@semantic-release/github","assets":["dist/*","!dist/*.map.gz"]}]},"repository":{"type":"git","url":"git+https://github.com/octokit/rest.js.git"},"scripts":{"build":"npm-run-all build:*","build:browser":"npm-run-all build:browser:*","build:browser:development":"webpack --mode development --entry . --output-library=Octokit --output=./dist/octokit-rest.js --profile --json > dist/bundle-stats.json","build:browser:production":"webpack --mode production --entry . --plugin=compression-webpack-plugin --output-library=Octokit --output-path=./dist --output-filename=octokit-rest.min.js --devtool source-map","build:ts":"npm run -s update-endpoints:typescript","coverage":"nyc report --reporter=html && open coverage/index.html","generate-bundle-report":"webpack-bundle-analyzer dist/bundle-stats.json --mode=static --no-open --report dist/bundle-report.html","lint":"prettier --check '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json","lint:fix":"prettier --write '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json","postvalidate:ts":"tsc --noEmit --target es6 test/typescript-validate.ts","prebuild:browser":"mkdirp dist/","pretest":"npm run -s lint","prevalidate:ts":"npm run -s build:ts","start-fixtures-server":"octokit-fixtures-server","test":"nyc mocha test/mocha-node-setup.js \"test/*/**/*-test.js\"","test:browser":"cypress run --browser chrome","update-endpoints":"npm-run-all update-endpoints:*","update-endpoints:fetch-json":"node scripts/update-endpoints/fetch-json","update-endpoints:typescript":"node scripts/update-endpoints/typescript","validate:ts":"tsc --target es6 --noImplicitAny index.d.ts"},"types":"index.d.ts","version":"16.43.1"};
+module.exports = {"_args":[["@octokit/rest@16.43.1","/Users/kristof/Projects/EXT006_GithubActions/code_M2/magento-performance-compare"]],"_from":"@octokit/rest@16.43.1","_id":"@octokit/rest@16.43.1","_inBundle":false,"_integrity":"sha512-gfFKwRT/wFxq5qlNjnW2dh+qh74XgTQ2B179UX5K1HYCluioWj8Ndbgqw2PVqa1NnVJkGHp2ovMpVn/DImlmkw==","_location":"/@octokit/rest","_phantomChildren":{"@octokit/types":"2.15.0","deprecation":"2.3.1","once":"1.4.0","os-name":"3.1.0"},"_requested":{"type":"version","registry":true,"raw":"@octokit/rest@16.43.1","name":"@octokit/rest","escapedName":"@octokit%2frest","scope":"@octokit","rawSpec":"16.43.1","saveSpec":null,"fetchSpec":"16.43.1"},"_requiredBy":["/@actions/github"],"_resolved":"https://registry.npmjs.org/@octokit/rest/-/rest-16.43.1.tgz","_spec":"16.43.1","_where":"/Users/kristof/Projects/EXT006_GithubActions/code_M2/magento-performance-compare","author":{"name":"Gregor Martynus","url":"https://github.com/gr2m"},"bugs":{"url":"https://github.com/octokit/rest.js/issues"},"bundlesize":[{"path":"./dist/octokit-rest.min.js.gz","maxSize":"33 kB"}],"contributors":[{"name":"Mike de Boer","email":"info@mikedeboer.nl"},{"name":"Fabian Jakobs","email":"fabian@c9.io"},{"name":"Joe Gallo","email":"joe@brassafrax.com"},{"name":"Gregor Martynus","url":"https://github.com/gr2m"}],"dependencies":{"@octokit/auth-token":"^2.4.0","@octokit/plugin-paginate-rest":"^1.1.1","@octokit/plugin-request-log":"^1.0.0","@octokit/plugin-rest-endpoint-methods":"2.4.0","@octokit/request":"^5.2.0","@octokit/request-error":"^1.0.2","atob-lite":"^2.0.0","before-after-hook":"^2.0.0","btoa-lite":"^1.0.0","deprecation":"^2.0.0","lodash.get":"^4.4.2","lodash.set":"^4.3.2","lodash.uniq":"^4.5.0","octokit-pagination-methods":"^1.1.0","once":"^1.4.0","universal-user-agent":"^4.0.0"},"description":"GitHub REST API client for Node.js","devDependencies":{"@gimenete/type-writer":"^0.1.3","@octokit/auth":"^1.1.1","@octokit/fixtures-server":"^5.0.6","@octokit/graphql":"^4.2.0","@types/node":"^13.1.0","bundlesize":"^0.18.0","chai":"^4.1.2","compression-webpack-plugin":"^3.1.0","cypress":"^3.0.0","glob":"^7.1.2","http-proxy-agent":"^4.0.0","lodash.camelcase":"^4.3.0","lodash.merge":"^4.6.1","lodash.upperfirst":"^4.3.1","lolex":"^5.1.2","mkdirp":"^1.0.0","mocha":"^7.0.1","mustache":"^4.0.0","nock":"^11.3.3","npm-run-all":"^4.1.2","nyc":"^15.0.0","prettier":"^1.14.2","proxy":"^1.0.0","semantic-release":"^17.0.0","sinon":"^8.0.0","sinon-chai":"^3.0.0","sort-keys":"^4.0.0","string-to-arraybuffer":"^1.0.0","string-to-jsdoc-comment":"^1.0.0","typescript":"^3.3.1","webpack":"^4.0.0","webpack-bundle-analyzer":"^3.0.0","webpack-cli":"^3.0.0"},"files":["index.js","index.d.ts","lib","plugins"],"homepage":"https://github.com/octokit/rest.js#readme","keywords":["octokit","github","rest","api-client"],"license":"MIT","name":"@octokit/rest","nyc":{"ignore":["test"]},"publishConfig":{"access":"public"},"release":{"publish":["@semantic-release/npm",{"path":"@semantic-release/github","assets":["dist/*","!dist/*.map.gz"]}]},"repository":{"type":"git","url":"git+https://github.com/octokit/rest.js.git"},"scripts":{"build":"npm-run-all build:*","build:browser":"npm-run-all build:browser:*","build:browser:development":"webpack --mode development --entry . --output-library=Octokit --output=./dist/octokit-rest.js --profile --json > dist/bundle-stats.json","build:browser:production":"webpack --mode production --entry . --plugin=compression-webpack-plugin --output-library=Octokit --output-path=./dist --output-filename=octokit-rest.min.js --devtool source-map","build:ts":"npm run -s update-endpoints:typescript","coverage":"nyc report --reporter=html && open coverage/index.html","generate-bundle-report":"webpack-bundle-analyzer dist/bundle-stats.json --mode=static --no-open --report dist/bundle-report.html","lint":"prettier --check '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json","lint:fix":"prettier --write '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json","postvalidate:ts":"tsc --noEmit --target es6 test/typescript-validate.ts","prebuild:browser":"mkdirp dist/","pretest":"npm run -s lint","prevalidate:ts":"npm run -s build:ts","start-fixtures-server":"octokit-fixtures-server","test":"nyc mocha test/mocha-node-setup.js \"test/*/**/*-test.js\"","test:browser":"cypress run --browser chrome","update-endpoints":"npm-run-all update-endpoints:*","update-endpoints:fetch-json":"node scripts/update-endpoints/fetch-json","update-endpoints:typescript":"node scripts/update-endpoints/typescript","validate:ts":"tsc --target es6 --noImplicitAny index.d.ts"},"types":"index.d.ts","version":"16.43.1"};
 
 /***/ }),
 

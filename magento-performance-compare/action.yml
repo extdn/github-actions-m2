@@ -8,10 +8,14 @@ inputs:
   extension-package-name:
     description: 'Composer package name of extension'
     required: true
-  php-version:
+  baseline-file:
     required: false
-    description: 'PHP Version'
-    default: '7.3'
+    description: 'Path to blackfire.io json profile before'
+    default: './baseline.json'
+  after-file:
+    required: false
+    description: 'Path to blackfire.io json profile after'
+    default: './after.json'
   threshold:
     required: false
     description: 'Performance threshold'

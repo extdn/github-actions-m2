@@ -1,0 +1,11 @@
+name: 'Setup Performance Comparison for M2 Extensions'
+author: 'ExtDN'
+description: 'prepares performance comparison before and after installing a Magento 2 extension'
+inputs:
+  php-version:
+    required: false
+    description: 'PHP Version'
+    default: '7.3'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
