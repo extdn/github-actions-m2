@@ -2517,7 +2517,7 @@ try {
             'exec',
             '-T',
             'php-fpm',
-            'bash -c \'ls -al && id\''
+            '"bash -c \'ls -al && id\'"'
         ]
     );
 
