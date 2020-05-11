@@ -2510,8 +2510,8 @@ try {
     await exec.exec('composer', ['config', '--unset', 'repo.0'], m2Options);
     await exec.exec('composer', ['config', 'repo.foomanmirror', 'composer', 'https://repo-magento-mirror.fooman.co.nz/'], m2Options);
     await exec.exec('composer', ['install', '--prefer-dist'], m2Options);
-    await exec.exec(pwd, [], m2Options);
-    await exec.exec(ls, ['-al'], m2Options);
+    await exec.exec('pwd', [], m2Options);
+    await exec.exec('ls', ['-al'], m2Options);
 
     //List folder
     /*await exec.exec('docker-compose',
