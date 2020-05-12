@@ -4,20 +4,17 @@ const fs = require('fs');
 
 async function run() {
     try {
-        console.log('Action Start');
         const token = core.getInput('github-token', {required: true})
+        const baselineFileName = core.getInput('baseline-file', {required: true});
+        const afterFileName = core.getInput('after-file', {required: true});
         const threshold = core.getInput('threshold');
-        const baselineFileName = core.getInput('baseline-file');
-        const afterFileName = core.getInput('after-file');
 
         if (!fs.existsSync(baselineFileName) || !fs.existsSync(afterFileName)) {
             throw new Error("Can't find blackfire profiles to compare");
         }
-
-        let baseline = JSON.parse(fs.readFileSync(baselineFileName));
-        let after = JSON.parse(fs.readFileSync(afterFileName));
-        console.log(baseline);
-        console.log(after);
+console.log(fs.readFileSync(baselineFileName).toString());
+        let baseline = JSON.parse(fs.readFileSync(baselineFileName).toString());
+        let after = JSON.parse(fs.readFileSync(afterFileName).toString());
 
         let timeDiff = Number(((baseline.envelope.wt - after.envelope.wt) / baseline.envelope.wt) * 100).toFixed(2);
         let memoryDiff = Number(((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.wt) * 100).toFixed(2);
