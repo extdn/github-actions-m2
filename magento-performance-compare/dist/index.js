@@ -1998,12 +1998,12 @@ async function run() {
         const baselineFileName = core.getInput('baseline-file');
         const afterFileName = core.getInput('after-file');
 
-        if (!fs.existsSync(process.env.GITHUB_WORKSPACE + baselineFileName) && !fs.existsSync(process.env.GITHUB_WORKSPACE + afterFileName)) {
+        if (!fs.existsSync(baselineFileName) && !fs.existsSync(afterFileName)) {
             core.setFailed("Can't find blackfire profiles to compare");
         }
 
-        let baseline = JSON.parse(fs.readFileSync(process.env.GITHUB_WORKSPACE + baselineFileName));
-        let after = JSON.parse(fs.readFileSync(process.env.GITHUB_WORKSPACE + afterFileName));
+        let baseline = JSON.parse(fs.readFileSync(baselineFileName));
+        let after = JSON.parse(fs.readFileSync(afterFileName));
 
         let timeDiff = Number(((baseline.envelope.wt - after.envelope.wt) / baseline.envelope.wt) * 100).toFixed(2);
         let memoryDiff = Number(((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.wt) * 100).toFixed(2).toFixed(2);
