@@ -2001,16 +2001,16 @@ async function run() {
             throw new Error("Can't find blackfire profiles to compare");
         }
 
-        let baseline = JSON.parse(fs.readFileSync(baselineFileName).toString());
-        let after = JSON.parse(fs.readFileSync(afterFileName).toString());
+        const baseline = JSON.parse(fs.readFileSync(baselineFileName).toString());
+        const after = JSON.parse(fs.readFileSync(afterFileName).toString());
 
-        let timeDiff = Number(((baseline.envelope.wt - after.envelope.wt) / baseline.envelope.wt) * 100).toFixed(2);
-        let memoryDiff = Number(((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.wt) * 100).toFixed(2);
-        let sqlDiff = Number(((baseline.arguments["io.db.query"]["*"].ct - after.arguments["io.db.query"]["*"].ct) / baseline.arguments["io.db.query"]["*"].ct) * 100).toFixed(2);
+        const timeDiff = Number(((baseline.envelope.wt - after.envelope.wt) / baseline.envelope.wt) * 100).toFixed(2);
+        const memoryDiff = Number(((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.wt) * 100).toFixed(2);
+        const sqlDiff = Number(((baseline.arguments["io.db.query"]["*"].ct - after.arguments["io.db.query"]["*"].ct) / baseline.arguments["io.db.query"]["*"].ct) * 100).toFixed(2);
 
         const github = new GitHub(token);
 
-        const message = "Time Difference " + timeDiff + "%\nMemory Difference " + memoryDiff + "%\nNumber of SQL Queries " + sqlDiff + "%\n\n(Profile)[" + baseline._links.graph_url.href + "]";
+        const message = "Time Difference | " + timeDiff + "%\nMemory Difference | " + memoryDiff + "%\nNumber of SQL Queries | " + sqlDiff + "%\n\n[Profile](" + baseline._links.graph_url.href + ")";
         core.debug(message);
         if (context.payload.pull_request == null) {
             const new_comment = github.repos.createCommitComment({
@@ -2026,8 +2026,8 @@ async function run() {
             });
         }
 
-        if (timeDiff > threshold || memoryDiff > threshold || sqlDiff > threshold) {
-            core.setFailed("Performance decreased more than configured threshold.");
+        if ((timeDiff > threshold) || (memoryDiff > threshold) || (sqlDiff > threshold)) {
+            throw new Error("Performance decreased more than configured threshold " + threshold);
         }
 
     } catch (error) {
