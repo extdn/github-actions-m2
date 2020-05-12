@@ -2004,13 +2004,13 @@ async function run() {
         const baseline = JSON.parse(fs.readFileSync(baselineFileName).toString());
         const after = JSON.parse(fs.readFileSync(afterFileName).toString());
 
-        const timeDiff = ((after.envelope.wt - baseline.envelope.wt) / baseline.envelope.wt) * 100;
-        const memoryDiff = ((after.envelope.pmu - baseline.envelope.pmu) / baseline.envelope.pmu) * 100;
-        const sqlDiff = ((after.arguments["io.db.query"]["*"].ct - baseline.arguments["io.db.query"]["*"].ct) / baseline.arguments["io.db.query"]["*"].ct) * 100;
+        const timeDiff = ((parseFloat(after.envelope.wt) - parseFloat(baseline.envelope.wt)) / parseFloat(baseline.envelope.wt)) * 100;
+        const memoryDiff = ((parseFloat(after.envelope.pmu) - parseFloat(baseline.envelope.pmu)) / parseFloat(baseline.envelope.pmu)) * 100;
+        const sqlDiff = ((parseFloat(after.arguments["io.db.query"]["*"].ct) - parseFloat(baseline.arguments["io.db.query"]["*"].ct)) / parseFloat(baseline.arguments["io.db.query"]["*"].ct)) * 100;
 
         const github = new GitHub(token);
 
-        const message = "| Dimension | Difference |\n| --- | ---: |\n| Time | " + Number(timeDiff).toFixed(2) + "% |\n| Memory | " + Number(memoryDiff).toFixed(2) + "%| \n| SQL Queries | " + Number(sqlDiff).toFixed(2) + "% |\n\n[Blackfire.io Profile](" + baseline._links.graph_url.href + ")";
+        const message = "| Dimension | Difference |\n| --- | ---: |\n| Time | " + Number(timeDiff).toFixed(2) + "% |\n| Memory | " + Number(memoryDiff).toFixed(2) + "%| \n| SQL Queries | " + Number(sqlDiff).toFixed(2) + "% |\n\n[Blackfire.io Comparison](https://blackfire.io/profiles/compare/"+baseline.id+"..."+after.id+"/graph)";
         core.debug(message);
         if (context.payload.pull_request == null) {
             const new_comment = github.repos.createCommitComment({
