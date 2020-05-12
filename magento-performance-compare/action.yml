@@ -2,6 +2,10 @@ name: 'Performance Comparison for M2 Extensions'
 author: 'ExtDN'
 description: 'compares performance before and after installing a Magento 2 extension'
 inputs:
+  github-token:
+    description: 'The GitHub authentication token'
+    required: true
+    default: ${{ github.token }}
   extension-name:
     description: 'Module Name of Magento 2 Extension'
     required: true
