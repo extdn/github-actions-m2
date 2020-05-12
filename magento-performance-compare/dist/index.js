@@ -2009,6 +2009,7 @@ async function run() {
         let memoryDiff = Number(((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.wt) * 100).toFixed(2).toFixed(2);
         let sqlDiff = Number(((baseline["io.db.query"]["*"].ct - after["io.db.query"]["*"].ct) / baseline["io.db.query"]["*"].ct) * 100).toFixed(2);
 
+        core.debug("Time Difference " + timeDiff + "Memory Difference " + memoryDiff + "Number of SQL Queries " + sqlDiff + "Profile" + baseline._links.graph_url.href);
         const github = new GitHub(token);
 
         const new_comment = github.commits.createComment({
