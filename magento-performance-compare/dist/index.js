@@ -2013,16 +2013,15 @@ async function run() {
         const message = "Time Difference " + timeDiff + "%\nMemory Difference " + memoryDiff + "%\nNumber of SQL Queries " + sqlDiff + "%\n\n(Profile)[" + baseline._links.graph_url.href + "]";
         core.debug(message);
         if (context.payload.pull_request == null) {
-            const new_comment = github.createCommitComment({
+            const new_comment = github.repos.createCommitComment({
                 ...context.repo,
                 commit_sha: process.env.GITHUB_SHA,
                 body: message
             });
         } else {
-            const pull_request_number = context.payload.pull_request.number;
             const new_comment = github.issues.createComment({
                 ...context.repo,
-                issue_number: pull_request_number,
+                issue_number: context.payload.pull_request.number,
                 body: message
             });
         }
