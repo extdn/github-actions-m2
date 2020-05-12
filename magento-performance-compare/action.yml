@@ -13,13 +13,13 @@ inputs:
     description: 'Composer package name of extension'
     required: true
   baseline-file:
-    required: false
+    required: true
     description: 'Path to blackfire.io json profile before'
-    default: './baseline.json'
+    default: '/baseline.json'
   after-file:
-    required: false
+    required: true
     description: 'Path to blackfire.io json profile after'
-    default: './after.json'
+    default: '/after.json'
   threshold:
     required: false
     description: 'Performance threshold'
