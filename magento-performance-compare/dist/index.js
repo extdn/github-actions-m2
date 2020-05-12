@@ -2004,13 +2004,13 @@ async function run() {
         const baseline = JSON.parse(fs.readFileSync(baselineFileName).toString());
         const after = JSON.parse(fs.readFileSync(afterFileName).toString());
 
-        const timeDiff = Number(((baseline.envelope.wt - after.envelope.wt) / baseline.envelope.wt) * 100).toFixed(2);
-        const memoryDiff = Number(((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.wt) * 100).toFixed(2);
-        const sqlDiff = Number(((baseline.arguments["io.db.query"]["*"].ct - after.arguments["io.db.query"]["*"].ct) / baseline.arguments["io.db.query"]["*"].ct) * 100).toFixed(2);
+        const timeDiff = ((baseline.envelope.wt - after.envelope.wt) / baseline.envelope.wt) * 100;
+        const memoryDiff = ((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.wt) * 100;
+        const sqlDiff = ((baseline.arguments["io.db.query"]["*"].ct - after.arguments["io.db.query"]["*"].ct) / baseline.arguments["io.db.query"]["*"].ct) * 100;
 
         const github = new GitHub(token);
 
-        const message = "Time Difference | " + timeDiff + "%\nMemory Difference | " + memoryDiff + "%\nNumber of SQL Queries | " + sqlDiff + "%\n\n[Profile](" + baseline._links.graph_url.href + ")";
+        const message = "Time Difference | " + Number(timeDiff).toFixed(2) + "%\nMemory Difference | " + Number(memoryDiff).toFixed(2) + "%\nNumber of SQL Queries | " + Number(sqlDiff).toFixed(2) + "%\n\n[Profile](" + baseline._links.graph_url.href + ")";
         core.debug(message);
         if (context.payload.pull_request == null) {
             const new_comment = github.repos.createCommitComment({
