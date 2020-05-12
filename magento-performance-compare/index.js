@@ -24,9 +24,9 @@ async function run() {
         core.debug("Time Difference " + timeDiff + "Memory Difference " + memoryDiff + "Number of SQL Queries " + sqlDiff + "Profile" + baseline._links.graph_url.href);
         const github = new GitHub(token);
 
-        const new_comment = github.commits.createComment({
+        const new_comment = github.commits.createCommitComment({
             ...context.repo,
-            sha: process.env.GITHUB_SHA,
+            commit_sha: process.env.GITHUB_SHA,
             body: "Time Difference " + timeDiff + "Memory Difference " + memoryDiff + "Number of SQL Queries " + sqlDiff + "Profile" + baseline._links.graph_url.href
         });
         if (timeDiff > threshold || memoryDiff > threshold || sqlDiff > threshold) {
