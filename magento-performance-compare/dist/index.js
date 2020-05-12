@@ -2010,7 +2010,7 @@ async function run() {
 
         const github = new GitHub(token);
 
-        const message = "| Dimension | Difference |\n| --- | --- |\n| Time | " + Number(timeDiff).toFixed(2) + "% |\n| Memory | " + Number(memoryDiff).toFixed(2) + "%| \n| SQL Queries | " + Number(sqlDiff).toFixed(2) + "% |\n\n[Blackfire.io Profile](" + baseline._links.graph_url.href + ")";
+        const message = "| Dimension | Difference |\n| --- | ---: |\n| Time | " + Number(timeDiff).toFixed(2) + "% |\n| Memory | " + Number(memoryDiff).toFixed(2) + "%| \n| SQL Queries | " + Number(sqlDiff).toFixed(2) + "% |\n\n[Blackfire.io Profile](" + baseline._links.graph_url.href + ")";
         core.debug(message);
         if (context.payload.pull_request == null) {
             const new_comment = github.repos.createCommitComment({
