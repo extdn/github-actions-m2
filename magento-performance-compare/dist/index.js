@@ -1992,7 +1992,7 @@ const fs = __webpack_require__(747);
 
 async function run() {
     try {
-
+        console.log('Action Start');
         const token = core.getInput('github-token', {required: true})
         const threshold = core.getInput('threshold');
         const baselineFileName = core.getInput('baseline-file');
@@ -2008,6 +2008,8 @@ async function run() {
         let timeDiff = Number(((baseline.envelope.wt - after.envelope.wt) / baseline.envelope.wt) * 100).toFixed(2);
         let memoryDiff = Number(((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.wt) * 100).toFixed(2).toFixed(2);
         let sqlDiff = Number(((baseline["io.db.query"]["*"].ct - after["io.db.query"]["*"].ct) / baseline["io.db.query"]["*"].ct) * 100).toFixed(2);
+
+        console.log("Time Difference " + timeDiff + "Memory Difference " + memoryDiff + "Number of SQL Queries " + sqlDiff + "Profile" + baseline._links.graph_url.href);
 
         core.debug("Time Difference " + timeDiff + "Memory Difference " + memoryDiff + "Number of SQL Queries " + sqlDiff + "Profile" + baseline._links.graph_url.href);
         const github = new GitHub(token);
