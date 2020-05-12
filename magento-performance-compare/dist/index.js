@@ -2005,7 +2005,7 @@ async function run() {
         const after = JSON.parse(fs.readFileSync(afterFileName).toString());
 
         const timeDiff = ((baseline.envelope.wt - after.envelope.wt) / baseline.envelope.wt) * 100;
-        const memoryDiff = ((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.wt) * 100;
+        const memoryDiff = ((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.pmu) * 100;
         const sqlDiff = ((baseline.arguments["io.db.query"]["*"].ct - after.arguments["io.db.query"]["*"].ct) / baseline.arguments["io.db.query"]["*"].ct) * 100;
 
         const github = new GitHub(token);
