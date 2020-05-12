@@ -15,11 +15,11 @@ inputs:
   baseline-file:
     required: true
     description: 'Path to blackfire.io json profile before'
-    default: '/baseline.json'
+    default: 'baseline.json'
   after-file:
     required: true
     description: 'Path to blackfire.io json profile after'
-    default: '/after.json'
+    default: 'after.json'
   threshold:
     required: false
     description: 'Performance threshold'

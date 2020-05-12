@@ -10,8 +10,8 @@ async function run() {
         const baselineFileName = core.getInput('baseline-file');
         const afterFileName = core.getInput('after-file');
 
-        if (!fs.existsSync(baselineFileName) && !fs.existsSync(afterFileName)) {
-            core.setFailed("Can't find blackfire profiles to compare");
+        if (!fs.existsSync(baselineFileName) || !fs.existsSync(afterFileName)) {
+            throw new Error("Can't find blackfire profiles to compare");
         }
 
         let baseline = JSON.parse(fs.readFileSync(baselineFileName));
@@ -20,8 +20,6 @@ async function run() {
         let timeDiff = Number(((baseline.envelope.wt - after.envelope.wt) / baseline.envelope.wt) * 100).toFixed(2);
         let memoryDiff = Number(((baseline.envelope.pmu - after.envelope.pmu) / baseline.envelope.wt) * 100).toFixed(2).toFixed(2);
         let sqlDiff = Number(((baseline["io.db.query"]["*"].ct - after["io.db.query"]["*"].ct) / baseline["io.db.query"]["*"].ct) * 100).toFixed(2);
-
-        console.log("Time Difference " + timeDiff + "Memory Difference " + memoryDiff + "Number of SQL Queries " + sqlDiff + "Profile" + baseline._links.graph_url.href);
 
         core.debug("Time Difference " + timeDiff + "Memory Difference " + memoryDiff + "Number of SQL Queries " + sqlDiff + "Profile" + baseline._links.graph_url.href);
         const github = new GitHub(token);
