@@ -2,7 +2,7 @@ FROM php:7.3
 
 COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer
 
-RUN apt-get update && apt-get -y install git zlib1g-dev zip libzip-dev libpng-dev libsodium-dev libicu-dev libxml2-dev libxslt-dev nc
+RUN apt-get update && apt-get -y install git zlib1g-dev zip libzip-dev libpng-dev libsodium-dev libicu-dev libxml2-dev libxslt-dev netcat
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install xsl
 RUN docker-php-ext-install soap
