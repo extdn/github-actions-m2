@@ -31,7 +31,8 @@ inputs:
     default: '7.3'
 runs:
   using: 'docker'
-  image: 'docker://jissereitsma/github-actions-m2:latest'
+  image: 'docker://yireo/github-actions-magento-integration-tests:latest'
 branding:
   icon: 'code'  
   color: 'green'
+
