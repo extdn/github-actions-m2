@@ -15,11 +15,12 @@ CE_VERSION=$INPUT_CE_VERSION
 # Magento installation
 echo "Using Marketpace URL $MARKETPLACE_URL"
 composer global require hirak/prestissimo
-composer create-project --repository-url=$MARKETPLACE_URL magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction
+composer create-project --no-install --no-interaction --repository-url=$MARKETPLACE_URL magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT 
 cd $MAGENTO_ROOT
 composer config --unset repo.0
 composer config repo.custom-mirror composer $MARKETPLACE_URL
 cat composer.json
+exit
 composer install --prefer-dist
 
 # Setup extension
