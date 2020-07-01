@@ -5,6 +5,6 @@ FROM php:7.3-cli-alpine3.9
 COPY entrypoint.sh /entrypoint.sh
 COPY files/install-config-mysql.php /install-config-mysql.php
 COPY files/phpunit.xml /phpunit.xml
-CMD ["chmod 755 /entrypoint.sh"]
+RUN chmod 755 /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
