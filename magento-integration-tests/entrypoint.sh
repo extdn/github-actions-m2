@@ -13,8 +13,7 @@ PROJECT_PATH=$GITHUB_WORKSPACE
 CE_VERSION=$INPUT_CE_VERSION
 
 # Magento credentials
-composer global config http-basic.repo.magento.com username $MAGENTO_MARKETPLACE_USERNAME
-composer global config http-basic.repo.magento.com password $MAGENTO_MARKETPLACE_PASSWORD
+composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
 
 # Magento installation
 composer global require hirak/prestissimo
