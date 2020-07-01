@@ -28,7 +28,11 @@ composer install --prefer-dist
 # Setup extension
 mkdir -p app/code/$INPUT_EXTENSION_VENDOR
 cd app/code/$INPUT_EXTENSION_VENDOR
-ln -s ${GITHUB_WORKSPACE}/${INPUT_EXTENSION_SOURCE} $INPUT_EXTENSION_MODULE
+cp -R ${GITHUB_WORKSPACE}/${INPUT_EXTENSION_SOURCE} $INPUT_EXTENSION_MODULE
+
+# Enable the module
+cd $MAGENTO_ROOT
+./bin/magento module:enable ${INPUT_EXTENSION_VENDOR}_${INPUT_EXTENSION_MODULE}
 
 # Prepare for integration tests
 cd $MAGENTO_ROOT
