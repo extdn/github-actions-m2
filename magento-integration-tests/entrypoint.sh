@@ -13,7 +13,7 @@ PROJECT_PATH=$GITHUB_WORKSPACE
 CE_VERSION=$INPUT_CE_VERSION
 
 # MySQL check
-nc -z -w1 127.0.0.1 3306 || (echo "MySQL is not running" && exit)
+nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
 php /db-create-and-test.php magento2 || exit
 php /db-create-and-test.php magento2test || exit
 
@@ -28,7 +28,7 @@ composer install --prefer-dist
 
 # Run Magento setup
 bin/magento setup:install --base-url=http://magento2.test/ \
---db-host=127.0.0.1 --db-name=magento2 \
+--db-host=mysql --db-name=magento2 \
 --db-user=root --db-password=root \
 --admin-firstname=John --admin-lastname=Doe \
 --admin-email=johndoe@example.com \

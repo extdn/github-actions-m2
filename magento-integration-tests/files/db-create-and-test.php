@@ -6,7 +6,7 @@ if (empty($database)) {
 
 $user = 'root';
 $password = 'root';
-$pdo = new PDO('mysql:host=127.0.0.1', $user, $password);
+$pdo = new PDO('mysql:host=mysql', $user, $password);
 $pdo->query('CREATE DATABASE '.$database);
 
 $stmt = $pdo->query('SHOW DATABASES');
@@ -15,5 +15,5 @@ foreach($databases as $database){
     echo $database, "\n";
 }
 
-$pdo = new PDO('mysql:host=127.0.0.1;dbname='.$database, $user, $password);
+$pdo = new PDO('mysql:host=mysql;dbname='.$database, $user, $password);
 
