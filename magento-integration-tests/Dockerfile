@@ -2,6 +2,7 @@ FROM php:7.3-cli-alpine3.9
 
 COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer
 
+RUN apt-get update && apt-get -y install git zlib1g-dev zip libzip-dev
 RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install zip
 
