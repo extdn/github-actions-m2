@@ -14,7 +14,7 @@ CE_VERSION=$INPUT_CE_VERSION
 
 # Magento installation
 composer global require hirak/prestissimo
-composer create-project --repository=$MARKETPLACE_URL magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction
+composer create-project --repository-url=$MARKETPLACE_URL magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction
 cd $MAGENTO_ROOT
 composer config --unset repo.0
 composer config repo.custom-mirror composer $MARKETPLACE_URL
