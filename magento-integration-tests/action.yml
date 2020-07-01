@@ -1,0 +1,37 @@
+name: 'Magento 2 integration tests'
+author: 'ExtDN'
+description: 'runs integration tests for given Magento 2 open source version'
+services:
+  mysql:
+    image: mysql:5.7
+    env:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: magento2
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306
+    options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+inputs:
+  extension_vendor:
+    description: 'Your extension vendor name'
+    required: true
+  extension_module:
+    description: 'Your extension module name'
+    required: true
+  ce_version:
+    description: 'Magento 2 Open Source version number'
+    required: true
+    default: '2.3.5'
+  marketplace_url:
+    description: 'Magento 2 Marketplace URL (https://marketplace.magento.com/ or a mirror)'
+    default: 'https://repo-magento-mirror.fooman.co.nz/'
+  php:
+    description: 'version of php to use: 7.2 or 7.3 or 7.4'
+    default: '7.3'
+runs:
+  using: 'docker'
+  image: 'docker://jissereitsma/github-actions-m2:latest'
+branding:
+  icon: 'code'  
+  color: 'green'
