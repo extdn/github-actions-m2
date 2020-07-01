@@ -3,7 +3,7 @@ FROM php:7.3
 COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer
 
 RUN apt-get update && apt-get -y install \
-    mysql-client \
+    mariadb-client \
     apt-transport-https \
     git \
     zlib1g-dev \
