@@ -14,6 +14,7 @@ RUN docker-php-ext-install intl
 
 COPY entrypoint.sh /entrypoint.sh
 COPY files/install-config-mysql.php /install-config-mysql.php
+COPY files/db-test.php /db-test.php
 COPY files/phpunit.xml /phpunit.xml
 RUN chmod 755 /entrypoint.sh
 
