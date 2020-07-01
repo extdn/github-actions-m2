@@ -2,11 +2,11 @@
 
 set -e
 
-test -z "${INPUT_EXTENSION_VENDOR}" && (echo "'extension_vendor' is not set in your GitHub Actions YAML file" && exit)
-test -z "${INPUT_EXTENSION_MODULE}" && (echo "'extension_module' is not set in your GitHub Actions YAML file" && exit)
-test -z "${INPUT_CE_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit)
-test -z "${MAGENTO_MARKETPLACE_USERNAME}" && (echo "'MAGENTO_MARKETPLACE_USERNAME' is not available as a secret" && exit)
-test -z "${MAGENTO_MARKETPLACE_PASSWORD}" && (echo "'MAGENTO_MARKETPLACE_PASSWORD' is not available as a secret" && exit)
+test -z "${INPUT_EXTENSION_VENDOR}" && (echo "'extension_vendor' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${INPUT_EXTENSION_MODULE}" && (echo "'extension_module' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${INPUT_CE_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${MAGENTO_MARKETPLACE_USERNAME}" && (echo "'MAGENTO_MARKETPLACE_USERNAME' is not available as a secret" && exit 1)
+test -z "${MAGENTO_MARKETPLACE_PASSWORD}" && (echo "'MAGENTO_MARKETPLACE_PASSWORD' is not available as a secret" && exit 1)
 
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
