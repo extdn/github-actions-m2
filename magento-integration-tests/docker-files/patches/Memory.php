@@ -48,7 +48,7 @@ class Memory
      */
     public function getRealMemoryUsage()
     {
-        return 0;
+        return 42;
         $pid = getmypid();
         try {
             // fall back to the Unix command line
