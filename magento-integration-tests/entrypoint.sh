@@ -13,7 +13,7 @@ PROJECT_PATH=$GITHUB_WORKSPACE
 CE_VERSION=$INPUT_CE_VERSION
 
 # MySQL check
-mysqladmin -u root --password=root ping
+nc -z -w1 127.0.0.1 3306 || (echo "MySQL is not running" && exit)
 
 # Magento credentials
 composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
