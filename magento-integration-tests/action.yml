@@ -19,6 +19,9 @@ inputs:
   extension_module:
     description: 'Your extension module name'
     required: true
+  extension_source:
+    description: 'Relative path to your extension source within your repository'
+    default: './'
   ce_version:
     description: 'Magento 2 Open Source version number'
     required: true

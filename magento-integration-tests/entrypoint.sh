@@ -13,7 +13,8 @@ MARKETPLACE_URL=$INPUT_MARKETPLACE_URL
 CE_VERSION=$INPUT_CE_VERSION
 
 # Magento installation
-composer create-project --repository=$MARKETPLACE_URL magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction
+composer global require hirak/prestissimo
+composer create-project --repository=$MARKETPLACE_URL magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-ansi
 cd $MAGENTO_ROOT
 composer config --unset repo.0
 composer config repo.custom-mirror composer $MARKETPLACE_URL
@@ -22,7 +23,7 @@ composer install --prefer-dist
 # Setup extension
 mkdir app/code/$INPUT_EXTENSION_VENDOR
 cd app/code/$INPUT_EXTENSION_VENDOR
-ln -s $GITHUB_WORKSPACE $INPUT_EXTENSION_MODULE
+ln -s ${GITHUB_WORKSPACE}${INPUT_EXTENSION_SOURCE} $INPUT_EXTENSION_MODULE
 
 # Prepare for integration tests
 cd $MAGENTO_ROOT
