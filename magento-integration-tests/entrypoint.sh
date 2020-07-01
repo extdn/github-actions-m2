@@ -12,6 +12,9 @@ MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
 CE_VERSION=$INPUT_CE_VERSION
 
+# MySQL check
+mysqladmin -u root --password=root ping
+
 # Magento credentials
 composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
 
