@@ -17,7 +17,7 @@ composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME
 
 # Magento installation
 composer global require hirak/prestissimo
-composer create-project --repository=https://marketplace.magento.com/ magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction
+composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction
 cd $MAGENTO_ROOT
 composer install --prefer-dist
 
