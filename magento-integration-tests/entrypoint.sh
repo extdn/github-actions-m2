@@ -14,8 +14,8 @@ CE_VERSION=$INPUT_CE_VERSION
 
 # MySQL check
 nc -z -w1 127.0.0.1 3306 || (echo "MySQL is not running" && exit)
-php ./files/db-create-and-test.php magento2 || exit
-php ./files/db-create-and-test.php magento2-test || exit
+php /db-create-and-test.php magento2 || exit
+php /db-create-and-test.php magento2-test || exit
 
 # Magento credentials
 composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
