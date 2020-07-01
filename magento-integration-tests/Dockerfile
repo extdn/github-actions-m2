@@ -18,6 +18,7 @@ RUN apt-get update && apt-get -y install \
     libxml2-dev \
     libxslt-dev \
     netcat
+
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install xsl
 RUN docker-php-ext-install soap
@@ -29,10 +30,9 @@ RUN docker-php-ext-install zip
 RUN docker-php-ext-install intl
 
 COPY entrypoint.sh /entrypoint.sh
-COPY files/install-config-mysql.php /install-config-mysql.php
-COPY files/db-create-and-test.php /db-create-and-test.php
-COPY files/phpunit.xml /phpunit.xml
 RUN chmod 755 /entrypoint.sh
+
+COPY docker-files /docker-files
 
 ENTRYPOINT ["sh", "/entrypoint.sh"]
 

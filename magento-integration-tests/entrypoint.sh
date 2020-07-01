@@ -14,8 +14,8 @@ CE_VERSION=$INPUT_CE_VERSION
 
 # MySQL check
 nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
-php /db-create-and-test.php magento2 || exit
-php /db-create-and-test.php magento2test || exit
+php /docker-files/db-create-and-test.php magento2 || exit
+php /docker-files/db-create-and-test.php magento2test || exit
 
 # Magento credentials
 composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
@@ -50,8 +50,9 @@ bin/magento setup:upgrade
 
 # Prepare for integration tests
 cd $MAGENTO_ROOT
-cp /install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
-cp /phpunit.xml dev/tests/integration/phpunit.xml
+cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
+cp /docker-files/phpunit.xml dev/tests/integration/phpunit.xml
+cp /docker-files/patches/Memory.php dev/tests/integration/framework/Magento/TestFramework/Helper/Memory.php
 
 # Run the integration tests
 cd $MAGENTO_ROOT/dev/tests/integration && ../../../vendor/bin/phpunit -c phpunit.xml
