@@ -7,5 +7,5 @@ COPY files/install-config-mysql.php /install-config-mysql.php
 COPY files/phpunit.xml /phpunit.xml
 RUN chmod 755 /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["sh", "/entrypoint.sh"]
 
