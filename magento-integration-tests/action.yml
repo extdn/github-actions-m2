@@ -10,7 +10,7 @@ services:
       MYSQL_DATABASE: magento2
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - 3306
+      - 3306:3306
     options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw
 inputs:
   extension_vendor:

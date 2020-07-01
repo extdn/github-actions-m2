@@ -1,6 +1,6 @@
 <?php
 return [
-    'db-host' => 'mysql',
+    'db-host' => 'localhost',
     'db-user' => 'root',
     'db-password' => 'root',
     'db-name' => 'magento2',
