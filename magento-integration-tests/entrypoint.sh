@@ -24,7 +24,7 @@ composer install --prefer-dist
 # Setup extension
 mkdir app/code/$INPUT_EXTENSION_VENDOR
 cd app/code/$INPUT_EXTENSION_VENDOR
-ln -s ${GITHUB_WORKSPACE}${INPUT_EXTENSION_SOURCE} $INPUT_EXTENSION_MODULE
+ln -s ${GITHUB_WORKSPACE}/${INPUT_EXTENSION_SOURCE} $INPUT_EXTENSION_MODULE
 
 # Prepare for integration tests
 cd $MAGENTO_ROOT
