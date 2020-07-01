@@ -18,6 +18,7 @@ composer create-project --repository=$MARKETPLACE_URL magento/project-community-
 cd $MAGENTO_ROOT
 composer config --unset repo.0
 composer config repo.custom-mirror composer $MARKETPLACE_URL
+cat composer.json
 composer install --prefer-dist
 
 # Setup extension
