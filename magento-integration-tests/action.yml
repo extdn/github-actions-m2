@@ -1,0 +1,26 @@
+name: 'Magento 2 integration tests'
+author: 'ExtDN'
+description: 'runs integration tests for given Magento 2 open source version'
+inputs:
+  extension_vendor:
+    description: 'Your extension vendor name'
+    required: true
+  extension_module:
+    description: 'Your extension module name'
+    required: true
+  extension_source:
+    description: 'Relative path to your extension source within your repository'
+  ce_version:
+    description: 'Magento 2 Open Source version number'
+    required: true
+    default: '2.3.5'
+  php:
+    description: 'version of php to use: 7.2 or 7.3 or 7.4'
+    default: '7.3'
+runs:
+  using: 'docker'
+  image: 'docker://yireo/github-actions-magento-integration-tests:latest'
+branding:
+  icon: 'code'  
+  color: 'green'
+
