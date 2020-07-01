@@ -4,6 +4,7 @@ COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer
 
 RUN apt-get update && apt-get -y install git zlib1g-dev zip libzip-dev libpng-dev libsodium-dev libicu-dev
 RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install soap
 RUN docker-php-ext-install gd
 RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install sodium
