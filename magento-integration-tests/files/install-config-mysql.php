@@ -1,12 +1,4 @@
 <?php
-$disableModules = [];
-$allModules = include(__DIR__ . '/../../../app/etc/config.php');
-foreach ($allModules as $allModule => $allModuleValue) {
-    if ($allModuleValue === 0) {
-        $disableModules[] = $allModule;
-    }
-}
-
 return [
     'db-host' => 'mysql',
     'db-user' => 'root',
@@ -19,5 +11,4 @@ return [
     'admin-email' => \Magento\TestFramework\Bootstrap::ADMIN_EMAIL,
     'admin-firstname' => \Magento\TestFramework\Bootstrap::ADMIN_FIRSTNAME,
     'admin-lastname' => \Magento\TestFramework\Bootstrap::ADMIN_LASTNAME,
-    'disable_modules' => implode(',', $disableModules)
 ];
