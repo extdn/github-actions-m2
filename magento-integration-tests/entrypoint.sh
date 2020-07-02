@@ -68,5 +68,5 @@ sed "s#%COMPOSER_NAME%#$INPUT_COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/i
 cp /docker-files/patches/Memory.php dev/tests/integration/framework/Magento/TestFramework/Helper/Memory.php
 
 echo "Run the integration tests"
-cd $MAGENTO_ROOT/dev/tests/integration && ../../../vendor/bin/phpunit -c phpunit.xml
+cd $MAGENTO_ROOT/dev/tests/integration && php -d memory_limit=1G ../../../vendor/bin/phpunit -c phpunit.xml
 
