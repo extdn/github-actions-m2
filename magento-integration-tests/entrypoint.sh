@@ -41,10 +41,10 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
 fi
 
 echo "Run installation"
-composer install --prefer-dist --no-interaction --no-progress --no-suggest
+php -d memory_limit=1G /usr/local/bin/composer install --prefer-dist --no-interaction --no-progress --no-suggest
 
 echo "Run Magento setup"
-bin/magento setup:install --base-url=http://magento2.test/ \
+php -d memory_limit=1G bin/magento setup:install --base-url=http://magento2.test/ \
 --db-host=mysql --db-name=magento2 \
 --db-user=root --db-password=root \
 --admin-firstname=John --admin-lastname=Doe \
