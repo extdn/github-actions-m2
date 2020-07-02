@@ -34,5 +34,5 @@ RUN chmod 755 /entrypoint.sh
 
 COPY docker-files /docker-files
 
-ENTRYPOINT ["sh", "/entrypoint.sh"]
+ENTRYPOINT ["bash", "/entrypoint.sh"]
 

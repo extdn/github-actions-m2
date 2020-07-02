@@ -25,10 +25,9 @@ jobs:
             MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
             MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
         with:
-            extension_vendor: Foo
-            extension_module: Bar
+            module_name: Foo_Bar
+            composer_name: foo/magento2-foobar
             ce_version: 2.3.5
-            php: 7.3 
 ```
 
 Make sure to modify the following values:
@@ -43,10 +42,10 @@ Next, make sure to add the secrets `MAGENTO_MARKETPLACE_USERNAME` and `MAGENTO_M
 ### Maintenance of the Docker image
 To use the `Dockerfile` of this package, a new image needs to be built and pushed to the Docker Hub:
 
-    docker build -t VENDOR/IMAGE
+    docker build -t VENDOR/IMAGE .
     docker push VENDOR/IMAGE
 
 For instance with the vendor and image-name used in this package:
 
-    docker build -t yireo/github-actions-magento-integration-tests
+    docker build -t yireo/github-actions-magento-integration-tests .
     docker push yireo/github-actions-magento-integration-tests
