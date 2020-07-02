@@ -2,8 +2,8 @@
 
 set -e
 
-test -z "${INPUT_EXTENSION_VENDOR}" && (echo "'extension_vendor' is not set in your GitHub Actions YAML file" && exit 1)
-test -z "${INPUT_EXTENSION_MODULE}" && (echo "'extension_module' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${INPUT_MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${INPUT_COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${INPUT_CE_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${MAGENTO_MARKETPLACE_USERNAME}" && (echo "'MAGENTO_MARKETPLACE_USERNAME' is not available as a secret" && exit 1)
 test -z "${MAGENTO_MARKETPLACE_PASSWORD}" && (echo "'MAGENTO_MARKETPLACE_PASSWORD' is not available as a secret" && exit 1)
@@ -12,21 +12,33 @@ MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
 CE_VERSION=$INPUT_CE_VERSION
 
-# MySQL check
+echo "MySQL checks"
 nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
 php /docker-files/db-create-and-test.php magento2 || exit
 php /docker-files/db-create-and-test.php magento2test || exit
 
-# Magento credentials
+echo "Setup Magento credentials"
 composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
 
-# Magento installation
+echo "Prepare composer installation"
 composer global require hirak/prestissimo
-composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction
-cd $MAGENTO_ROOT
-composer install --prefer-dist
+composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
 
-# Run Magento setup
+echo "Setup extension source folder within Magento root"
+cd $MAGENTO_ROOT
+mkdir -p local-source/
+cd local-source/
+cp -R ${GITHUB_WORKSPACE}/${INPUT_MODULE_SOURCE} $INPUT_MODULE_NAME
+
+echo "Configure extension source in composer"
+cd $MAGENTO_ROOT
+composer config repositories.local-source path local-source/\*
+composer require $INPUT_COMPOSER_NAME:@dev --no-update --no-interaction
+
+echo "Run installation"
+composer install --prefer-dist --no-interaction --no-progress --no-suggest
+
+echo "Run Magento setup"
 bin/magento setup:install --base-url=http://magento2.test/ \
 --db-host=mysql --db-name=magento2 \
 --db-user=root --db-password=root \
@@ -38,22 +50,23 @@ bin/magento setup:install --base-url=http://magento2.test/ \
 --sales-order-increment-prefix="ORD$" --session-save=db \
 --use-rewrites=1
 
-# Setup extension
-mkdir -p app/code/$INPUT_EXTENSION_VENDOR
-cd app/code/$INPUT_EXTENSION_VENDOR
-cp -R ${GITHUB_WORKSPACE}/${INPUT_EXTENSION_SOURCE} $INPUT_EXTENSION_MODULE
-
-# Enable the module
+echo "Enable the module"
 cd $MAGENTO_ROOT
-bin/magento module:enable ${INPUT_EXTENSION_VENDOR}_${INPUT_EXTENSION_MODULE}
-bin/magento setup:upgrade
+bin/magento module:enable ${INPUT_MODULE_NAME}
+bin/magento setup:db:status -q || bin/magento setup:upgrade
 
-# Prepare for integration tests
+echo "Determine which phpunit.xml file to use"
+if [[ -z "$INPUT_PHPUNIT_FILE" || ! -f "$INPUT_PHPUNIT_FILE" ]] ; then
+    INPUT_PHPUNIT_FILE=/docker-files/phpunit.xml
+fi
+
+echo "Using PHPUnit file: $INPUT_PHPUNIT_FILE"
+echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
 cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
-cp /docker-files/phpunit.xml dev/tests/integration/phpunit.xml
+sed "s#%COMPOSER_NAME%#$INPUT_COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/integration/phpunit.xml
 cp /docker-files/patches/Memory.php dev/tests/integration/framework/Magento/TestFramework/Helper/Memory.php
 
-# Run the integration tests
+echo "Run the integration tests"
 cd $MAGENTO_ROOT/dev/tests/integration && ../../../vendor/bin/phpunit -c phpunit.xml
 

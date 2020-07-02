@@ -48,7 +48,6 @@ class Memory
      */
     public function getRealMemoryUsage()
     {
-        return 42;
         $pid = getmypid();
         try {
             // fall back to the Unix command line
@@ -56,6 +55,7 @@ class Memory
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
             // try to use the Windows command line
             // some ports of Unix commands on Windows, such as MinGW, have limited capabilities and cannot be used
+            die($e->getMessage());
             $result = $this->_getWinProcessMemoryUsage($pid);
         }
         return $result;
