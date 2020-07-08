@@ -1,26 +1,17 @@
-# Magento 2 Integration Tests
+# Magento 2 Unit Tests
 To use this action, create a YAML file `.github/workflows/example.yml` in your extension folder, based upon the following contents:
 ```yaml
 name: ExtDN Actions
 on: [push, pull_request]
 
 jobs:
-  integration-tests:
-    name: Magento 2 Integration Tests
+  unit-tests:
+    name: Magento 2 Unit Tests
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_SQL_TO_RUN: 'GRANT ALL ON *.* TO "root"@"%";'
-        ports:
-          - 3306:3306
-        options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v2
-      - name: M2 Integration Tests with Magento 2
-        uses: extdn/github-actions-m2/magento-integration-tests@master
+      - name: M2 Unit Tests with Magento 2
+        uses: extdn/github-actions-m2/magento-unit-tests@master
         env:
             MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
             MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
@@ -47,5 +38,5 @@ To use the `Dockerfile` of this package, a new image needs to be built and pushe
 
 For instance with the vendor and image-name used in this package:
 
-    docker build -t yireo/github-actions-magento-integration-tests .
-    docker push yireo/github-actions-magento-integration-tests
+    docker build -t yireo/github-actions-magento-unit-tests .
+    docker push yireo/github-actions-magento-unit-tests
