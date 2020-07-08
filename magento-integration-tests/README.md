@@ -24,10 +24,9 @@ jobs:
         env:
             MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
             MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
-        with:
-            module_name: Foo_Bar
-            composer_name: foo/magento2-foobar
-            ce_version: 2.3.5
+            MODULE_NAME: Foo_Bar
+            COMPOSER_NAME: foo/magento2-foobar
+            CE_VERSION: 2.3.5
 ```
 
 Make sure to modify the following values:
@@ -35,6 +34,10 @@ Make sure to modify the following values:
 - `composer_name` - for instance, `Bar` if your Magento 2 module is called `Foo_Bar`
 
 Next, make sure to add the secrets `MAGENTO_MARKETPLACE_USERNAME` and `MAGENTO_MARKETPLACE_USERNAME` to your GitHub repository under **Settings > Secrets**.
+
+Additionally, you can add an environment variable `MAGENTO_PRE_INSTALL_SCRIPT` to run a script, after composer is
+configured, but before the composer installation is run. Likewise, you can customize your PHPUnit procedure by supplying
+a custom XML file using `PHPUNIT_FILE`. See `entrypoint.sh` for clearification.
 
 ### Todo
 - Make the PHP version dynamic too

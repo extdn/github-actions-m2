@@ -2,15 +2,14 @@
 
 set -e
 
-test -z "${INPUT_MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file" && exit 1)
-test -z "${INPUT_COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
-test -z "${INPUT_CE_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${CE_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${MAGENTO_MARKETPLACE_USERNAME}" && (echo "'MAGENTO_MARKETPLACE_USERNAME' is not available as a secret" && exit 1)
 test -z "${MAGENTO_MARKETPLACE_PASSWORD}" && (echo "'MAGENTO_MARKETPLACE_PASSWORD' is not available as a secret" && exit 1)
 
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
-CE_VERSION=$INPUT_CE_VERSION
 
 echo "MySQL checks"
 nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
@@ -28,12 +27,12 @@ echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
 mkdir -p local-source/
 cd local-source/
-cp -R ${GITHUB_WORKSPACE}/${INPUT_MODULE_SOURCE} $INPUT_MODULE_NAME
+cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $MODULE_NAME
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
 composer config repositories.local-source path local-source/\*
-composer require $INPUT_COMPOSER_NAME:@dev --no-update --no-interaction
+composer require $COMPOSER_NAME:@dev --no-update --no-interaction
 
 if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ]] ; then
     echo "Running custom pre-installation script: ${INPUT_MAGENTO_PRE_INSTALL_SCRIPT}"
@@ -57,7 +56,7 @@ php -d memory_limit=2G bin/magento setup:install --base-url=http://magento2.test
 
 echo "Enable the module"
 cd $MAGENTO_ROOT
-bin/magento module:enable ${INPUT_MODULE_NAME}
+bin/magento module:enable ${MODULE_NAME}
 bin/magento setup:db:status -q || bin/magento setup:upgrade
 
 echo "Determine which phpunit.xml file to use"
@@ -69,7 +68,7 @@ echo "Using PHPUnit file: $INPUT_PHPUNIT_FILE"
 echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
 cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
-sed "s#%COMPOSER_NAME%#$INPUT_COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/integration/phpunit.xml
+sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/integration/phpunit.xml
 cp /docker-files/patches/Memory.php dev/tests/integration/framework/Magento/TestFramework/Helper/Memory.php
 
 echo "Run the integration tests"
