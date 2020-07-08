@@ -15,10 +15,9 @@ jobs:
         env:
             MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
             MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
-        with:
-            module_name: Foo_Bar
-            composer_name: foo/magento2-foobar
-            ce_version: 2.3.5
+            MODULE_NAME: Foo_Bar
+            COMPOSER_NAME: foo/magento2-foobar
+            CE_VERSION: 2.3.5
 ```
 
 Make sure to modify the following values:
