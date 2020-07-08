@@ -42,7 +42,6 @@ echo "Using PHPUnit file: $INPUT_PHPUNIT_FILE"
 echo "Prepare for unit tests"
 cd $MAGENTO_ROOT
 sed "s#%COMPOSER_NAME%#$INPUT_COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/unit/phpunit.xml
-#cp /docker-files/patches/Memory.php dev/tests/unit/framework/Magento/TestFramework/Helper/Memory.php
 
 echo "Run the unit tests"
 cd $MAGENTO_ROOT/dev/tests/unit && ../../../vendor/bin/phpunit -c phpunit.xml
