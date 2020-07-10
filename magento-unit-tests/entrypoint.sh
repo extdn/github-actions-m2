@@ -29,6 +29,11 @@ cd $MAGENTO_ROOT
 composer config repositories.local-source path local-source/\*
 composer require $COMPOSER_NAME:@dev --no-update --no-interaction
 
+if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ]] ; then
+    echo "Running custom pre-installation script: ${INPUT_MAGENTO_PRE_INSTALL_SCRIPT}"
+    . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT
+fi
+
 echo "Run installation"
 composer install --prefer-dist --no-interaction --no-progress --no-suggest
 
