@@ -35,7 +35,7 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
 fi
 
 echo "Run installation"
-composer install --prefer-dist --no-interaction --no-progress --no-suggest
+COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress --no-suggest
 
 echo "Determine which phpunit.xml file to use"
 if [[ -z "$INPUT_PHPUNIT_FILE" || ! -f "$INPUT_PHPUNIT_FILE" ]] ; then
