@@ -16,6 +16,8 @@ inputs:
     description: 'Relative path to your module source within your repository. Empty by default.'
   phpunit_file:
     description: 'Relative path to your own PHPUnit file. Leave empty to use the default.'
+  magento_pre_install_script:
+    description: 'Relative path to an optional script before Magento installation is run. Leave empty to use the default.'
 runs:
   using: 'docker'
   image: 'docker://yireo/github-actions-magento-unit-tests:latest'
