@@ -2,7 +2,7 @@
 To use this action, create a YAML file `.github/workflows/example.yml` in your extension folder, based upon the following contents:
 ```yaml
 name: ExtDN Actions
-on: [push, pull_request]
+on: [push]
 
 jobs:
   integration-tests:
