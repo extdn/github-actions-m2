@@ -68,7 +68,7 @@ if [[ -z "$INPUT_PHPUNIT_FILE" || ! -f "$INPUT_PHPUNIT_FILE" ]] ; then
 fi
 
 echo "Add ReachDigital framework"
-composer require reach-digital/magento2-test-framework 
+COMPOSER_MEMORY_LIMIT=-1 composer require reach-digital/magento2-test-framework 
 
 echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
@@ -77,5 +77,5 @@ sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/quick-i
 cp /docker-files/patches/Memory.php dev/tests/integration/framework/Magento/TestFramework/Helper/Memory.php
 
 echo "Run the integration tests"
-cd $MAGENTO_ROOT/dev/tests/quick-integration && php -d memory_limit=-1 ../../../vendor/bin/phpunit -c phpunit.xml
+cd $MAGENTO_ROOT/dev/tests/quick-integration && php -d memory_limit=2G ../../../vendor/bin/phpunit -c phpunit.xml
 
