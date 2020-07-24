@@ -30,7 +30,7 @@ cd local-source/
 cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $MODULE_NAME
 
 echo "Add ReachDigital framework"
-composer require --dev reach-digital/magento2-test-framework --no-update --no-interaction
+composer require reach-digital/magento2-test-framework --no-update --no-interaction
 
 echo "Removing unneeded packages"
 composer require yireo/magento2-replace-sample-data --no-update --no-interaction
@@ -72,6 +72,7 @@ fi
 
 echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
+mkdir -p dev/tests/quick-integration/etc
 cp /docker-files/install-config-mysql.php dev/tests/quick-integration/etc/install-config-mysql.php
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/quick-integration/phpunit.xml
 cp /docker-files/patches/Memory.php dev/tests/integration/framework/Magento/TestFramework/Helper/Memory.php
