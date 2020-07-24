@@ -45,22 +45,22 @@ fi
 echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress --no-suggest
 
-#echo "Run Magento setup"
-#php -d memory_limit=2G bin/magento setup:install --base-url=http://magento2.test/ \
-#--db-host=mysql --db-name=magento2 \
-#--db-user=root --db-password=root \
-#--admin-firstname=John --admin-lastname=Doe \
-#--admin-email=johndoe@example.com \
-#--admin-user=johndoe --admin-password=johndoe!1234 \
-#--backend-frontname=admin --language=en_US \
-#--currency=USD --timezone=Europe/Amsterdam --cleanup-database \
-#--sales-order-increment-prefix="ORD$" --session-save=db \
-#--use-rewrites=1
+echo "Run Magento setup"
+php -d memory_limit=2G bin/magento setup:install --base-url=http://magento2.test/ \
+--db-host=mysql --db-name=magento2 \
+--db-user=root --db-password=root \
+--admin-firstname=John --admin-lastname=Doe \
+--admin-email=johndoe@example.com \
+--admin-user=johndoe --admin-password=johndoe!1234 \
+--backend-frontname=admin --language=en_US \
+--currency=USD --timezone=Europe/Amsterdam --cleanup-database \
+--sales-order-increment-prefix="ORD$" --session-save=db \
+--use-rewrites=1
 
-#echo "Enable the module"
-#cd $MAGENTO_ROOT
-#bin/magento module:enable ${MODULE_NAME}
-#bin/magento setup:db:status -q || bin/magento setup:upgrade
+echo "Enable the module"
+cd $MAGENTO_ROOT
+bin/magento module:enable ${MODULE_NAME}
+bin/magento setup:db:status -q || bin/magento setup:upgrade
 
 echo "Determine which phpunit.xml file to use"
 if [[ -z "$INPUT_PHPUNIT_FILE" || ! -f "$INPUT_PHPUNIT_FILE" ]] ; then
