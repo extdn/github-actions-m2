@@ -72,8 +72,10 @@ COMPOSER_MEMORY_LIMIT=-1 composer require reach-digital/magento2-test-framework
 
 echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
+cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
 cp /docker-files/install-config-mysql.php dev/tests/quick-integration/etc/install-config-mysql.php
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/quick-integration/phpunit.xml
+sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/integration/phpunit.xml
 cp /docker-files/patches/Memory.php dev/tests/integration/framework/Magento/TestFramework/Helper/Memory.php
 
 echo "Run the integration tests"
