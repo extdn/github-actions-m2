@@ -8,6 +8,10 @@ inputs:
   composer_name:
     description: 'Your composer name. Example: foo/magento2-bar'
     required: true
+  php_version:
+    description: 'PHP version'
+    required: true
+    default: '7.4'
   magento_version:
     description: 'Magento 2 Open Source version number'
     required: true
@@ -20,7 +24,7 @@ inputs:
     description: 'Relative path to an optional script before Magento installation is run. Leave empty to use the default.'
 runs:
   using: 'docker'
-  image: 'docker://yireo/github-actions-magento-unit-tests:'${{ php-version }}
+  image: 'docker://yireo/github-actions-magento-unit-tests:'${{ php_version }}
 branding:
   icon: 'code'  
   color: 'green'
