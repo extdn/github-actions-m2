@@ -2,9 +2,11 @@
 
 set -e
 
+test -z "${CE_VERSION}" || MAGENTO_VERSION=$CE_VERSION
+
 test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
-test -z "${MAGENTO_VERSION}" && MAGENTO_NAME=$INPUT_MAGENTO_NAME
+test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
 
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set" && exit 1)
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set" && exit 1)

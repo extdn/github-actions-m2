@@ -2,8 +2,7 @@
 To use this action, create a YAML file `.github/workflows/example.yml` in your extension folder, based upon the following contents:
 ```yaml
 name: ExtDN Actions
-on: [push, pull_request]
-
+on: [push]
 jobs:
   unit-tests:
     name: Magento 2 Unit Tests
@@ -17,6 +16,33 @@ jobs:
           MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
           MODULE_NAME: Foo_Bar
           COMPOSER_NAME: foo/magento2-foobar
+```
+
+You can also run multiple combinations and reuse the same variables:
+
+```yaml
+name: ExtDN Actions
+on: [push]
+jobs:
+  unit-tests:
+    name: Magento 2 Unit Tests
+    runs-on: ubuntu-latest
+    env:
+      MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
+      MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
+      MODULE_NAME: Foo_Bar
+      COMPOSER_NAME: foo/magento2-foobar
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker://yireo/github-actions-magento-unit-tests:7.3
+        env:
+          MAGENTO_VERSION: '2.3.4'
+      - uses: docker://yireo/github-actions-magento-unit-tests:7.3
+        env:
+          MAGENTO_VERSION: '2.3.5-p2'
+      - uses: docker://yireo/github-actions-magento-unit-tests:7.4
+        env:
+          MAGENTO_VERSION: '2.4.0'
 ```
 
 Make sure to modify the following values:
