@@ -30,6 +30,7 @@ RUN docker-php-ext-install zip
 RUN docker-php-ext-install intl
 RUN docker-php-ext-install sockets
 RUN composer global require hirak/prestissimo
+RUN apt-get clean
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
