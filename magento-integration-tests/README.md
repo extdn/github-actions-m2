@@ -9,10 +9,6 @@ jobs:
     name: Magento 2 Integration Tests
     runs-on: ubuntu-latest
     services:
-      es:
-         image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
-         ports:
-           - 9200:9200
       mysql:
         image: mysql:5.7
         env:
@@ -25,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: docker://yireo/github-actions-magento-integration-tests:7.4
         env:
-            MAGENTO_VERSION: '2.4.0'
+            MAGENTO_VERSION: '2.3.5-p2'
             MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
             MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
             MODULE_NAME: Foo_Bar

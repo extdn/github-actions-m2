@@ -7,6 +7,7 @@ test -z "${CE_VERSION}" || MAGENTO_VERSION=$CE_VERSION
 test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
+test -z "${ELASTICSEARCH}" && ELASTICSEARCH=$INPUT_ELASTICSEARCH
 
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
@@ -23,6 +24,7 @@ php /docker-files/db-create-and-test.php magento2 || exit
 php /docker-files/db-create-and-test.php magento2test || exit
 
 echo "Setup Magento credentials"
+composer global require hirak/prestissimo
 composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
@@ -61,8 +63,9 @@ SETUP_ARGS="--base-url=http://magento2.test/ \
 --currency=USD --timezone=Europe/Amsterdam \
 --sales-order-increment-prefix=ORD_ --session-save=db \
 --use-rewrites=1"
-if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
-    SETUP_ARGS="$SETUP_ARGS --elasticsearch-host=localhost --elasticsearch-port=9200"
+
+if [[ "$ELASTICSEARCH" == "1" ]]; then
+    SETUP_ARGS="$SETUP_ARGS --elasticsearch-host=es --elasticsearch-port=9200 --elasticsearch-enable-auth=0 --elasticsearch-timeout=60"
 fi
 
 echo "Run Magento setup: $SETUP_ARGS"
