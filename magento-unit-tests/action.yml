@@ -25,7 +25,7 @@ inputs:
 runs:
   using: 'docker'
   #image: 'docker://yireo/github-actions-magento-unit-tests'
-  image: docker://yireo/github-actions-magento-unit-tests:${{ php_version }}
+  image: docker://yireo/github-actions-magento-unit-tests-${{ php_version }}
 branding:
   icon: 'code'  
   color: 'green'
