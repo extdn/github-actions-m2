@@ -8,10 +8,10 @@ inputs:
   composer_name:
     description: 'Your composer name. Example: foo/magento2-bar'
     required: true
-  ce_version:
+  magento_version:
     description: 'Magento 2 Open Source version number'
     required: true
-    default: '2.3.5'
+    default: '2.4.0'
   module_source:
     description: 'Relative path to your module source within your repository. Empty by default.'
   phpunit_file:
