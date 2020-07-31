@@ -28,6 +28,7 @@ RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install sodium
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install intl
+RUN composer global require hirak/prestissimo
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
