@@ -24,7 +24,8 @@ inputs:
     description: 'Relative path to an optional script before Magento installation is run. Leave empty to use the default.'
 runs:
   using: 'docker'
-  image: 'docker://yireo/github-actions-magento-unit-tests:'${{ php_version }}
+  image: 'docker://yireo/github-actions-magento-unit-tests'
+  #image: 'docker://yireo/github-actions-magento-unit-tests:'${{ php_version }}
 branding:
   icon: 'code'  
   color: 'green'
