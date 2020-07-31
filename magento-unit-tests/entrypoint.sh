@@ -2,9 +2,13 @@
 
 set -e
 
+test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
+test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
+test -z "${MAGENTO_VERSION}" && MAGENTO_NAME=$INPUT_MAGENTO_NAME
+
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set" && exit 1)
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set" && exit 1)
-test -z "${CE_VERSION}" && (echo "'ce_version' is not set" && exit 1)
+test -z "${MAGENTO_VERSION}" && (echo "'magento_version' is not set" && exit 1)
 test -z "${MAGENTO_MARKETPLACE_USERNAME}" && (echo "'MAGENTO_MARKETPLACE_USERNAME' is not set" && exit 1)
 test -z "${MAGENTO_MARKETPLACE_PASSWORD}" && (echo "'MAGENTO_MARKETPLACE_PASSWORD' is not set" && exit 1)
 
@@ -16,7 +20,7 @@ composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME
 
 echo "Prepare composer installation"
 composer global require hirak/prestissimo
-composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
+composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
