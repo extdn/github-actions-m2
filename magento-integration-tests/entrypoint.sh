@@ -25,8 +25,8 @@ php /docker-files/db-create-and-test.php magento2test || exit
 echo "Setup Magento credentials"
 composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
 
-echo "Prepare composer installation"
-composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
+echo "Prepare composer installation for $MAGENTO_VERSION"
+composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
@@ -51,22 +51,22 @@ echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress --no-suggest
 
 echo "Gathering specific Magento setup options"
-SETUP_ARGS=""
-if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
-    SETUP_ARGS="--elasticsearch-host=localhost --elasticsearch-port=9200"
-fi
-
-echo "Run Magento setup"
-php -d memory_limit=2G bin/magento setup:install --base-url=http://magento2.test/ \
+SETUP_ARGS="--base-url=http://magento2.test/ \
 --db-host=mysql --db-name=magento2 \
 --db-user=root --db-password=root \
 --admin-firstname=John --admin-lastname=Doe \
 --admin-email=johndoe@example.com \
 --admin-user=johndoe --admin-password=johndoe!1234 \
 --backend-frontname=admin --language=en_US \
---currency=USD --timezone=Europe/Amsterdam --cleanup-database \
---sales-order-increment-prefix="ORD$" --session-save=db \
---use-rewrites=1 $SETUP_ARGS
+--currency=USD --timezone=Europe/Amsterdam \
+--sales-order-increment-prefix=ORD_ --session-save=db \
+--use-rewrites=1"
+if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
+    SETUP_ARGS="$SETUP_ARGS --elasticsearch-host=localhost --elasticsearch-port=9200"
+fi
+
+echo "Run Magento setup: $SETUP_ARGS"
+php -d memory_limit=2G bin/magento setup:install $SETUP_ARGS
 
 echo "Enable the module"
 cd $MAGENTO_ROOT
