@@ -2,15 +2,9 @@
 
 set -e
 
-test -z "${CE_VERSION}" || MAGENTO_VERSION=$CE_VERSION
-
-test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
-test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
-test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
-
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
-test -z "${MAGENTO_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${CE_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${MAGENTO_MARKETPLACE_USERNAME}" && (echo "'MAGENTO_MARKETPLACE_USERNAME' is not available as a secret" && exit 1)
 test -z "${MAGENTO_MARKETPLACE_PASSWORD}" && (echo "'MAGENTO_MARKETPLACE_PASSWORD' is not available as a secret" && exit 1)
 
@@ -73,13 +67,17 @@ if [[ -z "$INPUT_PHPUNIT_FILE" || ! -f "$INPUT_PHPUNIT_FILE" ]] ; then
     INPUT_PHPUNIT_FILE=/docker-files/phpunit.xml
 fi
 
-echo "Using PHPUnit file: $INPUT_PHPUNIT_FILE"
+echo "Add ReachDigital framework"
+COMPOSER_MEMORY_LIMIT=-1 composer require reach-digital/magento2-test-framework 
+
 echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
 cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
+cp /docker-files/install-config-mysql.php dev/tests/quick-integration/etc/install-config-mysql.php
+sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/quick-integration/phpunit.xml
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/integration/phpunit.xml
 cp /docker-files/patches/Memory.php dev/tests/integration/framework/Magento/TestFramework/Helper/Memory.php
 
 echo "Run the integration tests"
-cd $MAGENTO_ROOT/dev/tests/integration && php -d memory_limit=1G ../../../vendor/bin/phpunit -c phpunit.xml
+cd $MAGENTO_ROOT/dev/tests/quick-integration && php -d memory_limit=2G ../../../vendor/bin/phpunit -c phpunit.xml
 
