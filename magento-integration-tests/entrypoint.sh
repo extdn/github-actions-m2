@@ -51,6 +51,12 @@ fi
 echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress --no-suggest
 
+echo "Gathering specific Magento setup options"
+SETUP_ARGS=""
+if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
+    SETUP_ARGS="--elasticsearch-host=localhost --elasticsearch-port=9200"
+fi
+
 echo "Run Magento setup"
 php -d memory_limit=2G bin/magento setup:install --base-url=http://magento2.test/ \
 --db-host=mysql --db-name=magento2 \
@@ -61,7 +67,7 @@ php -d memory_limit=2G bin/magento setup:install --base-url=http://magento2.test
 --backend-frontname=admin --language=en_US \
 --currency=USD --timezone=Europe/Amsterdam --cleanup-database \
 --sales-order-increment-prefix="ORD$" --session-save=db \
---use-rewrites=1
+--use-rewrites=1 $SETUP_ARGS
 
 echo "Enable the module"
 cd $MAGENTO_ROOT
