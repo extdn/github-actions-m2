@@ -93,7 +93,7 @@ cd $MAGENTO_ROOT
 cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/integration/phpunit.xml
 
-curl https://gist.githubusercontent.com/jissereitsma/004993763b5333e17ac3ba80d931e270/raw/50b404c23e3d79ca4d0d60e8a70d5569481e56a2/fix-memory-report-after-integration-tests.patch | patch -p0
+curl https://gist.githubusercontent.com/jissereitsma/004993763b5333e17ac3ba80d931e270/raw/d37da0c283a2f244a41e79bb7ada49b58a2b2a3e/fix-memory-report-after-integration-tests.patch | patch -p0
 
 echo "Run the integration tests"
 cd $MAGENTO_ROOT/dev/tests/integration && php -d memory_limit=1G ../../../vendor/bin/phpunit -c phpunit.xml
