@@ -59,7 +59,7 @@ COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-pr
 
 if [[ "$MAGENTO_VERSION" == "2.3.4" ]]; then
     # Somebody hacked the Magento\Setup\Controller\Landing.php file to add Laminas MVC which is not installed in 2.3.4
-    curl https://gist.githubusercontent.com/jissereitsma/51742489c6e97138363c93983a034af2/raw/1f14af19a64195b1246263513aba594726e5d72a/remove-laminas-from-setup-landing-controller.patch | patch -p0
+    curl -s https://gist.githubusercontent.com/jissereitsma/51742489c6e97138363c93983a034af2/raw/1f14af19a64195b1246263513aba594726e5d72a/remove-laminas-from-setup-landing-controller.patch | patch -p0
 fi
 
 echo "Gathering specific Magento setup options"
@@ -97,7 +97,7 @@ cd $MAGENTO_ROOT
 cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/integration/phpunit.xml
 
-curl https://gist.githubusercontent.com/jissereitsma/004993763b5333e17ac3ba80d931e270/raw/d37da0c283a2f244a41e79bb7ada49b58a2b2a3e/fix-memory-report-after-integration-tests.patch | patch -p0
+curl -s https://gist.githubusercontent.com/jissereitsma/004993763b5333e17ac3ba80d931e270/raw/d37da0c283a2f244a41e79bb7ada49b58a2b2a3e/fix-memory-report-after-integration-tests.patch | patch -p0
 
 echo "Run the integration tests"
 cd $MAGENTO_ROOT/dev/tests/integration && php -d memory_limit=1G ../../../vendor/bin/phpunit -c phpunit.xml
