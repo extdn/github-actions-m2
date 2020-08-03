@@ -32,7 +32,7 @@ composer global require hirak/prestissimo
 composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
-composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
+COMPOSER_MEMORY_LIMIT=2G composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
@@ -41,7 +41,7 @@ cd local-source/
 cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $MODULE_NAME
 
 echo "Removing unneeded packages"
-composer require yireo/magento2-replace-bundled --no-update --no-interaction
+composer require yireo/magento2-replace-bundled:4.0.3 --no-update --no-interaction
 composer require yireo/magento2-replace-sample-data --no-update --no-interaction
 
 echo "Configure extension source in composer"
@@ -55,7 +55,7 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
 fi
 
 echo "Run installation"
-COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress --no-suggest
+COMPOSER_MEMORY_LIMIT=2G composer install --no-interaction --no-progress --no-suggest
 
 if [[ "$MAGENTO_VERSION" == "2.3.4" ]]; then
     # Somebody hacked the Magento\Setup\Controller\Landing.php file to add Laminas MVC which is not installed in 2.3.4
@@ -99,6 +99,12 @@ sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/integra
 
 curl -s https://gist.githubusercontent.com/jissereitsma/004993763b5333e17ac3ba80d931e270/raw/d37da0c283a2f244a41e79bb7ada49b58a2b2a3e/fix-memory-report-after-integration-tests.patch | patch -p0
 
+cd $MAGENTO_ROOT
+cat composer.json
+composer show $COMPOSER_NAME:@dev
+ls vendor/
+php -r "echo ini_get('memory_limit').PHP_EOL;"
+
 echo "Run the integration tests"
-cd $MAGENTO_ROOT/dev/tests/integration && php -d memory_limit=1G ../../../vendor/bin/phpunit -c phpunit.xml
+cd $MAGENTO_ROOT/dev/tests/integration && ../../../vendor/bin/phpunit -c phpunit.xml
 
