@@ -8,6 +8,7 @@ test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
 test -z "${ELASTICSEARCH}" && ELASTICSEARCH=$INPUT_ELASTICSEARCH
+test -z "${PHPUNIT_FILE}" && PHPUNIT_FILE=$INPUT_PHPUNIT_FILE
 
 if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
     ELASTICSEARCH=1
@@ -87,11 +88,11 @@ bin/magento module:enable ${MODULE_NAME}
 bin/magento setup:db:status -q || bin/magento setup:upgrade
 
 echo "Determine which phpunit.xml file to use"
-if [[ -z "$INPUT_PHPUNIT_FILE" || ! -f "$INPUT_PHPUNIT_FILE" ]] ; then
-    INPUT_PHPUNIT_FILE=/docker-files/phpunit.xml
+if [[ -z "$PHPUNIT_FILE" || ! -f "$PHPUNIT_FILE" ]] ; then
+    PHPUNIT_FILE=/docker-files/phpunit.xml
 fi
-
 echo "Using PHPUnit file: $INPUT_PHPUNIT_FILE"
+
 echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
 cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
