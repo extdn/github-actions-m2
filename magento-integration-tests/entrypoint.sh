@@ -91,12 +91,12 @@ echo "Determine which phpunit.xml file to use"
 if [[ -z "$PHPUNIT_FILE" || ! -f "$PHPUNIT_FILE" ]] ; then
     PHPUNIT_FILE=/docker-files/phpunit.xml
 fi
-echo "Using PHPUnit file: $INPUT_PHPUNIT_FILE"
+echo "Using PHPUnit file: $PHPUNIT_FILE"
 
 echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
 cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
-sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/integration/phpunit.xml
+sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $PHPUNIT_FILE > dev/tests/integration/phpunit.xml
 
 curl -s https://gist.githubusercontent.com/jissereitsma/004993763b5333e17ac3ba80d931e270/raw/d37da0c283a2f244a41e79bb7ada49b58a2b2a3e/fix-memory-report-after-integration-tests.patch | patch -p0
 
