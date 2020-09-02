@@ -98,6 +98,10 @@ echo "Using PHPUnit file: $PHPUNIT_FILE"
 echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
 cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
+if [[ "$ELASTICSEARCH" == "1" ]]; then
+    cp /docker-files/install-config-mysql-with-es.php dev/tests/integration/etc/install-config-mysql.php
+fi
+
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $PHPUNIT_FILE > dev/tests/integration/phpunit.xml
 
 curl -s https://gist.githubusercontent.com/jissereitsma/004993763b5333e17ac3ba80d931e270/raw/d37da0c283a2f244a41e79bb7ada49b58a2b2a3e/fix-memory-report-after-integration-tests.patch | patch -p0
