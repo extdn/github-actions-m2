@@ -14,7 +14,7 @@ if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
     ELASTICSEARCH=1
 fi
 
-test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file")
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${MAGENTO_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${MAGENTO_MARKETPLACE_USERNAME}" && (echo "'MAGENTO_MARKETPLACE_USERNAME' is not available as a secret" && exit 1)
@@ -39,7 +39,7 @@ echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
 mkdir -p local-source/
 cd local-source/
-cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $MODULE_NAME
+cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $GITHUB_ACTION
 
 echo "Removing unneeded packages"
 composer require yireo/magento2-replace-bundled:4.0.3 --no-update --no-interaction
@@ -82,10 +82,12 @@ fi
 echo "Run Magento setup: $SETUP_ARGS"
 php -d memory_limit=2G bin/magento setup:install $SETUP_ARGS
 
-echo "Enable the module"
 cd $MAGENTO_ROOT
-bin/magento module:enable ${MODULE_NAME}
-bin/magento setup:db:status -q || bin/magento setup:upgrade
+if [[ ! -z "$MODULE_NAME" ]] ; then
+    echo "Enable the module"
+    bin/magento module:enable ${MODULE_NAME}
+    bin/magento setup:db:status -q || bin/magento setup:upgrade
+fi
 
 echo "Determine which phpunit.xml file to use"
 if [[ -z "$PHPUNIT_FILE" || ! -f "$PHPUNIT_FILE" ]] ; then
