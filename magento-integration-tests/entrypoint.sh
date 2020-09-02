@@ -30,7 +30,7 @@ php /docker-files/db-create-and-test.php magento2test || exit
 
 echo "Setup Magento credentials"
 composer global require hirak/prestissimo
-composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
+composer global config http-basic.repo.magento.com "$MAGENTO_MARKETPLACE_USERNAME" "$MAGENTO_MARKETPLACE_PASSWORD"
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
 COMPOSER_MEMORY_LIMIT=2G composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
