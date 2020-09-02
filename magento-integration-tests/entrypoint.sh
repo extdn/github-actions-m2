@@ -14,7 +14,7 @@ if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
     ELASTICSEARCH=1
 fi
 
-#test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file")
+test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file")
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${MAGENTO_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${MAGENTO_MARKETPLACE_USERNAME}" && (echo "'MAGENTO_MARKETPLACE_USERNAME' is not available as a secret" && exit 1)
@@ -33,7 +33,7 @@ composer global require hirak/prestissimo
 composer global config http-basic.repo.magento.com "$MAGENTO_MARKETPLACE_USERNAME" "$MAGENTO_MARKETPLACE_PASSWORD"
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
-COMPOSER_MEMORY_LIMIT=2G composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
+COMPOSER_MEMORY_LIMIT=8G composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
@@ -56,7 +56,7 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
 fi
 
 echo "Run installation"
-COMPOSER_MEMORY_LIMIT=2G composer install --no-interaction --no-progress --no-suggest
+COMPOSER_MEMORY_LIMIT=8G composer install --no-interaction --no-progress --no-suggest
 
 if [[ "$MAGENTO_VERSION" == "2.3.4" ]]; then
     # Somebody hacked the Magento\Setup\Controller\Landing.php file to add Laminas MVC which is not installed in 2.3.4
@@ -80,7 +80,7 @@ if [[ "$ELASTICSEARCH" == "1" ]]; then
 fi
 
 echo "Run Magento setup: $SETUP_ARGS"
-php -d memory_limit=2G bin/magento setup:install $SETUP_ARGS
+php -d memory_limit=8G bin/magento setup:install $SETUP_ARGS
 
 cd $MAGENTO_ROOT
 if [[ ! -z "$MODULE_NAME" ]] ; then
