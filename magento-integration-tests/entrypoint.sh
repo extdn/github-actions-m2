@@ -89,8 +89,12 @@ if [[ ! -z "$MODULE_NAME" ]] ; then
     bin/magento setup:db:status -q || bin/magento setup:upgrade
 fi
 
-echo "Determine which phpunit.xml file to use"
-if [[ -z "$PHPUNIT_FILE" || ! -f "$PHPUNIT_FILE" ]] ; then
+echo "Trying phpunit.xml file $PHPUNIT_FILE"
+if [[ ! -z "$PHPUNIT_FILE" ]] ; then
+    PHPUNIT_FILE=${GITHUB_WORKSPACE}/${PHPUNIT_FILE}
+fi
+
+if [[ ! -f "$PHPUNIT_FILE" ]] ; then
     PHPUNIT_FILE=/docker-files/phpunit.xml
 fi
 echo "Using PHPUnit file: $PHPUNIT_FILE"
@@ -107,8 +111,9 @@ sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $PHPUNIT_FILE > dev/tests/integration/p
 curl -s https://gist.githubusercontent.com/jissereitsma/004993763b5333e17ac3ba80d931e270/raw/d37da0c283a2f244a41e79bb7ada49b58a2b2a3e/fix-memory-report-after-integration-tests.patch | patch -p0
 
 cd $MAGENTO_ROOT
-cat composer.json
+#cat composer.json
 php -r "echo ini_get('memory_limit').PHP_EOL;"
+#cat $MAGENTO_ROOT/dev/tests/integration/phpunit.xml
 
 echo "Run the integration tests"
 cd $MAGENTO_ROOT/dev/tests/integration && ../../../vendor/bin/phpunit -c phpunit.xml
