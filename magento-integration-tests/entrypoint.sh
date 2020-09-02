@@ -104,8 +104,6 @@ curl -s https://gist.githubusercontent.com/jissereitsma/004993763b5333e17ac3ba80
 
 cd $MAGENTO_ROOT
 cat composer.json
-composer show $COMPOSER_NAME:@dev
-ls vendor/
 php -r "echo ini_get('memory_limit').PHP_EOL;"
 
 echo "Run the integration tests"
