@@ -2,7 +2,7 @@ FROM php:7.4-cli
 
 COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer
 
-RUN apt-get update && apt-get -y install \
+RUN apt-get update && apt-get -y install --no-install-recommends \
     mariadb-client \
     apt-transport-https \
     git \
@@ -17,7 +17,8 @@ RUN apt-get update && apt-get -y install \
     libicu-dev \
     libxml2-dev \
     libxslt-dev \
-    netcat
+    netcat \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install xsl
