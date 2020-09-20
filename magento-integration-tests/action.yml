@@ -27,7 +27,7 @@ inputs:
     required: false
 runs:
   using: 'docker'
-  image: 'docker://extdn/magento-integration-tests-action:${{ inputs.php_version }}-latest'
+  image: 'docker://extdn/magento-integration-tests-action:7.4-latest'
   env:
     MAGENTO_MARKETPLACE_USERNAME: ${{ secret.MAGENTO_MARKETPLACE_USERNAME }}
     MAGENTO_MARKETPLACE_PASSWORD: ${{ secret.MAGENTO_MARKETPLACE_PASSWORD }}
