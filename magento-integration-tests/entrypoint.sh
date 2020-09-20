@@ -17,8 +17,6 @@ fi
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file")
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${MAGENTO_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
-test -z "${MAGENTO_MARKETPLACE_USERNAME}" && (echo "'MAGENTO_MARKETPLACE_USERNAME' is not available as a secret" && exit 1)
-test -z "${MAGENTO_MARKETPLACE_PASSWORD}" && (echo "'MAGENTO_MARKETPLACE_PASSWORD' is not available as a secret" && exit 1)
 
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
@@ -30,10 +28,9 @@ php /docker-files/db-create-and-test.php magento2test || exit
 
 echo "Setup Magento credentials"
 composer global require hirak/prestissimo
-composer global config http-basic.repo.magento.com "$MAGENTO_MARKETPLACE_USERNAME" "$MAGENTO_MARKETPLACE_PASSWORD"
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
-COMPOSER_MEMORY_LIMIT=8G composer create-project --repository=https://repo.magento.com/ magento/project-community-edition:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
+COMPOSER_MEMORY_LIMIT=8G composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ magento/project-community-edition:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
@@ -47,6 +44,8 @@ composer require yireo/magento2-replace-sample-data --no-update --no-interaction
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
+composer config --unset repo.0
+composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 composer config repositories.local-source path local-source/\*
 composer require $COMPOSER_NAME:@dev --no-update --no-interaction
 

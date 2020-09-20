@@ -29,8 +29,6 @@ runs:
   using: 'docker'
   image: 'docker://extdn/magento-integration-tests-action:7.4-latest'
   env:
-    MAGENTO_MARKETPLACE_USERNAME: ${{ env.MAGENTO_MARKETPLACE_USERNAME }}
-    MAGENTO_MARKETPLACE_PASSWORD: ${{ env.MAGENTO_MARKETPLACE_PASSWORD }}
     MODULE_NAME: ${{ inputs.module_name }}
     COMPOSER_NAME: ${{ inputs.composer_name }}
     MAGENTO_VERSION: ${{ inputs.ce_version }}
