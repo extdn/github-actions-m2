@@ -28,7 +28,7 @@ jobs:
         id: "tagName"
 
       - name: "Build Docker image"
-        run: "docker build --tag extdn/${{ matrix.actions-with-docker-image }}-action:${{ matrix.php-version }}-latest ${{ matrix.actions-with-docker-image }}/. -f Dockerfile:${{ matrix.php-version }}"
+        run: "docker build --tag extdn/${{ matrix.actions-with-docker-image }}-action:${{ matrix.php-version }}-latest ${{ matrix.actions-with-docker-image }}/. -f ${{ matrix.actions-with-docker-image }}/Dockerfile:${{ matrix.php-version }}"
 
       - name: "Docker Login"
         run: "echo ${{ secrets.DOCKER_PASSWORD }} | $(which docker) login --password-stdin --username ${{ env.DOCKER_USERNAME }}"
