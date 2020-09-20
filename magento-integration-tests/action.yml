@@ -29,11 +29,11 @@ runs:
   using: 'docker'
   image: 'docker://extdn/magento-integration-tests-action:${{ inputs.php_version }}-latest'
   args:
-    - "-e MAGENTO_MARKETPLACE_USERNAME=${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}"
-    - "-e MAGENTO_MARKETPLACE_PASSWORD=${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}"
-    - "-e MODULE_NAME=${{ inputs.module_name }}"
-    - "-e COMPOSER_NAME=${{ inputs.composer_name }}"
-    - "-e MAGENTO_VERSION=${{ inputs.ce_version }}"
+    - "-e MAGENTO_MARKETPLACE_USERNAME="${{ env.MAGENTO_MARKETPLACE_USERNAME }}
+    - "-e MAGENTO_MARKETPLACE_PASSWORD="${{ env.MAGENTO_MARKETPLACE_PASSWORD }}
+    - "-e MODULE_NAME="${{ inputs.module_name }}
+    - "-e COMPOSER_NAME="${{ inputs.composer_name }}
+    - "-e MAGENTO_VERSION="${{ inputs.ce_version }}
 
 branding:
   icon: 'code'  
