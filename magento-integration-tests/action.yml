@@ -11,16 +11,23 @@ inputs:
   ce_version:
     description: 'Magento 2 Open Source version number'
     required: true
-    default: '2.3.5'
+    default: '2.4.0'
+  php_version:
+    description: 'Php version number'
+    required: true
+    default: '7.4'
   module_source:
     description: 'Relative path to your module source within your repository. Empty by default.'
+    required: false
   phpunit_file:
     description: 'Relative path to your own PHPUnit file. Leave empty to use the default.'
+    required: false
   magento_pre_install_script:
     description: 'Relative path to an optional script before Magento installation is run. Leave empty to use the default.'
+    required: false
 runs:
   using: 'docker'
-  image: 'docker://yireo/github-actions-magento-integration-tests:latest'
+  image: 'docker://extdn/magento-integration-tests-action:${{ inputs.php_version }}-latest'
 branding:
   icon: 'code'  
   color: 'green'

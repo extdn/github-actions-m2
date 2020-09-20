@@ -1,6 +1,9 @@
 name: Build Integration Images
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'magento-integration-tests/**'
 
 jobs:
   build:
