@@ -5,7 +5,7 @@ async function run() {
 try { 
     const ceversion = core.getInput('ce-version');
     const options = {};
-    await exec.exec(`composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ magento/project-community-edition:${ceversion} m2-folder --no-install --no-interaction`);
+    await exec.exec(`composer create-project --repository-url==https://repo-magento-mirror.fooman.co.nz/ magento/project-community-edition:${ceversion} m2-folder --no-install --no-interaction`);
     options.cwd = './m2-folder';
     await exec.exec('composer', ['config', '--unset', 'repo.0'], options);
     await exec.exec('composer', ['config', 'repositories.foomanmirror', 'composer', 'https://repo-magento-mirror.fooman.co.nz/'], options);
