@@ -11,11 +11,7 @@ inputs:
   ce_version:
     description: 'Magento 2 Open Source version number'
     required: true
-    default: '2.4.0'
-  php_version:
-    description: 'Php version number'
-    required: true
-    default: '7.4'
+    default: '2.3.5-p2'
   module_source:
     description: 'Relative path to your module source within your repository. Empty by default.'
     required: false
@@ -27,7 +23,7 @@ inputs:
     required: false
 runs:
   using: 'docker'
-  image: 'docker://extdn/magento-integration-tests-action:7.4-latest'
+  image: 'docker://extdn/magento-integration-tests-action:7.2-latest'
   env:
     MODULE_NAME: ${{ inputs.module_name }}
     COMPOSER_NAME: ${{ inputs.composer_name }}
