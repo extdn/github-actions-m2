@@ -23,6 +23,8 @@ PROJECT_PATH=$GITHUB_WORKSPACE
 
 echo "MySQL checks"
 nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
+php /docker-files/db-create-and-test.php magento2 || exit
+php /docker-files/db-create-and-test.php magento2test || exit
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
 composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-plugins magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
