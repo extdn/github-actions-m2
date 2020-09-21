@@ -25,7 +25,7 @@ echo "MySQL checks"
 nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
-composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-custom-installers magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
+composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-plugins magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
