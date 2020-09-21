@@ -13,12 +13,11 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_SQL_TO_RUN: 'GRANT ALL ON *.* TO "root"@"%";'
         ports:
           - 3306:3306
         options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       es:
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+        image: docker.io/wardenenv/elasticsearch:7.8
         ports:
           - 9200:9200
         env:
