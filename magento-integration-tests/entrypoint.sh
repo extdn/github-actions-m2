@@ -82,12 +82,13 @@ fi
 echo "Run Magento setup: $SETUP_ARGS"
 php bin/magento setup:install $SETUP_ARGS
 
-cd $MAGENTO_ROOT
-if [[ ! -z "$MODULE_NAME" ]] ; then
-    echo "Enable the module"
-    bin/magento module:enable ${MODULE_NAME}
-    bin/magento setup:db:status -q || bin/magento setup:upgrade
-fi
+# Not required as done as part of setup:install
+#cd $MAGENTO_ROOT
+#if [[ ! -z "$MODULE_NAME" ]] ; then
+#    echo "Enable the module"
+#    bin/magento module:enable ${MODULE_NAME}
+#    bin/magento setup:db:status -q || bin/magento setup:upgrade
+#fi
 
 echo "Trying phpunit.xml file $PHPUNIT_FILE"
 if [[ ! -z "$PHPUNIT_FILE" ]] ; then
