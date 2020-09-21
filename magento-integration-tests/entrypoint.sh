@@ -23,11 +23,6 @@ PROJECT_PATH=$GITHUB_WORKSPACE
 
 echo "MySQL checks"
 nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
-php /docker-files/db-create-and-test.php magento2 || exit
-php /docker-files/db-create-and-test.php magento2test || exit
-
-echo "Setup Magento credentials"
-composer global require hirak/prestissimo
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
 composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-custom-installers magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
@@ -60,6 +55,10 @@ composer install --no-interaction --no-progress --no-suggest
 if [[ "$MAGENTO_VERSION" == "2.3.4" ]]; then
     # Somebody hacked the Magento\Setup\Controller\Landing.php file to add Laminas MVC which is not installed in 2.3.4
     curl -s https://gist.githubusercontent.com/jissereitsma/51742489c6e97138363c93983a034af2/raw/1f14af19a64195b1246263513aba594726e5d72a/remove-laminas-from-setup-landing-controller.patch | patch -p0
+fi
+if [[ "$MAGENTO_VERSION" == "2.3.4" ]]; then
+  #Dotdigital tests don't work out of the box
+  rm -rf "$MAGENTO_ROOT/vendor/dotmailer/dotmailer-magento2-extension/Test/Integration/"
 fi
 
 echo "Gathering specific Magento setup options"
