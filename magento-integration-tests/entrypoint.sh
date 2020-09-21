@@ -58,7 +58,7 @@ if [[ "$MAGENTO_VERSION" == "2.3.4" ]]; then
     # Somebody hacked the Magento\Setup\Controller\Landing.php file to add Laminas MVC which is not installed in 2.3.4
     curl -s https://gist.githubusercontent.com/jissereitsma/51742489c6e97138363c93983a034af2/raw/1f14af19a64195b1246263513aba594726e5d72a/remove-laminas-from-setup-landing-controller.patch | patch -p0
 fi
-if [[ "$MAGENTO_VERSION" == "2.3.4" ]]; then
+if [[ "$MAGENTO_VERSION" == "2.4.0" ]]; then
   #Dotdigital tests don't work out of the box
   rm -rf "$MAGENTO_ROOT/vendor/dotmailer/dotmailer-magento2-extension/Test/Integration/"
 fi
