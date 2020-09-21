@@ -17,15 +17,23 @@ jobs:
         ports:
           - 3306:3306
         options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      es:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+        ports:
+          - 9200:9200
+        env:
+          'discovery.type': single-node
+          'xpack.security.enabled': false
+          ES_JAVA_OPTS: "-Xms64m -Xmx512m"
+        options: --health-cmd="curl localhost:9200/_cluster/health?wait_for_status=yellow&timeout=60s" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v2
-      - uses: docker://yireo/github-actions-magento-integration-tests:7.4
-        env:
-            MAGENTO_VERSION: '2.3.5-p2'
-            MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
-            MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
-            MODULE_NAME: Foo_Bar
-            COMPOSER_NAME: foo/magento2-foobar
+      - name: M2 Integration Tests with Magento 2 (Php7.4)
+        uses: extdn/github-actions-m2/magento-integration-tests/7.4@integration-tests
+        with:
+          module_name: Foo_Bar
+          composer_name: foo/magento2-foobar
+          ce_version: '2.4.0'
 ```
 
 Make sure to modify the following values:
@@ -43,13 +51,3 @@ Additionally, you can add an environment variable `MAGENTO_PRE_INSTALL_SCRIPT` t
 configured, but before the composer installation is run. Likewise, you can customize your PHPUnit procedure by supplying
 a custom XML file using `PHPUNIT_FILE`. See `entrypoint.sh` for clearification.
 
-### Maintenance of the Docker image
-To use the `Dockerfile` of this package, a new image needs to be built and pushed to the Docker Hub:
-
-    docker build -t VENDOR/IMAGE .
-    docker push VENDOR/IMAGE
-
-For instance with the vendor and image-name used in this package:
-
-    docker build -t yireo/github-actions-magento-integration-tests .
-    docker push yireo/github-actions-magento-integration-tests
