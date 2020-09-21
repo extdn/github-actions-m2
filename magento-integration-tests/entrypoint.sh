@@ -30,7 +30,7 @@ echo "Setup Magento credentials"
 composer global require hirak/prestissimo
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
-COMPOSER_MEMORY_LIMIT=8G composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-custom-installers magento/project-community-edition m2 "$MAGENTO_VERSION"
+COMPOSER_MEMORY_LIMIT=8G composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-custom-installers magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
