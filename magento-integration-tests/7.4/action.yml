@@ -28,6 +28,7 @@ runs:
     MODULE_NAME: ${{ inputs.module_name }}
     COMPOSER_NAME: ${{ inputs.composer_name }}
     MAGENTO_VERSION: ${{ inputs.ce_version }}
+    COMPOSER_MEMORY_LIMIT: -1
 
 branding:
   icon: 'code'  

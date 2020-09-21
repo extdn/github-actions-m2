@@ -30,7 +30,7 @@ echo "Setup Magento credentials"
 composer global require hirak/prestissimo
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
-COMPOSER_MEMORY_LIMIT=8G composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-custom-installers magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
+composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-custom-installers magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
@@ -55,7 +55,7 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
 fi
 
 echo "Run installation"
-COMPOSER_MEMORY_LIMIT=8G composer install --no-interaction --no-progress --no-suggest
+composer install --no-interaction --no-progress --no-suggest
 
 if [[ "$MAGENTO_VERSION" == "2.3.4" ]]; then
     # Somebody hacked the Magento\Setup\Controller\Landing.php file to add Laminas MVC which is not installed in 2.3.4
@@ -79,7 +79,7 @@ if [[ "$ELASTICSEARCH" == "1" ]]; then
 fi
 
 echo "Run Magento setup: $SETUP_ARGS"
-php -d memory_limit=8G bin/magento setup:install $SETUP_ARGS
+php bin/magento setup:install $SETUP_ARGS
 
 cd $MAGENTO_ROOT
 if [[ ! -z "$MODULE_NAME" ]] ; then
