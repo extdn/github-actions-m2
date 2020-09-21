@@ -35,9 +35,10 @@ mkdir -p local-source/
 cd local-source/
 cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $GITHUB_ACTION
 
-echo "Removing unneeded packages"
-composer require yireo/magento2-replace-bundled:4.0.3 --no-update --no-interaction
-composer require yireo/magento2-replace-sample-data --no-update --no-interaction
+#echo "Removing unneeded packages"
+# can move to pre-install scripts if needed?
+#composer require yireo/magento2-replace-bundled:4.0.3 --no-update --no-interaction
+#composer require yireo/magento2-replace-sample-data --no-update --no-interaction
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
