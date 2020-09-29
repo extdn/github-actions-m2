@@ -1,13 +1,14 @@
-FROM php:7.4
+FROM php:7.4-cli
 
 COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer
 
-RUN apt-get update && apt-get -y install \
+RUN apt-get update && apt-get -y install --no-install-recommends \
     mariadb-client \
     apt-transport-https \
     git \
     zlib1g-dev \
     zip \
+    unzip \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     libzip-dev \
@@ -17,7 +18,8 @@ RUN apt-get update && apt-get -y install \
     libicu-dev \
     libxml2-dev \
     libxslt-dev \
-    netcat
+    netcat \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install xsl
@@ -30,12 +32,12 @@ RUN docker-php-ext-install zip
 RUN docker-php-ext-install intl
 RUN docker-php-ext-install sockets
 RUN composer global require hirak/prestissimo
-RUN apt-get clean
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
 
 COPY docker-files /docker-files
+RUN echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini
 
 ENTRYPOINT ["bash", "/entrypoint.sh"]
 
