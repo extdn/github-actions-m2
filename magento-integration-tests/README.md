@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: M2 Integration Tests with Magento 2 (Php7.4)
-        uses: extdn/github-actions-m2/magento-integration-tests/7.4@integration-tests
+        uses: extdn/github-actions-m2/magento-integration-tests/7.4@master
         with:
           module_name: Foo_Bar
           composer_name: foo/magento2-foobar
@@ -41,10 +41,7 @@ Make sure to modify the following values:
 
 You could also choose to switch PHP version, by changing the tag of the Docker image:
 
-    - uses: docker://yireo/github-actions-magento-integration-tests:7.3
-
-Next, make sure to add the secrets `MAGENTO_MARKETPLACE_USERNAME` and `MAGENTO_MARKETPLACE_USERNAME` to your GitHub repository under **Settings > Secrets**. Tip: You could also use the secrets to define the module and composer name: This way your workflow file remains
-generic.
+    - uses: extdn/github-actions-m2/magento-integration-tests/7.3@master
 
 Additionally, you can add an environment variable `MAGENTO_PRE_INSTALL_SCRIPT` to run a script, after composer is
 configured, but before the composer installation is run. Likewise, you can customize your PHPUnit procedure by supplying
