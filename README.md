@@ -11,19 +11,104 @@ Provides an action that can be used in your GitHub workflow to execute the lates
 
 #### How to use it
 In your GitHub repository add the below as 
-`.github/workflows/ci.yml`
+`.github/workflows/coding-standard.yml`
 
 ```
-name: Continous Integration
+name: ExtDN M2 Coding Standard
 on: [push, pull_request]
 
 jobs:
   static:
-    name: Static Code Analysis
+    name: M2 Coding Standard
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: extdn/github-actions-m2/magento-coding-standard@master
+```
+
+---
+## Magento Integration tests
+Run your Magento 2 integration tests via this Github Action. All you need is to add your tests. This action will set up the needed Magento services and set up. Please note this action will perform a Composer installation so will provide additional confirmation that this works as well.
+
+#### Screenshot
+![Screenshot Mess Detector Action](magento-integration-tests/screenshot.png?raw=true")
+#### How to use it
+In your GitHub repository add the below as 
+`.github/workflows/integration.yml`
+
+```
+name: ExtDN M2 Integration Tests
+on: [push, pull_request]
+
+jobs:
+  integration-tests:
+    name: Magento 2 Integration Tests
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      es:
+        image: docker.io/wardenenv/elasticsearch:7.8
+        ports:
+          - 9200:9200
+        env:
+          'discovery.type': single-node
+          'xpack.security.enabled': false
+          ES_JAVA_OPTS: "-Xms64m -Xmx512m"
+        options: --health-cmd="curl localhost:9200/_cluster/health?wait_for_status=yellow&timeout=60s" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - uses: actions/checkout@v2
+      - name: M2 Integration Tests with Magento 2 (Php7.4)
+        uses: extdn/github-actions-m2/magento-integration-tests/7.4@master
+        with:
+          module_name: Foo_Bar
+          composer_name: foo/magento2-foobar
+          ce_version: '2.4.0'
+```
+
+The following images are provided for use
+Php 7.4: extdn/github-actions-m2/magento-integration-tests/7.4@master
+Php 7.3: extdn/github-actions-m2/magento-integration-tests/7.3@master
+Php 7.2: extdn/github-actions-m2/magento-integration-tests/7.2@master
+
+The following inputs are required
+- module_name
+- composer_name
+- ce_version
+
+
+The default [phpunit.xml](https://github.com/extdn/github-actions-m2/blob/master/magento-integration-tests/docker-files/phpunit.xml) configuration will check the following folders for *Test files:
+- Test/Integration
+- tests/Integration
+- tests/integration
+
+If this phpunit file does not work for you can provide a relative path to your own PHPUnit file via phpunit_file
+
+``` 
+      - name: M2 Integration Tests with Magento 2 (Php7.4)
+        uses: extdn/github-actions-m2/magento-integration-tests/7.4@master
+        with:
+          module_name: Foo_Bar
+          composer_name: foo/magento2-foobar
+          ce_version: '2.4.0'
+          phpunit_file: './path/to/phpunit.xml'
+```
+
+Sometimes it may be needed to run additional commands before tests can run. For example to add or remove additional dependencies. Use the input magento_pre_install_script to provide a relative path to this script. Example
+
+``` 
+      - name: M2 Integration Tests with Magento 2 (Php7.4)
+        uses: extdn/github-actions-m2/magento-integration-tests/7.4@master
+        with:
+          module_name: Foo_Bar
+          composer_name: foo/magento2-foobar
+          ce_version: '2.4.0'
+          magento_pre_install_script: './.github/integration-test-setup.sh'
 ```
 
 ---
@@ -35,10 +120,10 @@ Provides an action that can be used in your GitHub workflow to execute the PHP M
 ![Screenshot Mess Detector Action](magento-mess-detector/screenshot.png?raw=true")
 #### How to use it
 In your GitHub repository add the below as 
-`.github/workflows/ci.yml`
+`.github/workflows/mess-detector.yml`
 
 ```
-name: Continous Integration
+name: ExtDN M2 Mess Detector
 on: [push, pull_request]
 
 jobs:
@@ -60,15 +145,15 @@ Provides an action that can be used in your GitHub workflow to execute the PHPSt
 
 #### How to use it
 In your GitHub repository add the below as 
-`.github/workflows/ci.yml`
+`.github/workflows/phpstan.yml`
 
 ```
-name: Continous Integration
+name: ExtDN M2 PHPStan
 on: [push, pull_request]
 
 jobs:
   phpstan:
-    name: M2 PhpStan
+    name: M2 PHPStan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
