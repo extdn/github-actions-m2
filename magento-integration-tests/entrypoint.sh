@@ -47,6 +47,7 @@ composer config repositories.foomanmirror composer https://repo-magento-mirror.f
 composer config repositories.local-source path local-source/\*
 composer require $COMPOSER_NAME:@dev --no-update --no-interaction
 
+echo "Pre Install Script: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
 if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ]] ; then
     echo "Running custom pre-installation script: ${INPUT_MAGENTO_PRE_INSTALL_SCRIPT}"
     . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT
