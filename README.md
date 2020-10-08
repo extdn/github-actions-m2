@@ -14,7 +14,7 @@ In your GitHub repository add the below as
 `.github/workflows/coding-standard.yml`
 
 ```
-name: Continous Integration
+name: M2 Coding Standard
 on: [push, pull_request]
 
 jobs:
@@ -38,7 +38,7 @@ In your GitHub repository add the below as
 `.github/workflows/mess-detector.yml`
 
 ```
-name: Continous Integration
+name: M2 Mess Detector
 on: [push, pull_request]
 
 jobs:
@@ -63,7 +63,7 @@ In your GitHub repository add the below as
 `.github/workflows/phpstan.yml`
 
 ```
-name: Continous Integration
+name: M2 PhpStan
 on: [push, pull_request]
 
 jobs:
