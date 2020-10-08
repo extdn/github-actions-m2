@@ -1,5 +1,5 @@
 FROM duhon/php:7.3-alpine AS builder
-
+RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
 RUN composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ magento/project-community-edition /var/www/magento2ce --no-install --no-interaction
 RUN composer config --unset repo.0
 RUN composer config repo.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/

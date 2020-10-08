@@ -6,5 +6,6 @@ RUN /usr/local/bin/composer global require magento/magento-coding-standard:*
 RUN ~/.composer/vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/
 RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
 
+ADD problem-matcher.json /problem-matcher.json
 ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
