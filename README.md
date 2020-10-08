@@ -72,17 +72,25 @@ jobs:
 ```
 
 The following images are provided for use
-Php 7.4: extdn/github-actions-m2/magento-integration-tests/7.4@master
-Php 7.3: extdn/github-actions-m2/magento-integration-tests/7.3@master
-Php 7.2: extdn/github-actions-m2/magento-integration-tests/7.2@master
 
-The following inputs are required
-- module_name
-- composer_name
-- ce_version
+|Php   | Image  |
+|---|---|
+|7.4 | extdn/github-actions-m2/magento-integration-tests/7.4@master |
+|7.3 | extdn/github-actions-m2/magento-integration-tests/7.3@master |
+|7.2 | extdn/github-actions-m2/magento-integration-tests/7.2@master |
+
+The following inputs are required:
+| with  | description  |
+|---|---|
+| module_name   | Your Magento module name. Example: Foo_Bar   |
+| composer_name   | Your composer name. Example: foo/magento2-bar   |
+| ce_version  | Magento 2 Open Source version number. Example: 2.4.0  |
+
+
 
 
 The default [phpunit.xml](https://github.com/extdn/github-actions-m2/blob/master/magento-integration-tests/docker-files/phpunit.xml) configuration will check the following folders for *Test files:
+
 - Test/Integration
 - tests/Integration
 - tests/integration
