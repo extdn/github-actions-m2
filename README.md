@@ -11,7 +11,7 @@ Provides an action that can be used in your GitHub workflow to execute the lates
 
 #### How to use it
 In your GitHub repository add the below as 
-`.github/workflows/ci.yml`
+`.github/workflows/coding-standard.yml`
 
 ```
 name: Continous Integration
@@ -35,7 +35,7 @@ Provides an action that can be used in your GitHub workflow to execute the PHP M
 ![Screenshot Mess Detector Action](magento-mess-detector/screenshot.png?raw=true")
 #### How to use it
 In your GitHub repository add the below as 
-`.github/workflows/ci.yml`
+`.github/workflows/mess-detector.yml`
 
 ```
 name: Continous Integration
@@ -60,7 +60,7 @@ Provides an action that can be used in your GitHub workflow to execute the PHPSt
 
 #### How to use it
 In your GitHub repository add the below as 
-`.github/workflows/ci.yml`
+`.github/workflows/phpstan.yml`
 
 ```
 name: Continous Integration
