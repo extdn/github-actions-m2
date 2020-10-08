@@ -5,4 +5,4 @@
 cp /problem-matcher.json ${HOME}/
 echo "::add-matcher::${HOME}/problem-matcher.json"
 
-sh -c "/root/.composer/vendor/bin/phpcs --standard=Magento2 $GITHUB_WORKSPACE -s $*"
+sh -c "/root/.composer/vendor/bin/phpcs --report=checkstyle --standard=Magento2 $GITHUB_WORKSPACE -s $*"
