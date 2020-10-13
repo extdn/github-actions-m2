@@ -53,7 +53,7 @@ You could also choose to switch PHP version, by changing the tag of the Docker i
 
     - uses: docker://yireo/github-actions-magento-unit-tests:7.4
 
-Next, make sure to add the secrets `MAGENTO_MARKETPLACE_USERNAME` and `MAGENTO_MARKETPLACE_USERNAME` to your GitHub repository under
+Next, make sure to add the secrets `MAGENTO_MARKETPLACE_USERNAME` and `MAGENTO_MARKETPLACE_PASSWORD` to your GitHub repository under
 **Settings > Secrets**. Tip: You could also use the secrets to define the module and composer name: This way your workflow file remains
 generic.
 
