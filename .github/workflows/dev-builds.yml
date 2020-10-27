@@ -1,0 +1,36 @@
+name: Docker Build
+
+on:
+  push:
+    paths:
+      - 'magento-phpstan/**'
+
+jobs:
+  build:
+    name: "Build and deploy"
+
+    runs-on: "ubuntu-latest"
+
+    strategy:
+      matrix:
+        actions-with-docker-image:
+          - "magento-phpstan"
+
+    env:
+      DOCKER_USERNAME: "extdn"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Build Docker image"
+        run: "docker build --tag extdn/${{ matrix.actions-with-docker-image }}-action:dev ${{ matrix.actions-with-docker-image }}/."
+
+      - name: "Docker Login"
+        run: "echo ${{ secrets.DOCKER_PASSWORD }} | $(which docker) login --password-stdin --username ${{ env.DOCKER_USERNAME }}"
+
+      - name: "Push Docker image (dev)"
+        run: "docker push extdn/${{ matrix.actions-with-docker-image }}-action:dev"
+
+      - name: "Docker Logout"
+        run: "docker logout"
