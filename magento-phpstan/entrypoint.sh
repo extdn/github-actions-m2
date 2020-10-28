@@ -10,7 +10,7 @@ echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
 mkdir -p local-source/
 cd local-source/
-cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $GITHUB_ACTION
+cp -R "${GITHUB_WORKSPACE}"/"${MODULE_SOURCE}" "$GITHUB_ACTION"
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
@@ -19,10 +19,10 @@ composer config repositories.local-source path local-source/\*
 composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 
 echo "Pre Install Script: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
-if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ]] ; then
+if [ -n "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] && [ -f "${GITHUB_WORKSPACE}"/"$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] ; then
     echo "Running custom pre-installation script: ${INPUT_MAGENTO_PRE_INSTALL_SCRIPT}"
-    . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT
-fi
+    . "${GITHUB_WORKSPACE}"/"$INPUT_MAGENTO_PRE_INSTALL_SCRIPT";
+fi;
 
 echo "Run installation"
 composer require $COMPOSER_NAME:@dev
