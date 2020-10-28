@@ -27,4 +27,4 @@ fi
 echo "Run installation"
 composer require $COMPOSER_NAME:@dev
 
-php $MAGENTO_ROOT/vendor/bin/phpstan analyse --level 1 --no-progress --error-format=raw --memory-limit=4G --configuration '$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon' $GITHUB_WORKSPACE/${MODULE_SOURCE}
+php $MAGENTO_ROOT/vendor/bin/phpstan analyse --level 1 --no-progress --error-format=raw --memory-limit=4G --configuration "$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon" $GITHUB_WORKSPACE/${MODULE_SOURCE}
