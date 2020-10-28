@@ -4,7 +4,7 @@ const fs = require('fs');
 
 async function run() {
 try {
-    const ceversion = '2.3.5';
+    const ceversion = '2.3.6';
     const phpVersion = core.getInput('php-version');
 
     if (!fs.existsSync(process.env.GITHUB_WORKSPACE+'/extension')) {
@@ -31,6 +31,7 @@ try {
     await exec.exec('docker-compose', ['up', '-d']);
 
     const m2Options = {};
+    await exec.exec(`composer self-update 1.10.16`);
     await exec.exec(`composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ magento/project-community-edition:${ceversion} ${process.env.GITHUB_WORKSPACE}/m2 --no-install --no-interaction`);
     m2Options.cwd = process.env.GITHUB_WORKSPACE+'/m2';
     await exec.exec('composer', ['config', 'platform.php', phpVersion], m2Options);
