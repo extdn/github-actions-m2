@@ -3,7 +3,7 @@ author: 'ExtDN'
 description: 'performs php static code analysis with the Magento 2 PhpStan ruleset'
 runs:
   using: 'docker'
-  image: 'docker://extdn/magento-phpstan-action:latest'
+  image: 'docker://extdn/magento-phpstan-action:dev'
 branding:
   icon: 'code'  
   color: 'green'
