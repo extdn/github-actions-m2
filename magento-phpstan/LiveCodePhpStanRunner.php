@@ -77,7 +77,6 @@ class LiveCodePhpStanRunner implements ToolInterface
 
         $command = $this->getCommand() . ' analyse' .
             ' --level ' . self::RULE_LEVEL .
-            ' --autoload-file ' . $this->getAutoloadPath() .
             ' --no-progress' .
             ' --error-format=' . self::ERROR_FORMAT .
             ' --memory-limit=' . self::MEMORY_LIMIT .
@@ -105,13 +104,6 @@ echo $command;
         // phpcs:ignore Magento2.Security.IncludeFile
         $vendorDir = require BP . '/app/etc/vendor_path.php';
         return 'php ' . BP . '/' . $vendorDir . '/bin/phpstan';
-    }
-
-    private function getAutoloadPath(): string
-    {
-        // phpcs:ignore Magento2.Security.IncludeFile
-        $vendorDir = require BP . '/app/etc/vendor_path.php';
-        return BP . '/' . $vendorDir . '/autoload.php';
     }
 
     private function getSourceCodePath($whiteList): string
