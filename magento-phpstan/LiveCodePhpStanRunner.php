@@ -87,7 +87,9 @@ class LiveCodePhpStanRunner implements ToolInterface
 
         // phpcs:disable Magento2.Security.InsecureFunction
         exec($command, $output, $exitCode);
-
+echo $command;
+        passthru($command);
+        echo "Exit Code".$exitCode;
         return $exitCode;
     }
 
