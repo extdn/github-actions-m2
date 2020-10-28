@@ -1,6 +1,13 @@
 name: 'Magento 2 PhpStan'
 author: 'ExtDN'
 description: 'performs php static code analysis with the Magento 2 PhpStan ruleset'
+inputs:
+  composer_name:
+    description: 'Your composer name. Example: foo/magento2-bar'
+    required: true
+  module_source:
+    description: 'Relative path to your module source within your repository. Empty by default.'
+    required: false
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-phpstan-action:dev'
