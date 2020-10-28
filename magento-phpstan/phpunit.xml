@@ -12,6 +12,6 @@
         </testsuite>
     </testsuites>
     <php>
-        <env name="WITH_COMPOSER" value="1" force="true" />
+        <const name="WITH_COMPOSER" value="1" force="true" />
     </php>
 </phpunit>
