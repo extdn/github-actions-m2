@@ -1,7 +1,8 @@
-#!/bin/sh -l
+#!/bin/bash
 set -e
 
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
+EXTENSION_BRANCH=${GITHUB_REF#refs/heads/}
 
 MAGENTO_ROOT=/m2
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
@@ -25,6 +26,7 @@ if [ -n "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] && [ -f "${GITHUB_WORKSPACE}"/"$IN
 fi;
 
 echo "Run installation"
-composer require $COMPOSER_NAME:@dev
+composer require $COMPOSER_NAME:dev-$EXTENSION_BRANCH#$GITHUB_SHA
 
-php $MAGENTO_ROOT/vendor/bin/phpstan analyse --level 1 --no-progress --error-format=raw --memory-limit=4G --configuration "$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon" $GITHUB_WORKSPACE/${MODULE_SOURCE}
+echo "Running PHPStan"
+php $MAGENTO_ROOT/vendor/bin/phpstan analyse --level $INPUT_PHPSTAN_LEVEL --error-format=raw --memory-limit=4G --configuration "$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon" $GITHUB_WORKSPACE/${MODULE_SOURCE}

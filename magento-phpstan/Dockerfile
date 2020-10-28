@@ -4,6 +4,7 @@ RUN composer create-project --repository=https://repo-magento-mirror.fooman.co.n
 WORKDIR "/var/www/magento2ce"
 RUN composer config --unset repo.0
 RUN composer config repo.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
+RUN composer require hoa/regex --no-update
 RUN composer install --prefer-dist
 
 

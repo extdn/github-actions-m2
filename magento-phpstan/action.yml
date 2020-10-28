@@ -8,6 +8,10 @@ inputs:
   module_source:
     description: 'Relative path to your module source within your repository. Empty by default.'
     required: false
+  phpstan_level:
+    description: 'PHPStan level to check. 1 by default.'
+    default: "1"
+    required: false
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-phpstan-action:dev'
