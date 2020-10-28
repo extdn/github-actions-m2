@@ -77,7 +77,7 @@ class LiveCodePhpStanRunner implements ToolInterface
 
         $command = $this->getCommand() . ' analyse' .
             ' --level ' . self::RULE_LEVEL .
-            ' --autoload-file' . $this->getAutoloadPath() .
+            ' --autoload-file ' . $this->getAutoloadPath() .
             ' --no-progress' .
             ' --error-format=' . self::ERROR_FORMAT .
             ' --memory-limit=' . self::MEMORY_LIMIT .
