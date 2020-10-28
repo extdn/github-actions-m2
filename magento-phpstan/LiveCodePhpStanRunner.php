@@ -77,6 +77,7 @@ class LiveCodePhpStanRunner implements ToolInterface
 
         $command = $this->getCommand() . ' analyse' .
             ' --level ' . self::RULE_LEVEL .
+            ' --autoload-file' . $this->getAutoloadPath() .
             ' --no-progress' .
             ' --error-format=' . self::ERROR_FORMAT .
             ' --memory-limit=' . self::MEMORY_LIMIT .
@@ -88,7 +89,7 @@ class LiveCodePhpStanRunner implements ToolInterface
         // phpcs:disable Magento2.Security.InsecureFunction
         exec($command, $output, $exitCode);
 echo $command;
-var_dump($_SERVER);
+
         passthru($command);
         echo "Exit Code".$exitCode;
         return $exitCode;
@@ -104,6 +105,13 @@ var_dump($_SERVER);
         // phpcs:ignore Magento2.Security.IncludeFile
         $vendorDir = require BP . '/app/etc/vendor_path.php';
         return 'php ' . BP . '/' . $vendorDir . '/bin/phpstan';
+    }
+
+    private function getAutoloadPath(): string
+    {
+        // phpcs:ignore Magento2.Security.IncludeFile
+        $vendorDir = require BP . '/app/etc/vendor_path.php';
+        return BP . '/' . $vendorDir . '/autoload.php';
     }
 
     private function getSourceCodePath($whiteList): string
