@@ -110,7 +110,7 @@ echo $command;
         if(!empty($whiteList)){
             return implode(',', $whiteList);
         }
-        return defined('PATH_TO_SOURCE')? PATH_TO_SOURCE : '/var/www/html';
+        return $_SERVER['GITHUB_WORKSPACE'] ?: '/var/www/html';
     }
 
 }
