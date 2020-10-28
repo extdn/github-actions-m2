@@ -35,16 +35,11 @@ mkdir -p local-source/
 cd local-source/
 cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $GITHUB_ACTION
 
-#echo "Removing unneeded packages"
-# can move to pre-install scripts if needed?
-#composer require yireo/magento2-replace-bundled:4.0.3 --no-update --no-interaction
-#composer require yireo/magento2-replace-sample-data --no-update --no-interaction
-
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
 composer config --unset repo.0
-composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 composer config repositories.local-source path local-source/\*
+composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 composer require $COMPOSER_NAME:@dev --no-update --no-interaction
 
 echo "Pre Install Script: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
@@ -79,14 +74,6 @@ fi
 
 echo "Run Magento setup: $SETUP_ARGS"
 php bin/magento setup:install $SETUP_ARGS
-
-# Not required as done as part of setup:install
-#cd $MAGENTO_ROOT
-#if [[ ! -z "$MODULE_NAME" ]] ; then
-#    echo "Enable the module"
-#    bin/magento module:enable ${MODULE_NAME}
-#    bin/magento setup:db:status -q || bin/magento setup:upgrade
-#fi
 
 echo "Trying phpunit.xml file $PHPUNIT_FILE"
 if [[ ! -z "$PHPUNIT_FILE" ]] ; then
