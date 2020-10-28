@@ -1,6 +1,8 @@
 #!/bin/sh -l
 set -e
 
+test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
+
 MAGENTO_ROOT=/m2
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
 
@@ -13,8 +15,8 @@ cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $GITHUB_ACTION
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
 composer config --unset repo.0
-composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 composer config repositories.local-source path local-source/\*
+composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 
 echo "Pre Install Script: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
 if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ]] ; then
