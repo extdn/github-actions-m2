@@ -11,9 +11,6 @@ RUN composer install --prefer-dist
 FROM extdn/magento-integration-tests-action:7.4-latest
 COPY --from=builder /var/www/magento2ce/ /m2/
 RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
-ADD phpunit.xml /m2/dev/tests/static/phpunit.xml
-ADD PhpStanRunner.php /m2/dev/tests/static/testsuite/Magento/Test/Php/PhpStanRunner.php
-ADD LiveCodePhpStanRunner.php /m2/dev/tests/static/framework/Magento/TestFramework/CodingStandard/Tool/LiveCodePhpStanRunner.php
 
 ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
