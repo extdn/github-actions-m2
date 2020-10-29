@@ -169,3 +169,106 @@ jobs:
         with:
           composer_name: foo/magento2-foobar
 ```
+
+## Magento Performance Smoke Test
+Provides an action that can be used in your GitHub workflow to execute blackfire.io profiling before and after installing extension code.
+
+#### How to use it
+In your GitHub repository add the below as 
+`.github/workflows/performance.yml`
+
+```
+name: ExtDN M2 Performance Testing
+on: [push, pull_request]
+
+jobs:
+  performance:
+    name: M2 Performance Testing
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_COMPOSE_FILE: "./docker-compose.yml"
+      EXTENSION_NAME: "Foo_Bar"
+      EXTENSION_PACKAGE_NAME: "foo/magento2-foobar"
+
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout files
+        with:
+          path: extension
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: "echo \"::set-output name=dir::$(composer config cache-dir)\""
+        working-directory: ./extension
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Prepare ExtDN performance testing
+        uses: extdn/github-actions-m2/magento-performance-setup@master
+        env:
+          BLACKFIRE_CLIENT_ID: ${{ secrets.BLACKFIRE_CLIENT_ID }}
+          BLACKFIRE_CLIENT_TOKEN: ${{ secrets.BLACKFIRE_CLIENT_TOKEN }}
+          BLACKFIRE_SERVER_ID: ${{ secrets.BLACKFIRE_SERVER_ID }}
+          BLACKFIRE_SERVER_TOKEN: ${{ secrets.BLACKFIRE_SERVER_TOKEN }}
+
+      - name: Install Magento
+        run: >-
+          docker-compose -f ${{ env.DOCKER_COMPOSE_FILE }} exec -T php-fpm
+          bash -c 'cd /var/www/html/m2 && sudo chown www-data: -R /var/www/html/m2 && ls -al && id
+          && php -f bin/magento setup:install --base-url=http://magento2.test/ --backend-frontname=admin --db-host=mysql --db-name=magento_performance_tests --db-user=root --db-password=123123q --admin-user=admin@example.com --admin-password=password1 --admin-email=admin@example.com --admin-firstname=firstname --admin-lastname=lastname'
+      - name: Generate Performance Fixtures
+        run: >-
+          docker-compose -f ${{ env.DOCKER_COMPOSE_FILE }} exec -T php-fpm
+          bash -c 'cd /var/www/html/m2
+          && php -f bin/magento setup:performance:generate-fixtures setup/performance-toolkit/profiles/ce/small.xml
+          && php -f bin/magento cache:enable
+          && php -f bin/magento cache:disable block_html full_page'
+      - name: Run Blackfire
+        id: blackfire-baseline
+        run: docker-compose -f ${{ env.DOCKER_COMPOSE_FILE }} run blackfire-agent blackfire --json curl http://magento2.test/category-1/category-1-1.html > ${{ github.workspace }}/baseline.json
+        env:
+          BLACKFIRE_CLIENT_ID: ${{ secrets.BLACKFIRE_CLIENT_ID }}
+          BLACKFIRE_CLIENT_TOKEN: ${{ secrets.BLACKFIRE_CLIENT_TOKEN }}
+          BLACKFIRE_SERVER_ID: ${{ secrets.BLACKFIRE_SERVER_ID }}
+          BLACKFIRE_SERVER_TOKEN: ${{ secrets.BLACKFIRE_SERVER_TOKEN }}
+
+      - name: Install Extension
+        run: >-
+          docker-compose -f ${{ env.DOCKER_COMPOSE_FILE }} exec -e EXTENSION_BRANCH=${GITHUB_REF#refs/heads/} -T php-fpm
+          bash -c 'cd /var/www/html/m2
+          && php -f vendor/composer/composer/bin/composer config repo.extension path /var/www/html/extension
+          && php -f vendor/composer/composer/bin/composer require ${{ env.EXTENSION_PACKAGE_NAME }}:dev-$EXTENSION_BRANCH#${{ github.sha }}
+          && php -f bin/magento module:enable ${{ env.EXTENSION_NAME }}
+          && php -f bin/magento setup:upgrade
+          && php -f bin/magento cache:enable
+          && php -f bin/magento cache:disable block_html full_page'
+      - name: Run Blackfire Again
+        id: blackfire-after
+        run: docker-compose -f ${{ env.DOCKER_COMPOSE_FILE }} run blackfire-agent blackfire --json curl http://magento2.test/category-1/category-1-1.html > ${{ github.workspace }}/after.json
+        env:
+          BLACKFIRE_CLIENT_ID: ${{ secrets.BLACKFIRE_CLIENT_ID }}
+          BLACKFIRE_CLIENT_TOKEN: ${{ secrets.BLACKFIRE_CLIENT_TOKEN }}
+          BLACKFIRE_SERVER_ID: ${{ secrets.BLACKFIRE_SERVER_ID }}
+          BLACKFIRE_SERVER_TOKEN: ${{ secrets.BLACKFIRE_SERVER_TOKEN }}
+
+      - name: Compare Performance Results
+        uses: extdn/github-actions-m2/magento-performance-compare@master
+```
+Change these environment variables:
+```
+EXTENSION_NAME: "Foo_Bar"
+EXTENSION_PACKAGE_NAME: "foo/magento2-foobar"
+```
+
+Additionally please create the following Github Secrets for this repository with the values available in your blackfire.io account:
+```
+BLACKFIRE_CLIENT_ID
+BLACKFIRE_CLIENT_TOKEN
+BLACKFIRE_SERVER_ID
+BLACKFIRE_SERVER_TOKEN
+```
