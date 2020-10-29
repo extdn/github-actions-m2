@@ -166,4 +166,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: extdn/github-actions-m2/magento-phpstan@master
+        with:
+          composer_name: foo/magento2-foobar
 ```
