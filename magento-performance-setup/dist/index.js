@@ -729,8 +729,8 @@ try {
     await exec.exec('docker-compose', ['up', '-d']);
 
     const m2Options = {};
-    await exec.exec(`composer self-update 1.10.16`);
-    await exec.exec(`composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ magento/project-community-edition:${ceversion} ${process.env.GITHUB_WORKSPACE}/m2 --no-install --no-interaction`);
+    await exec.exec(`sudo composer self-update 1.10.16`);
+    await exec.exec(`composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-interaction --no-plugins magento/project-community-edition:${ceversion} ${process.env.GITHUB_WORKSPACE}/m2 `);
     m2Options.cwd = process.env.GITHUB_WORKSPACE+'/m2';
     await exec.exec('composer', ['config', 'platform.php', phpVersion], m2Options);
     await exec.exec('composer', ['config', '--unset', 'repo.0'], m2Options);
