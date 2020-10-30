@@ -26,7 +26,7 @@ if [ -n "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] && [ -f "${GITHUB_WORKSPACE}"/"$IN
 fi;
 
 echo "Run installation"
-composer require $COMPOSER_NAME:dev-$EXTENSION_BRANCH#$GITHUB_SHA
+composer require $COMPOSER_NAME:@dev --no-interaction
 
 echo "Running PHPStan"
 php $MAGENTO_ROOT/vendor/bin/phpstan analyse --level $INPUT_PHPSTAN_LEVEL --no-progress --memory-limit=4G --configuration "$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon" $GITHUB_WORKSPACE/${MODULE_SOURCE}
