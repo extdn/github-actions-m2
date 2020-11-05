@@ -94,8 +94,6 @@ fi
 
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $PHPUNIT_FILE > dev/tests/integration/phpunit.xml
 
-curl -s https://gist.githubusercontent.com/jissereitsma/004993763b5333e17ac3ba80d931e270/raw/d37da0c283a2f244a41e79bb7ada49b58a2b2a3e/fix-memory-report-after-integration-tests.patch | patch -p0
-
 cd $MAGENTO_ROOT
 #cat composer.json
 php -r "echo ini_get('memory_limit').PHP_EOL;"
