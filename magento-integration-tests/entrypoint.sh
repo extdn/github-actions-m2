@@ -75,6 +75,12 @@ fi
 echo "Run Magento setup: $SETUP_ARGS"
 php bin/magento setup:install $SETUP_ARGS
 
+echo "Post Install Script: $INPUT_MAGENTO_POST_INSTALL_SCRIPT"
+if [[ ! -z "$INPUT_MAGENTO_POST_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_POST_INSTALL_SCRIPT" ]] ; then
+    echo "Running custom post-installation script: ${INPUT_MAGENTO_POST_INSTALL_SCRIPT}"
+    . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_POST_INSTALL_SCRIPT
+fi
+
 echo "Trying phpunit.xml file $PHPUNIT_FILE"
 if [[ ! -z "$PHPUNIT_FILE" ]] ; then
     PHPUNIT_FILE=${GITHUB_WORKSPACE}/${PHPUNIT_FILE}

@@ -45,5 +45,8 @@ You could also choose to switch PHP version, by changing the tag of the Docker i
 
 Additionally, you can add an environment variable `MAGENTO_PRE_INSTALL_SCRIPT` to run a script, after composer is
 configured, but before the composer installation is run. Likewise, you can customize your PHPUnit procedure by supplying
-a custom XML file using `PHPUNIT_FILE`. See `entrypoint.sh` for clearification.
+a custom XML file using `PHPUNIT_FILE`. And there is an environment variable `MAGENTO_POST_INSTALL_SCRIPT` to run a script, after the Magento setup has been completed, but before the tests
+are run.
+
+See `entrypoint.sh` for clearification.
 
