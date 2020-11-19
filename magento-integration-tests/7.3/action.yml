@@ -27,8 +27,6 @@ inputs:
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-integration-tests-action:7.3-latest'
-  volumes:
-    - ${{ github.workspace }}/tmp/cache:/tmp/cache
   env:
     MODULE_NAME: ${{ inputs.module_name }}
     COMPOSER_NAME: ${{ inputs.composer_name }}
