@@ -5,4 +5,6 @@
 cp /problem-matcher.json ${HOME}/
 echo "::add-matcher::${HOME}/problem-matcher.json"
 
-sh -c "/root/.composer/vendor/bin/phpcs --report=checkstyle --standard=Magento2 $GITHUB_WORKSPACE -s $*"
+cd $GITHUB_WORKSPACE
+test -z "${PHPCS_STANDARD}" && PHPCS_STANDARD=Magento2
+sh -c "/root/.composer/vendor/bin/phpcs --report=checkstyle --standard=$PHPCS_STANDARD $GITHUB_WORKSPACE -s $*"
