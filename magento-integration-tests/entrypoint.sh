@@ -105,10 +105,6 @@ cd $MAGENTO_ROOT
 php -r "echo ini_get('memory_limit').PHP_EOL;"
 #cat $MAGENTO_ROOT/dev/tests/integration/phpunit.xml
 
-echo "Run DI compilation"
-cd $MAGENTO_ROOT
-bin/magento setup:di:compile
-
 echo "Run the integration tests"
 cd $MAGENTO_ROOT/dev/tests/integration && ../../../vendor/bin/phpunit -c phpunit.xml
 
