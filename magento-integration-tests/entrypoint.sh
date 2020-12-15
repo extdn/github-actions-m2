@@ -21,16 +21,16 @@ test -z "${MAGENTO_VERSION}" && (echo "'ce_version' is not set in your GitHub Ac
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
 
+echo "Pre Project Script [pre_project_script]: $INPUT_PRE_PROJECT_SCRIPT"
+if [[ ! -z "$INPUT_PRE_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_PRE_PROJECT_SCRIPT" ]] ; then
+    echo "Running custom pre_project_script: ${$INPUT_PRE_PROJECT_SCRIPT}"
+    . ${GITHUB_WORKSPACE}/$INPUT_PRE_PROJECT_SCRIPT
+fi
+
 echo "MySQL checks"
 nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
 php /docker-files/db-create-and-test.php magento2 || exit
 php /docker-files/db-create-and-test.php magento2test || exit
-
-echo "Pre Composer Script: $INPUT_COMPOSER_PRE_INSTALL_SCRIPT"
-if [[ ! -z "$INPUT_COMPOSER_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_COMPOSER_PRE_INSTALL_SCRIPT" ]] ; then
-    echo "Running custom pre-composer script: ${INPUT_COMPOSER_PRE_INSTALL_SCRIPT}"
-    . ${GITHUB_WORKSPACE}/$INPUT_COMPOSER_PRE_INSTALL_SCRIPT
-fi
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
 composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-plugins magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
@@ -41,6 +41,12 @@ mkdir -p local-source/
 cd local-source/
 cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $GITHUB_ACTION
 
+echo "Post Project Script [post_project_script]: $INPUT_POST_PROJECT_SCRIPT"
+if [[ ! -z "$INPUT_POST_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_POST_PROJECT_SCRIPT" ]] ; then
+    echo "Running custom post_project_script: ${$INPUT_POST_PROJECT_SCRIPT}"
+    . ${GITHUB_WORKSPACE}/$INPUT_POST_PROJECT_SCRIPT
+fi
+
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
 composer config --unset repo.0
@@ -48,9 +54,9 @@ composer config repositories.local-source path local-source/\*
 composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 composer require $COMPOSER_NAME:@dev --no-update --no-interaction
 
-echo "Pre Install Script: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
+echo "Pre Install Script [magento_pre_install_script]: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
 if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ]] ; then
-    echo "Running custom pre-installation script: ${INPUT_MAGENTO_PRE_INSTALL_SCRIPT}"
+    echo "Running custom magento_pre_install_script: ${INPUT_MAGENTO_PRE_INSTALL_SCRIPT}"
     . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT
 fi
 
@@ -81,9 +87,9 @@ fi
 echo "Run Magento setup: $SETUP_ARGS"
 php bin/magento setup:install $SETUP_ARGS
 
-echo "Post Install Script: $INPUT_MAGENTO_POST_INSTALL_SCRIPT"
+echo "Post Install Script [magento_post_install_script]: $INPUT_MAGENTO_POST_INSTALL_SCRIPT"
 if [[ ! -z "$INPUT_MAGENTO_POST_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_POST_INSTALL_SCRIPT" ]] ; then
-    echo "Running custom post-installation script: ${INPUT_MAGENTO_POST_INSTALL_SCRIPT}"
+    echo "Running custom magento_post_install_script: ${INPUT_MAGENTO_POST_INSTALL_SCRIPT}"
     . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_POST_INSTALL_SCRIPT
 fi
 
