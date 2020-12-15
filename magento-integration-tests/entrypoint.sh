@@ -26,6 +26,12 @@ nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
 php /docker-files/db-create-and-test.php magento2 || exit
 php /docker-files/db-create-and-test.php magento2test || exit
 
+echo "Pre Composer Script: $INPUT_COMPOSER_PRE_INSTALL_SCRIPT"
+if [[ ! -z "$INPUT_COMPOSER_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_COMPOSER_PRE_INSTALL_SCRIPT" ]] ; then
+    echo "Running custom pre-composer script: ${INPUT_COMPOSER_PRE_INSTALL_SCRIPT}"
+    . ${GITHUB_WORKSPACE}/$INPUT_COMPOSER_PRE_INSTALL_SCRIPT
+fi
+
 echo "Prepare composer installation for $MAGENTO_VERSION"
 composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-plugins magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
 
