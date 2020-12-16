@@ -23,7 +23,7 @@ PROJECT_PATH=$GITHUB_WORKSPACE
 
 echo "Pre Project Script [pre_project_script]: $INPUT_PRE_PROJECT_SCRIPT"
 if [[ ! -z "$INPUT_PRE_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_PRE_PROJECT_SCRIPT" ]] ; then
-    echo "Running custom pre_project_script: ${$INPUT_PRE_PROJECT_SCRIPT}"
+    echo "Running custom pre_project_script: ${INPUT_PRE_PROJECT_SCRIPT}"
     . ${GITHUB_WORKSPACE}/$INPUT_PRE_PROJECT_SCRIPT
 fi
 
@@ -43,7 +43,7 @@ cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $GITHUB_ACTION
 
 echo "Post Project Script [post_project_script]: $INPUT_POST_PROJECT_SCRIPT"
 if [[ ! -z "$INPUT_POST_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_POST_PROJECT_SCRIPT" ]] ; then
-    echo "Running custom post_project_script: ${$INPUT_POST_PROJECT_SCRIPT}"
+    echo "Running custom post_project_script: ${INPUT_POST_PROJECT_SCRIPT}"
     . ${GITHUB_WORKSPACE}/$INPUT_POST_PROJECT_SCRIPT
 fi
 
