@@ -40,6 +40,7 @@ cd $MAGENTO_ROOT
 mkdir -p local-source/
 cd local-source/
 cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $GITHUB_ACTION
+cd $MAGENTO_ROOT
 
 echo "Post Project Script [post_project_script]: $INPUT_POST_PROJECT_SCRIPT"
 if [[ ! -z "$INPUT_POST_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_POST_PROJECT_SCRIPT" ]] ; then
@@ -48,7 +49,6 @@ if [[ ! -z "$INPUT_POST_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_POST_P
 fi
 
 echo "Configure extension source in composer"
-cd $MAGENTO_ROOT
 composer config --unset repo.0
 composer config repositories.local-source path local-source/\*
 composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
