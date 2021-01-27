@@ -20,6 +20,7 @@ test -z "${MAGENTO_VERSION}" && (echo "'ce_version' is not set in your GitHub Ac
 
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
+test -z "${REPOSITORY_URL}" && REPOSITORY_URL="https://repo-magento-mirror.fooman.co.nz/"
 
 echo "Pre Project Script [pre_project_script]: $INPUT_PRE_PROJECT_SCRIPT"
 if [[ ! -z "$INPUT_PRE_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_PRE_PROJECT_SCRIPT" ]] ; then
@@ -32,8 +33,11 @@ nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
 php /docker-files/db-create-and-test.php magento2 || exit
 php /docker-files/db-create-and-test.php magento2test || exit
 
+echo "Setup Magento credentials"
+test -z "${MAGENTO_MARKETPLACE_USERNAME}" || composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
+
 echo "Prepare composer installation for $MAGENTO_VERSION"
-composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-plugins magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
+composer create-project --repository=$REPOSITORY_URL --no-install --no-progress --no-plugins magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
@@ -61,7 +65,7 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
 fi
 
 echo "Run installation"
-composer install --no-interaction --no-progress --no-suggest
+COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-progress --no-suggest
 
 if [[ "$MAGENTO_VERSION" == "2.4.0" ]]; then
   #Dotdigital tests don't work out of the box

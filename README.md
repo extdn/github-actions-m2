@@ -272,3 +272,36 @@ BLACKFIRE_CLIENT_TOKEN
 BLACKFIRE_SERVER_ID
 BLACKFIRE_SERVER_TOKEN
 ```
+
+### Magento Marketplace repository
+With various of the GitHub Actions, you will need to setup Magento, with all of its packages. Normally, you would
+use the official Magento Marketplace for this, which also requires you to setup authentication.
+
+Amongst the environment variables, there is a variable `REPOSITORY_URL` which defaults - when kept empty -
+to `https://repo-magento-mirror.fooman.co.nz/` - a mirror of the Magento Marketplace, that removes the
+need of authentication.
+
+If you want to use the original Magento Marketplace anyway, reset the `REPOSITORY_URL` variable and add
+the marketplace credentials like this:
+
+```yaml
+jobs:
+  unit-tests:
+    env:
+      REPOSITORY_URL: https://repo.magento.com/
+      MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
+      MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
+```
+
+Next, make sure to add the secrets `MAGENTO_MARKETPLACE_USERNAME` and `MAGENTO_MARKETPLACE_PASSWORD` to your GitHub repository under **Settings > Secrets**. Tip: You could also use the secrets to define the module and composer name: This way your workflow file remains generic.
+
+Alternatively, the credentials could also be hard-coded :(
+
+```yaml
+jobs:
+  unit-tests:
+    env:
+      MAGENTO_MARKETPLACE_USERNAME: foo
+      MAGENTO_MARKETPLACE_PASSWORD: bar
+```
+

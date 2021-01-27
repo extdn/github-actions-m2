@@ -26,8 +26,6 @@ jobs:
       - name: M2 Integration Tests with Magento 2
         uses: extdn/github-actions-m2/magento-integration-tests@master
         env:
-            MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
-            MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
             MODULE_NAME: Foo_Bar
             COMPOSER_NAME: foo/magento2-foobar
             CE_VERSION: 2.3.5
@@ -36,8 +34,6 @@ jobs:
 Make sure to modify the following values:
 - `module_name` - for instance, `Foo` if your Magento 2 module is called `Foo_Bar`
 - `composer_name` - for instance, `Bar` if your Magento 2 module is called `Foo_Bar`
-
-Next, make sure to add the secrets `MAGENTO_MARKETPLACE_USERNAME` and `MAGENTO_MARKETPLACE_USERNAME` to your GitHub repository under **Settings > Secrets**.
 
 Additionally, you can add an environment variable `MAGENTO_PRE_INSTALL_SCRIPT` to run a script, after composer is
 configured, but before the composer installation is run. Likewise, you can customize your PHPUnit procedure by supplying
