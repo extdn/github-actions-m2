@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
@@ -7,6 +8,7 @@
 /**
  * PHP Code Mess v1.3.3 tool wrapper
  */
+
 namespace Magento\TestFramework\CodingStandard\Tool;
 
 use \Magento\TestFramework\CodingStandard\ToolInterface;
@@ -62,7 +64,7 @@ class LiveCodePhpmdRunner implements ToolInterface
             '--reportfile',
             $this->reportFile,
             '--suffixes',
-            'php' ,
+            'php',
             '--exclude',
             'vendor/,tmp/,var/,generated/,.git/,.idea/'
         ];
@@ -76,10 +78,9 @@ class LiveCodePhpmdRunner implements ToolInterface
 
     private function getSourceCodePath($whiteList): string
     {
-    	if(!empty($whiteList)){
-    		return implode(',', $whiteList);
-    	}
+        if (!empty($whiteList)) {
+            return implode(',', $whiteList);
+        }
         return $_SERVER['GITHUB_WORKSPACE'] ?: '/var/www/html';
     }
 }
-
