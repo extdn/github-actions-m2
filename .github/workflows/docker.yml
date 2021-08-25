@@ -16,6 +16,7 @@ jobs:
           - "magento-coding-standard"
           - "magento-mess-detector"
           - "magento-phpstan"
+          - "magento-copy-paste-detector"
 
     env:
       DOCKER_USERNAME: "extdn"

@@ -145,6 +145,28 @@ jobs:
 
 ---
 
+## Magento Copy Paste Detector
+Provides an action that can be used in your GitHub workflow to execute the PHP Copy Paste Detector rules included in Magento 2 ([link](https://github.com/magento/magento2/blob/2.3.4/dev/tests/static/framework/Magento/TestFramework/CodingStandard/Tool/CopyPasteDetector.php)).
+
+#### How to use it
+In your GitHub repository add the below as 
+`.github/workflows/copy-paste-detector.yml`
+
+```
+name: ExtDN M2 Copy Paste Detector
+on: [push, pull_request]
+
+jobs:
+  phpmd:
+    name: M2 Copy Paste Detector
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: extdn/github-actions-m2/magento-copy-paste-detector@master
+```
+
+---
+
 ## Magento PHPStan
 Provides an action that can be used in your GitHub workflow to execute the PHPStan rules included in Magento 2 ([link](https://github.com/magento/magento2/blob/2.3.5-p1/dev/tests/static/framework/Magento/TestFramework/CodingStandard/Tool/PhpStan.php)).
 
