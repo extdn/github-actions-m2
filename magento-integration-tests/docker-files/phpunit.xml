@@ -11,6 +11,9 @@
             <directory suffix="Test.php">../../../vendor/%COMPOSER_NAME%/Test/Integration</directory>
             <directory suffix="Test.php">../../../vendor/%COMPOSER_NAME%/tests/Integration</directory>
             <directory suffix="Test.php">../../../vendor/%COMPOSER_NAME%/tests/integration</directory>
+            <directory suffix="Test.php">../../../vendor/%COMPOSER_NAME%/src/Test/Integration</directory>
+            <directory suffix="Test.php">../../../vendor/%COMPOSER_NAME%/src/tests/Integration</directory>
+            <directory suffix="Test.php">../../../vendor/%COMPOSER_NAME%/src/tests/integration</directory>
         </testsuite>
     </testsuites>
     <filter>
