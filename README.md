@@ -15,7 +15,11 @@ In your GitHub repository add the below as
 
 ```
 name: ExtDN M2 Coding Standard
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   static:
@@ -38,7 +42,11 @@ In your GitHub repository add the below as
 
 ```
 name: ExtDN M2 Integration Tests
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   integration-tests:
@@ -132,7 +140,11 @@ In your GitHub repository add the below as
 
 ```
 name: ExtDN M2 Mess Detector
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   phpmd:
@@ -154,7 +166,11 @@ In your GitHub repository add the below as
 
 ```
 name: ExtDN M2 Copy Paste Detector
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   phpmd:
@@ -179,7 +195,11 @@ In your GitHub repository add the below as
 
 ```
 name: ExtDN M2 PHPStan
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   phpstan:
@@ -201,7 +221,11 @@ In your GitHub repository add the below as
 
 ```
 name: ExtDN M2 Performance Testing
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   performance:
