@@ -17,7 +17,7 @@ jobs:
           - "7.3"
           - "7.4"
         actions-with-docker-image:
-          - "magento-coding-standard-tests"
+          - "magento-coding-standard"
     env:
       DOCKER_USERNAME: "extdn"
 
