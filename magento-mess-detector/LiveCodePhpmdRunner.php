@@ -59,7 +59,7 @@ class LiveCodePhpmdRunner implements ToolInterface
         $commandLineArguments = [
             'run_file_mock', //emulate script name in console arguments
             $this->getSourceCodePath($whiteList),
-            'text', //report format
+            'github', //report format
             $this->rulesetFile,
             '--reportfile',
             $this->reportFile,
