@@ -3,6 +3,7 @@
 set -e
 
 test -z "${CE_VERSION}" || MAGENTO_VERSION=$CE_VERSION
+test -z "${PROJECT_NAME}" || MAGENTO_PROJECT_NAME=$PROJECT_NAME
 
 test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
@@ -17,6 +18,7 @@ fi
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file")
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${MAGENTO_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${MAGENTO_PROJECT_NAME}" && (echo "'project_name' is not set in your GitHub Actions YAML file" && exit 1)
 
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
@@ -37,7 +39,7 @@ echo "Setup Magento credentials"
 test -z "${MAGENTO_MARKETPLACE_USERNAME}" || composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
 
 echo "Prepare composer installation for $MAGENTO_VERSION"
-composer create-project --repository=$REPOSITORY_URL --no-install --no-progress --no-plugins magento/project-community-edition $MAGENTO_ROOT "$MAGENTO_VERSION"
+composer create-project --repository=$REPOSITORY_URL --no-install --no-progress --no-plugins $MAGENTO_PROJECT_NAME $MAGENTO_ROOT "$MAGENTO_VERSION"
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
@@ -55,7 +57,7 @@ fi
 echo "Configure extension source in composer"
 composer config --unset repo.0
 composer config repositories.local-source path local-source/\*
-composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
+composer config repositories.magento composer $REPOSITORY_URL
 composer require $COMPOSER_NAME:@dev --no-update --no-interaction
 
 echo "Pre Install Script [magento_pre_install_script]: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
