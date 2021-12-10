@@ -10,6 +10,11 @@ test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
 test -z "${ELASTICSEARCH}" && ELASTICSEARCH=$INPUT_ELASTICSEARCH
 test -z "${PHPUNIT_FILE}" && PHPUNIT_FILE=$INPUT_PHPUNIT_FILE
+test -z "${COMPOSER_VERSION}" && COMPOSER_VERSION=$INPUT_COMPOSER_VERSION
+
+if [ -z "$COMPOSER_VERSION" ] ; then
+    COMPOSER_VERSION=1
+fi
 
 if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
     ELASTICSEARCH=1
@@ -23,6 +28,9 @@ test -z "${MAGENTO_PROJECT_NAME}" && (echo "'project_name' is not set in your Gi
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
 test -z "${REPOSITORY_URL}" && REPOSITORY_URL="https://repo-magento-mirror.fooman.co.nz/"
+
+echo "Using composer ${COMPOSER_VERSION}"
+ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
 echo "Pre Project Script [pre_project_script]: $INPUT_PRE_PROJECT_SCRIPT"
 if [[ ! -z "$INPUT_PRE_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_PRE_PROJECT_SCRIPT" ]] ; then

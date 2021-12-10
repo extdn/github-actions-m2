@@ -1,6 +1,6 @@
 FROM php:7.1-cli
 
-COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer1
 
 RUN apt-get update && apt-get -y install --no-install-recommends \
     mariadb-client \
