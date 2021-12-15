@@ -18,7 +18,7 @@ inputs:
     default: "2"
 runs:
   using: 'docker'
-  image: 'docker://extdn/magento-phpstan-action:dev'
+  image: 'docker://extdn/magento-phpstan-action:latest'
 branding:
   icon: 'code'  
   color: 'green'
