@@ -1,11 +1,19 @@
 #!/bin/bash
 set -e
 
+test -z "${COMPOSER_VERSION}" && COMPOSER_VERSION=$INPUT_COMPOSER_VERSION
+if [ -z "$COMPOSER_VERSION" ] ; then
+   COMPOSER_VERSION=1
+fi
+
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 EXTENSION_BRANCH=${GITHUB_REF#refs/heads/}
 
 MAGENTO_ROOT=/m2
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
+
+echo "Using composer ${COMPOSER_VERSION}"
+￼ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT

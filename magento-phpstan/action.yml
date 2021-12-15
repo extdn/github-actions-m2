@@ -12,6 +12,10 @@ inputs:
     description: 'PHPStan level to check. 1 by default.'
     default: "1"
     required: false
+  composer_version:
+    description: 'The composer version to use. Can be either 1 or 2.'
+    required: false
+    default: "1"
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-phpstan-action:latest'
