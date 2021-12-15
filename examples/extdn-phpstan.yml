@@ -1,0 +1,14 @@
+name: ExtDN PHPStan
+on: [push]
+
+jobs:
+  phpstan:
+    name: Static Code Analysis with PHPStan
+    runs-on: ubuntu-latest
+    env:
+      COMPOSER_NAME: ${{ secrets.COMPOSER_NAME }}
+      PHPSTAN_LEVEL: 2
+      COMPOSER_VERSION: 2
+    steps:
+      - uses: actions/checkout@v2
+      - uses: extdn/github-actions-m2/magento-phpstan@master
