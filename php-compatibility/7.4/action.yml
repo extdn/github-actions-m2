@@ -1,0 +1,13 @@
+name: 'PHPCompatibility'
+author: 'ExtDN'
+description: 'performs php static code analysis with the PHPCompatibility Coding Standard'
+inputs:
+  phpcs_standard:
+    description: 'PHPCompatibility standard.'
+    required: false
+runs:
+  using: 'docker'
+  image: 'docker://extdn/php-compatibility-action:7.4-latest'
+branding:
+  icon: 'code'  
+  color: 'green'
