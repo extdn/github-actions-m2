@@ -24,7 +24,7 @@ inputs:
     description: 'Relative path to an optional script before Magento installation is run. Leave empty to use the default.'
 runs:
   using: 'docker'
-  image: 'docker:/extdn/magento-unit-tests-action:7.3-latest'
+  image: 'docker://extdn/magento-unit-tests-action:7.3-latest'
 branding:
   icon: 'code'  
   color: 'green'
