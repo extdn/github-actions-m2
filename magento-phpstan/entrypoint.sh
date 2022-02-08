@@ -36,5 +36,9 @@ fi;
 echo "Run installation"
 composer require $COMPOSER_NAME:@dev --no-interaction
 
+echo "Determining configuration file"
+CONFIGURATION_FILE=$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon
+test -f $GITHUB_WORKSPACE/${MODULE_SOURCE}/phpstan.neon && CONFIGURATION_FILE=$GITHUB_WORKSPACE/${MODULE_SOURCE}/phpstan.neon
+
 echo "Running PHPStan"
-php $MAGENTO_ROOT/vendor/bin/phpstan analyse --level $INPUT_PHPSTAN_LEVEL --no-progress --memory-limit=4G --configuration "$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon" $GITHUB_WORKSPACE/${MODULE_SOURCE}
+php $MAGENTO_ROOT/vendor/bin/phpstan analyse --level $INPUT_PHPSTAN_LEVEL --no-progress --memory-limit=4G --configuration $CONFIGURATION_FILE $GITHUB_WORKSPACE/${MODULE_SOURCE}
