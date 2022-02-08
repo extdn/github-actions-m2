@@ -41,4 +41,11 @@ CONFIGURATION_FILE=$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_fi
 test -f $GITHUB_WORKSPACE/${MODULE_SOURCE}/phpstan.neon && CONFIGURATION_FILE=$GITHUB_WORKSPACE/${MODULE_SOURCE}/phpstan.neon
 
 echo "Running PHPStan"
-php $MAGENTO_ROOT/vendor/bin/phpstan analyse --level $INPUT_PHPSTAN_LEVEL --no-progress --memory-limit=4G --configuration $CONFIGURATION_FILE $GITHUB_WORKSPACE/${MODULE_SOURCE}
+cd ${GITHUB_WORKSPACE}/${MODULE_SOURCE}
+php $MAGENTO_ROOT/vendor/bin/phpstan analyse \
+    --level $INPUT_PHPSTAN_LEVEL \
+    --no-progress \
+    --memory-limit=4G \
+    --configuration ${CONFIGURATION_FILE} \
+    ${GITHUB_WORKSPACE}/${MODULE_SOURCE}
+
