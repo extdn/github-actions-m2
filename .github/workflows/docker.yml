@@ -17,6 +17,10 @@ jobs:
           - "magento-mess-detector"
           - "magento-phpstan"
           - "magento-copy-paste-detector"
+          - "magento-unit-tests"
+          - "magento-integration-tests"
+          - "magento-quick-integration-tests"
+          - "php-compatibility"
 
     env:
       DOCKER_USERNAME: "extdn"
