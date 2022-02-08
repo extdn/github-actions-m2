@@ -36,9 +36,11 @@ fi;
 echo "Run installation"
 composer require $COMPOSER_NAME:@dev --no-interaction
 
-echo "Determining configuration file"
 CONFIGURATION_FILE=$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon
 test -f $GITHUB_WORKSPACE/${MODULE_SOURCE}/phpstan.neon && CONFIGURATION_FILE=$GITHUB_WORKSPACE/${MODULE_SOURCE}/phpstan.neon
+
+echo "Configuration file: $CONFIGURATION_FILE"
+echo "Level: $INPUT_PHPSTAN_LEVEL"
 
 echo "Running PHPStan"
 cd ${GITHUB_WORKSPACE}/${MODULE_SOURCE}
