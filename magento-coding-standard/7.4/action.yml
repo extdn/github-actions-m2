@@ -3,7 +3,13 @@ author: 'ExtDN'
 description: 'performs php static code analysis with the Magento 2 Coding Standard'
 inputs:
   phpcs_standard:
-    description: 'Path to your own PHPCS file or a specific standard. Leave empty to just use "Magento2".'
+    description: 'Path to your own PHPCS file or a specific standard. Default: "Magento2"'
+    required: false
+  phpcs_report:
+    description: 'Report to output. Default: "checkstyle"'
+    required: false
+  phpcs_severity:
+    description: 'Which severity to check for. Default: "8"'
     required: false
 runs:
   using: 'docker'
