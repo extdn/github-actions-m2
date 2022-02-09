@@ -16,6 +16,9 @@ inputs:
     description: 'The composer version to use. Can be either 1 or 2.'
     required: false
     default: "2"
+  magento_pre_install_script:
+    description: 'Relative path to an optional script before Magento installation is run. Leave empty to use the default.'
+    required: false
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-phpstan-action:latest'
