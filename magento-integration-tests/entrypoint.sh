@@ -20,10 +20,10 @@ if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
     ELASTICSEARCH=1
 fi
 
-test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file")
-test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
-test -z "${MAGENTO_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
-test -z "${MAGENTO_PROJECT_NAME}" && (echo "'project_name' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${MODULE_NAME}" && (echo "'module_name' is not set")
+test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set" && exit 1)
+test -z "${MAGENTO_VERSION}" && (echo "'ce_version' is not set" && exit 1)
+test -z "${MAGENTO_PROJECT_NAME}" && (echo "'project_name' is not set" && exit 1)
 
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE

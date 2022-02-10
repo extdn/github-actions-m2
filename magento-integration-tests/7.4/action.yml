@@ -11,7 +11,7 @@ inputs:
   ce_version:
     description: 'Magento 2 Open Source version number'
     required: true
-    default: '2.4.0'
+    default: '2.4.3'
   project_name:
     description: 'Magento 2 project name'
     required: true
