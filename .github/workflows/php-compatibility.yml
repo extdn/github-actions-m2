@@ -1,0 +1,42 @@
+name: Build PHP compatibility Images
+
+on:
+  push:
+    paths:
+      - 'php-compatibility/**'
+
+jobs:
+  build:
+    name: "Build and deploy"
+
+    runs-on: "ubuntu-latest"
+
+    strategy:
+      matrix:
+        php-version:
+          - "7.3"
+          - "7.4"
+        actions-with-docker-image:
+          - "php-compatibility"
+    env:
+      DOCKER_USERNAME: "extdn"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Grab version number"
+        uses: "olegtarasov/get-tag@v2.1"
+        id: "tagName"
+
+      - name: "Build Docker image"
+        run: "docker build --tag extdn/${{ matrix.actions-with-docker-image }}-action:${{ matrix.php-version }}-latest ${{ matrix.actions-with-docker-image }}/. -f ${{ matrix.actions-with-docker-image }}/Dockerfile:${{ matrix.php-version }}"
+
+      - name: "Docker Login"
+        run: "echo ${{ secrets.DOCKER_PASSWORD }} | $(which docker) login --password-stdin --username ${{ env.DOCKER_USERNAME }}"
+
+      - name: "Push Docker image (latest)"
+        run: "docker push extdn/${{ matrix.actions-with-docker-image }}-action:${{ matrix.php-version }}-latest"
+
+      - name: "Docker Logout"
+        run: "docker logout"
