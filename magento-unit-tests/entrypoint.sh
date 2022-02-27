@@ -3,22 +3,21 @@
 set -e
 
 test -z "${CE_VERSION}" || MAGENTO_VERSION=$CE_VERSION
-test -z "${PROJECT_NAME}" || MAGENTO_PROJECT_NAME=$PROJECT_NAME
-test -z "${MAGENTO_PROJECT_NAME}" || MAGENTO_PROJECT_NAME=$INPUT_PROJECT_NAME
 
 test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
+test -z "${PROJECT_NAME}" && PROJECT_NAME=$INPUT_PROJECT_NAME
 
 test -z "$MAGENTO_VERSION" && MAGENTO_VERSION="2.4.3-p1"
 test -z "$COMPOSER_VERSION" && test "$MAGENTO_VERSION" =~ ^2.4.* && COMPOSER_VERSION=2
 test -z "$COMPOSER_VERSION" && COMPOSER_VERSION=1
-test -z "$MAGENTO_PROJECT_NAME" && MAGENTO_PROJECT_NAME="magento/project-community-edition"
+test -z "$PROJECT_NAME" && PROJECT_NAME="magento/project-community-edition"
 
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set" && exit 1)
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set" && exit 1)
 test -z "${MAGENTO_VERSION}" && (echo "'magento_version' is not set" && exit 1)
-test -z "${MAGENTO_PROJECT_NAME}" && (echo "'project_name' is not set" && exit 1)
+test -z "${PROJECT_NAME}" && (echo "'project_name' is not set" && exit 1)
 
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
@@ -28,7 +27,7 @@ echo "Setup Magento credentials"
 test -z "${MAGENTO_MARKETPLACE_USERNAME}" || composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
 
 echo "Prepare composer installation"
-composer create-project --repository=$REPOSITORY_URL ${MAGENTO_PROJECT_NAME}:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
+composer create-project --repository=$REPOSITORY_URL ${PROJECT_NAME}:${MAGENTO_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
