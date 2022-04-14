@@ -1,7 +1,7 @@
 FROM extdn/magento-integration-tests-action:7.4-latest AS builder
 
 RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
-RUN composer2 create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-plugins --no-install --no-interaction magento/project-community-edition /var/www/magento2ce "2.4.3"
+RUN composer2 create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-plugins --no-install --no-interaction magento/project-community-edition /var/www/magento2ce "2.4.3-2p2"
 
 WORKDIR "/var/www/magento2ce"
 RUN composer2 config --unset repo.0
