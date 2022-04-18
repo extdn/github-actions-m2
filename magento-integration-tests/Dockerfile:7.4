@@ -32,6 +32,7 @@ RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install sodium
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install intl
+RUN docker-php-ext-install pcntl
 RUN docker-php-ext-install sockets
 
 COPY entrypoint.sh /entrypoint.sh
@@ -41,4 +42,3 @@ COPY docker-files /docker-files
 RUN echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini
 
 ENTRYPOINT ["bash", "/entrypoint.sh"]
-
