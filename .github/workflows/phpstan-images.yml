@@ -1,6 +1,7 @@
 name: Docker Dev Build
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'magento-phpstan/**'

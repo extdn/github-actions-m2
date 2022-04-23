@@ -1,6 +1,7 @@
 name: Build Integration Images
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'magento-integration-tests/**'
@@ -16,6 +17,7 @@ jobs:
         php-version:
           - "7.3"
           - "7.4"
+          - "8.1"
         actions-with-docker-image:
           - "magento-integration-tests"
     env:
