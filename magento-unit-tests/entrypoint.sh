@@ -8,6 +8,7 @@ test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
 test -z "${PROJECT_NAME}" && PROJECT_NAME=$INPUT_PROJECT_NAME
+test -z "${PHPUNIT_FILE}" && PHPUNIT_FILE=$INPUT_PHPUNIT_FILE
 
 test -z "$MAGENTO_VERSION" && MAGENTO_VERSION="2.4.3-p1"
 test -z "$COMPOSER_VERSION" && test "$MAGENTO_VERSION" =~ ^2.4.* && COMPOSER_VERSION=2
@@ -50,11 +51,11 @@ echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress --no-suggest
 
 echo "Determine which phpunit.xml file to use"
-if [[ -z "$INPUT_PHPUNIT_FILE" || ! -f "$INPUT_PHPUNIT_FILE" ]] ; then
-    INPUT_PHPUNIT_FILE=/docker-files/phpunit.xml
+if [[ -z "$PHPUNIT_FILE" || ! -f "$PHPUNIT_FILE" ]] ; then
+    PHPUNIT_FILE=/docker-files/phpunit.xml
 fi
 
-echo "Using PHPUnit file: $INPUT_PHPUNIT_FILE"
+echo "Using PHPUnit file: $PHPUNIT_FILE"
 echo "Prepare for unit tests"
 cd $MAGENTO_ROOT
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/unit/phpunit.xml
