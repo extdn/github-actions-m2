@@ -15,4 +15,8 @@ test -z "${PHPCS_STANDARD}" && PHPCS_STANDARD=Magento2
 test -z "${PHPCS_SEVERITY}" && PHPCS_SEVERITY=8
 test -z "${PHPCS_REPORT}" && PHPCS_REPORT=checkstyle
 
+echo "PHPCS report: ${PHPCS_REPORT}"
+echo "PHPCS standard: ${PHPCS_STANDARD}"
+echo "PHPCS severity: ${PHPCS_SEVERITY}"
+
 sh -c "/root/.composer/vendor/bin/phpcs --report=${PHPCS_REPORT} --severity=${PHPCS_SEVERITY} --standard=$PHPCS_STANDARD $GITHUB_WORKSPACE -s $*"
