@@ -76,7 +76,7 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
 fi
 
 echo "Run installation"
-COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-progress --no-suggest
+COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-progress
 
 if [[ "$MAGENTO_VERSION" == "2.4.0" ]]; then
   #Dotdigital tests don't work out of the box

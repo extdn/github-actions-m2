@@ -42,7 +42,7 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
 fi
 
 echo "Run installation"
-COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress --no-suggest
+COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress 
 
 echo "Run Magento setup"
 php -d memory_limit=2G bin/magento setup:install --base-url=http://magento2.test/ \
