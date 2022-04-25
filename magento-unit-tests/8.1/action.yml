@@ -17,7 +17,7 @@ inputs:
     required: true
     default: '2.4.4'
   module_source:
-    description: 'Relative path to your module source within your repository. Empty by default.'
+    description: 'Relative path to your module source within your repository, like "src/". Empty by default.'
   phpunit_file:
     description: 'Relative path to your own PHPUnit file. Leave empty to use the default.'
   magento_pre_install_script:
