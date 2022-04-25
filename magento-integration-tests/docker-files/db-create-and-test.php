@@ -7,7 +7,7 @@ if (empty($database)) {
 $user = 'root';
 $password = 'root';
 $pdo = new PDO('mysql:host=mysql', $user, $password);
-$pdo->query('CREATE DATABASE '.$database);
+$pdo->query('CREATE DATABASE IF NOT EXISTS '.$database);
 
 $pdo = new PDO('mysql:host=mysql;dbname='.$database, $user, $password);
 
