@@ -53,7 +53,7 @@ COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-pr
 echo "Determine which phpunit.xml file to use"
 
 echo "Trying phpunit.xml file $PHPUNIT_FILE"
-if [[ ! -z "$PHPUNIT_FILE" ]] ; then
+if [[ ! -z "$PHPUNIT_FILE" && ! -f "$PHPUNIT_FILE" ]] ; then
     PHPUNIT_FILE=${GITHUB_WORKSPACE}/${PHPUNIT_FILE}
 fi
 
