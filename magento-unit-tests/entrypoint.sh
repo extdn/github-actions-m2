@@ -51,7 +51,13 @@ echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress --no-suggest
 
 echo "Determine which phpunit.xml file to use"
-if [[ -z "$PHPUNIT_FILE" || ! -f "$PHPUNIT_FILE" ]] ; then
+
+echo "Trying phpunit.xml file $PHPUNIT_FILE"
+if [[ ! -z "$PHPUNIT_FILE" ]] ; then
+    PHPUNIT_FILE=${GITHUB_WORKSPACE}/${PHPUNIT_FILE}
+fi
+
+if [[ ! -f "$PHPUNIT_FILE" ]] ; then
     PHPUNIT_FILE=/docker-files/phpunit.xml
 fi
 
