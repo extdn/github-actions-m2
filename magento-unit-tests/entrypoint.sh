@@ -64,7 +64,7 @@ fi
 echo "Using PHPUnit file: $PHPUNIT_FILE"
 echo "Prepare for unit tests"
 cd $MAGENTO_ROOT
-sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $INPUT_PHPUNIT_FILE > dev/tests/unit/phpunit.xml
+sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $PHPUNIT_FILE > dev/tests/unit/phpunit.xml
 
 echo "Run the unit tests"
 cd $MAGENTO_ROOT/dev/tests/unit && ../../../vendor/bin/phpunit -c phpunit.xml
