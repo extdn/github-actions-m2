@@ -137,10 +137,7 @@ do
    fi
 done
 
-cd $MAGENTO_ROOT
-#cat composer.json
 php -r "echo ini_get('memory_limit').PHP_EOL;"
-#cat $MAGENTO_ROOT/dev/tests/integration/phpunit.xml
 
 echo "Run the integration tests"
 cd $MAGENTO_ROOT/dev/tests/integration && ../../../vendor/bin/phpunit -c phpunit.xml
