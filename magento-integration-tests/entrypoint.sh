@@ -128,10 +128,16 @@ fi
 
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $PHPUNIT_FILE > dev/tests/integration/phpunit.xml
 
-cd $MAGENTO_ROOT
-#cat composer.json
+for TESTSFOLDER in $(xmlstarlet select -t -v '/phpunit/testsuites/testsuite/directory/text()' dev/tests/integration/phpunit.xml)
+do
+   if [[ ! -d "$MAGENTO_ROOT/dev/tests/integration/$TESTSFOLDER" ]]
+   then
+       echo "Optional $TESTSFOLDER location does not exist on your filesystem - removing it from phpunit.xml"
+       xmlstarlet ed --inplace -d "//phpunit/testsuites/testsuite/directory[contains(text(),'$TESTSFOLDER')]" dev/tests/integration/phpunit.xml
+   fi
+done
+
 php -r "echo ini_get('memory_limit').PHP_EOL;"
-#cat $MAGENTO_ROOT/dev/tests/integration/phpunit.xml
 
 echo "Run the integration tests"
 cd $MAGENTO_ROOT/dev/tests/integration && ../../../vendor/bin/phpunit -c phpunit.xml
