@@ -64,7 +64,17 @@ fi
 echo "Using PHPUnit file: $PHPUNIT_FILE"
 echo "Prepare for unit tests"
 cd $MAGENTO_ROOT
+
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $PHPUNIT_FILE > dev/tests/unit/phpunit.xml
+
+for TESTSFOLDER in $(xmlstarlet select -t -v '/phpunit/testsuites/testsuite/directory/text()' dev/tests/integration/phpunit.xml)
+do
+   if [[ ! -d "$MAGENTO_ROOT/dev/tests/unit/$TESTSFOLDER" ]]
+   then
+       echo "Optional $TESTSFOLDER location does not exist on your filesystem - removing it from phpunit.xml"
+       xmlstarlet ed --inplace -d "//phpunit/testsuites/testsuite/directory[contains(text(),'$TESTSFOLDER')]" dev/tests/unit/phpunit.xml
+   fi
+done
 
 echo "Run the unit tests"
 cd $MAGENTO_ROOT/dev/tests/unit && ../../../vendor/bin/phpunit -c phpunit.xml

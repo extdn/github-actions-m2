@@ -17,6 +17,7 @@ RUN apt-get update && apt-get -y install \
     libicu-dev \
     libxml2-dev \
     libxslt-dev \
+    xmlstarlet \
     netcat
 
 RUN docker-php-ext-install pdo pdo_mysql
