@@ -20,6 +20,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
     libxslt-dev \
     netcat \
     procps \
+    xmlstarlet \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install pdo pdo_mysql
