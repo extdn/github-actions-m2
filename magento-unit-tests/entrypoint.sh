@@ -67,7 +67,7 @@ cd $MAGENTO_ROOT
 
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $PHPUNIT_FILE > dev/tests/unit/phpunit.xml
 
-for TESTSFOLDER in $(xmlstarlet select -t -v '/phpunit/testsuites/testsuite/directory/text()' dev/tests/integration/phpunit.xml)
+for TESTSFOLDER in $(xmlstarlet select -t -v '/phpunit/testsuites/testsuite/directory/text()' dev/tests/unit/phpunit.xml)
 do
    if [[ ! -d "$MAGENTO_ROOT/dev/tests/unit/$TESTSFOLDER" ]]
    then
