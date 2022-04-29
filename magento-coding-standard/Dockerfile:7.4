@@ -1,6 +1,7 @@
 FROM php:7.4-cli-alpine
 
 COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer2
 
 RUN /usr/local/bin/composer global require magento/magento-coding-standard:*
 RUN /usr/local/bin/composer global require phpcompatibility/php-compatibility:*
