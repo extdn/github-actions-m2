@@ -18,7 +18,10 @@ RUN apt-get update && apt-get -y install \
     libxml2-dev \
     libxslt-dev \
     xmlstarlet \
-    netcat
+    netcat \
+    && apt-get -y autoremove \
+    && apt-get clean autoclean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install xsl

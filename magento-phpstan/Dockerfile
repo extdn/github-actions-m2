@@ -9,7 +9,6 @@ RUN composer2 config repo.foomanmirror composer https://repo-magento-mirror.foom
 RUN composer2 require hoa/regex --no-update
 RUN composer2 install --prefer-dist
 
-
 FROM extdn/magento-integration-tests-action:7.4-latest
 COPY --from=builder /var/www/magento2ce/ /m2/
 RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
