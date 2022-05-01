@@ -1,7 +1,6 @@
 FROM php:8.1-cli-alpine
 
-COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer
-COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer2
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 RUN /usr/local/bin/composer global require phpcompatibility/php-compatibility:*
 RUN ~/.composer/vendor/bin/phpcs --config-set installed_paths ../../phpcompatibility/php-compatibility
