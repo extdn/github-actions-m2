@@ -24,4 +24,4 @@ runs:
   image: 'docker://extdn/magento-phpstan-action:latest'
 branding:
   icon: 'code'  
-  color: 'green'
+  color: 'red'
