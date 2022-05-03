@@ -11,4 +11,4 @@ jobs:
       COMPOSER_VERSION: 2
     steps:
       - uses: actions/checkout@v2
-      - uses: extdn/github-actions-m2/magento-phpstan@master
+      - uses: extdn/github-actions-m2/magento-phpstan/8.1@master
