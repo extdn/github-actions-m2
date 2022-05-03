@@ -14,6 +14,10 @@ jobs:
 
     strategy:
       matrix:
+        php-version:
+          - "7.3"
+          - "7.4"
+          - "8.1"
         actions-with-docker-image:
           - "magento-phpstan"
 
@@ -25,13 +29,13 @@ jobs:
         uses: "actions/checkout@v2"
 
       - name: "Build Docker image"
-        run: "docker build --tag extdn/${{ matrix.actions-with-docker-image }}-action:dev ${{ matrix.actions-with-docker-image }}/."
+        run: "docker build --tag extdn/${{ matrix.actions-with-docker-image }}-action:${{ matrix.php-version }}-latest ${{ matrix.actions-with-docker-image }}/. -f ${{ matrix.actions-with-docker-image }}/Dockerfile:${{ matrix.php-version }}"
 
       - name: "Docker Login"
         run: "echo ${{ secrets.DOCKER_PASSWORD }} | $(which docker) login --password-stdin --username ${{ env.DOCKER_USERNAME }}"
 
-      - name: "Push Docker image (dev)"
-        run: "docker push extdn/${{ matrix.actions-with-docker-image }}-action:dev"
+      - name: "Push Docker image (latest)"
+        run: "docker push extdn/${{ matrix.actions-with-docker-image }}-action:${{ matrix.php-version }}-latest"
 
       - name: "Docker Logout"
         run: "docker logout"
