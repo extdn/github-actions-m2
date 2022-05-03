@@ -41,8 +41,14 @@ inputs:
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-integration-tests-action:7.4-latest'
+  env:
+    MODULE_NAME: ${{ inputs.module_name }}
+    COMPOSER_NAME: ${{ inputs.composer_name }}
+    MAGENTO_VERSION: ${{ inputs.ce_version }}
+    PROJECT_NAME: ${{ inputs.project_name }}
+    COMPOSER_MEMORY_LIMIT: -1
 
 branding:
-  icon: 'code'  
+  icon: 'code'
   color: 'green'
 
