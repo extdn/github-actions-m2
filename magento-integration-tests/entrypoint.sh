@@ -15,7 +15,7 @@ test -z "${REPOSITORY_URL}" && REPOSITORY_URL=$INPUT_REPOSITORY_URL
 
 test -z "$MAGENTO_VERSION" && MAGENTO_VERSION="2.4.3-p1"
 test -z "$COMPOSER_VERSION" && [[ "$MAGENTO_VERSION" =~ ^2.4.* ]] && COMPOSER_VERSION=2
-test -z "$COMPOSER_VERSION" && COMPOSER_VERSION=1
+test -z "$COMPOSER_VERSION" && COMPOSER_VERSION=2
 test -z "$PROJECT_NAME" && PROJECT_NAME="magento/project-community-edition"
 test -z "${REPOSITORY_URL}" && REPOSITORY_URL="https://repo-magento-mirror.fooman.co.nz/"
 
