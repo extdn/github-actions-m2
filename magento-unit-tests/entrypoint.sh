@@ -76,6 +76,9 @@ do
    fi
 done
 
+echo "Current unit test file"
+cat $MAGENTO_ROOT/dev/tests/unit/phpunit.xml
+
 echo "Run the unit tests"
 cd $MAGENTO_ROOT/dev/tests/unit && ../../../vendor/bin/phpunit -c phpunit.xml
 
