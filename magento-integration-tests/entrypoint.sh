@@ -83,6 +83,11 @@ composer config --no-plugins allow-plugins.magento/composer-root-update-plugin t
 composer config --no-plugins allow-plugins.magento/inventory-composer-installer true
 composer config --no-plugins allow-plugins.magento/magento-composer-installer true
 
+if [[ "$MAGENTO_VERSION" == "2.4.4" ]]; then
+    echo "Quick fix for Magento 2.4.4"
+    composer require monolog/monolog:2.6.0 --no-update
+fi
+
 echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-progress
 
