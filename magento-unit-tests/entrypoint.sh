@@ -47,8 +47,10 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
     . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT
 fi
 
-echo "Allow composer plugins"
-composer config --no-plugins allow-plugins true
+if [[ "$COMPOSER_VERSION" -eq "2" ]] ; then
+    echo "Allow composer plugins"
+    composer config --no-plugins allow-plugins true
+fi
 #composer config --no-plugins allow-plugins.laminas/laminas-dependency-plugin true
 #composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
 #composer config --no-plugins allow-plugins.magento/composer-root-update-plugin true
