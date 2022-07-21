@@ -47,12 +47,14 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
     . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT
 fi
 
-echo "Allow composer plugins"
-composer config --no-plugins allow-plugins.laminas/laminas-dependency-plugin true
-composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-composer config --no-plugins allow-plugins.magento/composer-root-update-plugin true
-composer config --no-plugins allow-plugins.magento/inventory-composer-installer true
-composer config --no-plugins allow-plugins.magento/magento-composer-installer true
+if [[ "$COMPOSER_VERSION" -eq "2" ]] ; then
+    echo "Allow composer plugins"
+    composer config --no-plugins allow-plugins.laminas/laminas-dependency-plugin true
+    composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+    composer config --no-plugins allow-plugins.magento/composer-root-update-plugin true
+    composer config --no-plugins allow-plugins.magento/inventory-composer-installer true
+    composer config --no-plugins allow-plugins.magento/magento-composer-installer true
+fi
 
 echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress
