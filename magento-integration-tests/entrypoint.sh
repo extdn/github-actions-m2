@@ -104,7 +104,7 @@ SETUP_ARGS="--base-url=http://magento2.test/ \
 --backend-frontname=admin --language=en_US \
 --currency=USD --timezone=Europe/Amsterdam \
 --sales-order-increment-prefix=ORD_ --session-save=db \
---use-rewrites=1
+--use-rewrites=1 \
 --search-engine=elasticsearch7"
 
 
