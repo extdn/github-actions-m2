@@ -107,7 +107,7 @@ SETUP_ARGS="--base-url=http://magento2.test/ \
 --use-rewrites=1"
 
 if [[ "$ELASTICSEARCH" == "1" ]]; then
-    SETUP_ARGS="$SETUP_ARGS --elasticsearch-host=es --elasticsearch-port=9200 --elasticsearch-enable-auth=0 --elasticsearch-timeout=60"
+    SETUP_ARGS="$SETUP_ARGS --search-engine=elasticsearch7 --elasticsearch-host=es --elasticsearch-port=9200 --elasticsearch-enable-auth=0 --elasticsearch-timeout=60"
 fi
 
 echo "Run Magento setup: $SETUP_ARGS"
