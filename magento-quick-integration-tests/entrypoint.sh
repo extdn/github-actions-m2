@@ -54,7 +54,8 @@ php -d memory_limit=2G bin/magento setup:install --base-url=http://magento2.test
 --backend-frontname=admin --language=en_US \
 --currency=USD --timezone=Europe/Amsterdam --cleanup-database \
 --sales-order-increment-prefix="ORD$" --session-save=db \
---use-rewrites=1
+--use-rewrites=1 \
+--search-engine=elasticsearch7
 
 echo "Enable the module"
 cd $MAGENTO_ROOT
