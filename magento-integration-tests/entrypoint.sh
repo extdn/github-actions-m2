@@ -104,9 +104,12 @@ SETUP_ARGS="--base-url=http://magento2.test/ \
 --backend-frontname=admin --language=en_US \
 --currency=USD --timezone=Europe/Amsterdam \
 --sales-order-increment-prefix=ORD_ --session-save=db \
---use-rewrites=1 \
---search-engine=elasticsearch7"
+--use-rewrites=1"
 
+# only add the --search-engine param if it is supported
+if bin/magento setup:install --help | grep -q '\-\-search\-engine='; then
+    SETUP_ARGS="$SETUP_ARGS --search-engine=elasticsearch7"
+fi
 
 if [[ "$ELASTICSEARCH" == "1" ]]; then
     SETUP_ARGS="$SETUP_ARGS --elasticsearch-host=es --elasticsearch-port=9200 --elasticsearch-enable-auth=0 --elasticsearch-timeout=60"
