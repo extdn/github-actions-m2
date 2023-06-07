@@ -45,20 +45,29 @@ echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress 
 
 echo "Run Magento setup"
-
-SETUP_ARGS="--db-host=mysql --db-name=magento2 \
+SETUP_ARGS="--base-url=http://magento2.test/ \
+--db-host=mysql --db-name=magento2 \
 --db-user=root --db-password=root \
 --admin-firstname=John --admin-lastname=Doe \
 --admin-email=johndoe@example.com \
 --admin-user=johndoe --admin-password=johndoe!1234 \
 --backend-frontname=admin --language=en_US \
---currency=USD --timezone=Europe/Amsterdam --cleanup-database \
---sales-order-increment-prefix="ORD$" --session-save=db \
+--currency=USD --timezone=Europe/Amsterdam \
+--sales-order-increment-prefix=ORD_ --session-save=db \
 --use-rewrites=1"
+
+# only add the --search-engine param if it is supported
 if bin/magento setup:install --help | grep -q '\-\-search\-engine='; then
     SETUP_ARGS="$SETUP_ARGS --search-engine=elasticsearch7"
 fi
-php -d memory_limit=2G bin/magento setup:install --base-url=http://magento2.test/ \$SETUP_ARGS
+
+if [[ "$ELASTICSEARCH" == "1" ]]; then
+    SETUP_ARGS="$SETUP_ARGS --elasticsearch-host=es --elasticsearch-port=9200 --elasticsearch-enable-auth=0 --elasticsearch-timeout=60"
+fi
+
+echo "Run Magento setup: $SETUP_ARGS"
+php bin/magento setup:install $SETUP_ARGS
+
 echo "Enable the module"
 cd $MAGENTO_ROOT
 bin/magento module:enable ${MODULE_NAME}
