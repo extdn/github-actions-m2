@@ -26,7 +26,7 @@ jobs:
     name: M2 Coding Standard
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: extdn/github-actions-m2/magento-coding-standard@master
 ```
 
@@ -70,7 +70,7 @@ jobs:
           ES_JAVA_OPTS: "-Xms64m -Xmx512m"
         options: --health-cmd="curl localhost:9200/_cluster/health?wait_for_status=yellow&timeout=60s" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: M2 Integration Tests with Magento 2 (Php7.4)
         uses: extdn/github-actions-m2/magento-integration-tests/7.4@master
         with:
@@ -151,7 +151,7 @@ jobs:
     name: M2 Mess Detector
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: extdn/github-actions-m2/magento-mess-detector@master
 ```
 
@@ -177,7 +177,7 @@ jobs:
     name: M2 Copy Paste Detector
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: extdn/github-actions-m2/magento-copy-paste-detector@master
 ```
 
@@ -206,7 +206,7 @@ jobs:
     name: M2 PHPStan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: extdn/github-actions-m2/magento-phpstan@master
         with:
           composer_name: foo/magento2-foobar
@@ -237,7 +237,7 @@ jobs:
       EXTENSION_PACKAGE_NAME: "foo/magento2-foobar"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         name: Checkout files
         with:
           path: extension

@@ -22,7 +22,7 @@ jobs:
           - 3306:3306
         options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: M2 Integration Tests with Magento 2
         uses: extdn/github-actions-m2/magento-integration-tests@master
         env:
