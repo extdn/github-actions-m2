@@ -27,6 +27,11 @@ composer config --unset repo.0
 composer config repositories.local-source path local-source/\*
 composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 
+if [[ "$COMPOSER_VERSION" -eq "2" ]] ; then
+    echo "Allow composer plugins"
+    composer config --no-plugins allow-plugins true
+fi
+
 echo "Pre Install Script [magento_pre_install_script]: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
 if [ -n "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] && [ -f "${GITHUB_WORKSPACE}"/"$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] ; then
     echo "Running custom pre-installation script: ${INPUT_MAGENTO_PRE_INSTALL_SCRIPT}"
