@@ -207,7 +207,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: extdn/github-actions-m2/magento-phpstan@master
+      - uses: extdn/github-actions-m2/magento-phpstan/8.1@master
         with:
           composer_name: foo/magento2-foobar
 ```
