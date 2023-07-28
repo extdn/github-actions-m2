@@ -19,7 +19,7 @@ echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
 mkdir -p local-source/
 cd local-source/
-cp -R "${GITHUB_WORKSPACE}"/"${MODULE_SOURCE}" "$GITHUB_ACTION"
+cp -R "${GITHUB_WORKSPACE}"/"${INPUT_MODULE_SOURCE}" "$GITHUB_ACTION"
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
@@ -42,17 +42,17 @@ echo "Run installation"
 composer require $COMPOSER_NAME:@dev --no-interaction --dev
 
 CONFIGURATION_FILE=$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon
-test -f $GITHUB_WORKSPACE/${MODULE_SOURCE}/phpstan.neon && CONFIGURATION_FILE=$GITHUB_WORKSPACE/${MODULE_SOURCE}/phpstan.neon
+test -f $GITHUB_WORKSPACE/${INPUT_MODULE_SOURCE}/phpstan.neon && CONFIGURATION_FILE=$GITHUB_WORKSPACE/${INPUT_MODULE_SOURCE}/phpstan.neon
 
 echo "Configuration file: $CONFIGURATION_FILE"
 echo "Level: $INPUT_PHPSTAN_LEVEL"
 
 echo "Running PHPStan"
-cd ${GITHUB_WORKSPACE}/${MODULE_SOURCE}
+cd ${GITHUB_WORKSPACE}/${INPUT_MODULE_SOURCE}
 php $MAGENTO_ROOT/vendor/bin/phpstan analyse \
     --level $INPUT_PHPSTAN_LEVEL \
     --no-progress \
     --memory-limit=4G \
     --configuration ${CONFIGURATION_FILE} \
-    ${GITHUB_WORKSPACE}/${MODULE_SOURCE}
+    ${GITHUB_WORKSPACE}/${INPUT_MODULE_SOURCE}
 
