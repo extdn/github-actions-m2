@@ -3,6 +3,8 @@ name: Build PHP compatibility Images
 on:
   workflow_dispatch:
   push:
+    branches:
+      - master
     paths:
       - 'php-compatibility/**'
 

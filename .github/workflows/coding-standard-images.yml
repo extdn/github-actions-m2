@@ -5,6 +5,8 @@ on:
   schedule:
     - cron: "0 6 * * 0" # 6 AM Weekly
   push:
+    branches:
+      - master
     paths:
       - 'magento-coding-standard/**'
 

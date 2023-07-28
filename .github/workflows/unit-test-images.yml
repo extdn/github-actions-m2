@@ -3,6 +3,8 @@ name: Build Unit Testing Images
 on:
   workflow_dispatch:
   push:
+    branches:
+      - master
     paths:
       - 'magento-unit-tests/**'
 
