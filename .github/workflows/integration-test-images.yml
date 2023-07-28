@@ -3,6 +3,8 @@ name: Build Integration Images
 on:
   workflow_dispatch:
   push:
+    branches:
+      - master
     paths:
       - 'magento-integration-tests/**'
 
