@@ -35,3 +35,7 @@ jobs:
         env:
           MAGENTO_VERSION: '2.4.4'
           COMPOSER_VERSION: '2'
+      - uses: extdn/github-actions-m2/magento-integration-tests/8.2@master
+        env:
+          MAGENTO_VERSION: '2.4.6'
+          COMPOSER_VERSION: '2'
