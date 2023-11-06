@@ -4,6 +4,7 @@ RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
 RUN composer2 create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-plugins --no-install --no-interaction magento/project-community-edition /var/www/magento2ce "2.4.3-p2"
 
 WORKDIR "/var/www/magento2ce"
+RUN composer2 config --no-plugins allow-plugins true
 RUN composer2 config --unset repo.0
 RUN composer2 config repo.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 RUN composer2 require hoa/regex --no-update

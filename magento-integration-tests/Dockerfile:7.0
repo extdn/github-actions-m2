@@ -2,6 +2,7 @@ FROM php:7.0-cli
 
 COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer1
 
+RUN grep -v security.debian.org /etc/apt/sources.list | grep -v stretch-updates | sed -e 's/deb.debian.org/archive.debian.org/' > /t && mv /t /etc/apt/sources.list
 RUN apt-get update && apt-get -y install --no-install-recommends \
     mariadb-client \
     apt-transport-https \
