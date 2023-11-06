@@ -26,7 +26,7 @@ jobs:
           ES_JAVA_OPTS: "-Xms64m -Xmx512m"
         options: --health-cmd="curl localhost:9200/_cluster/health?wait_for_status=yellow&timeout=60s" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: M2 Integration Tests with Magento 2 (Php7.4)
         uses: extdn/github-actions-m2/magento-integration-tests/7.4@master
         with:
