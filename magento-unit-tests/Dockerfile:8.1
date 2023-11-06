@@ -18,7 +18,7 @@ RUN apt-get update && apt-get -y install \
     libxml2-dev \
     libxslt-dev \
     xmlstarlet \
-    netcat \
+    netcat-openbsd \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -40,4 +40,3 @@ RUN chmod 755 /entrypoint.sh
 COPY docker-files /docker-files
 
 ENTRYPOINT ["bash", "/entrypoint.sh"]
-
