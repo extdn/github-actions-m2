@@ -33,7 +33,9 @@ composer require yireo/magento2-replace-sample-data --no-update --no-interaction
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
+composer config --unset repo.0
 composer config repositories.local-source path local-source/\*
+composer config repositories.magento composer $REPOSITORY_URL
 composer require $COMPOSER_NAME:@dev --no-update --no-interaction
 
 if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ]] ; then
@@ -42,7 +44,7 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
 fi
 
 echo "Run installation"
-COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress 
+COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress
 
 echo "Run Magento setup"
 SETUP_ARGS="--base-url=http://magento2.test/ \
@@ -79,7 +81,7 @@ if [[ -z "$INPUT_PHPUNIT_FILE" || ! -f "$INPUT_PHPUNIT_FILE" ]] ; then
 fi
 
 echo "Add ReachDigital framework"
-COMPOSER_MEMORY_LIMIT=-1 composer require reach-digital/magento2-test-framework 
+COMPOSER_MEMORY_LIMIT=-1 composer require reach-digital/magento2-test-framework
 
 echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
@@ -91,4 +93,3 @@ cp /docker-files/patches/Memory.php dev/tests/integration/framework/Magento/Test
 
 echo "Run the integration tests"
 cd $MAGENTO_ROOT/dev/tests/quick-integration && php -d memory_limit=2G ../../../vendor/bin/phpunit -c phpunit.xml
-
