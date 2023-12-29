@@ -38,7 +38,9 @@ cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $MODULE_NAME
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
+composer config --unset repo.0
 composer config repositories.local-source path local-source/\*
+composer config repositories.magento composer $REPOSITORY_URL
 composer require $COMPOSER_NAME:@dev --no-update --no-interaction
 
 echo "Pre Install Script [magento_pre_install_script]: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
@@ -86,4 +88,3 @@ cat $MAGENTO_ROOT/dev/tests/unit/phpunit.xml
 
 echo "Run the unit tests"
 cd $MAGENTO_ROOT/dev/tests/unit && ../../../vendor/bin/phpunit -c phpunit.xml
-
