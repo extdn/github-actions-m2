@@ -6,12 +6,6 @@ inputs:
     description: 'The GitHub authentication token'
     required: true
     default: ${{ github.token }}
-  extension-name:
-    description: 'Module Name of Magento 2 Extension'
-    required: true
-  extension-package-name:
-    description: 'Composer package name of extension'
-    required: true
   baseline-file:
     required: true
     description: 'Path to blackfire.io json profile before'

@@ -2,13 +2,23 @@
 
 set -e
 
+test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
+test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
+test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
+test -z "${MODULE_SOURCE}" && MODULE_SOURCE=$INPUT_MODULE_SOURCE
+test -z "${PROJECT_NAME}" && PROJECT_NAME=$INPUT_PROJECT_NAME
+
+# Maintain backwards-compatibility with old 'ce_version' input.
+test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_CE_VERSION
+test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$CE_VERSION
+
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set in your GitHub Actions YAML file" && exit 1)
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
-test -z "${CE_VERSION}" && (echo "'ce_version' is not set in your GitHub Actions YAML file" && exit 1)
+test -z "${MAGENTO_VERSION}" && (echo "'magento_version' is not set in your GitHub Actions YAML file" && exit 1)
 
 MAGENTO_ROOT=/tmp/m2
-PROJECT_PATH=$GITHUB_WORKSPACE
 test -z "${REPOSITORY_URL}" && REPOSITORY_URL="https://repo-magento-mirror.fooman.co.nz/"
+test -z "${PROJECT_NAME}" && PROJECT_NAME="magento/project-community-edition"
 
 echo "MySQL checks"
 nc -z -w1 mysql 3306 || (echo "MySQL is not running" && exit)
@@ -20,7 +30,7 @@ test -z "${MAGENTO_MARKETPLACE_USERNAME}" || composer global config http-basic.r
 
 echo "Prepare composer installation"
 composer global require hirak/prestissimo
-composer create-project --repository=$REPOSITORY_URL magento/project-community-edition:${CE_VERSION} $MAGENTO_ROOT --no-install --no-interaction --no-progress
+composer create-project --repository="$REPOSITORY_URL" "${PROJECT_NAME}:${MAGENTO_VERSION}" $MAGENTO_ROOT --no-install --no-interaction --no-progress
 
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT

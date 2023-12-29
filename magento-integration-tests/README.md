@@ -32,7 +32,7 @@ jobs:
         with:
           module_name: Foo_Bar
           composer_name: foo/magento2-foobar
-          ce_version: '2.4.0'
+          magento_version: '2.4.0'
 ```
 
 Make sure to modify the following values:
@@ -49,4 +49,3 @@ a custom XML file using `PHPUNIT_FILE`. And there is an environment variable `MA
 are run.
 
 See `entrypoint.sh` for clearification.
-

@@ -3,9 +3,15 @@ author: 'ExtDN'
 description: 'performs installation of Magento 2 open source version'
 inputs:
   ce-version:
+    description: 'Deprecated. Please use "magento_version" instead.'
+  magento_version:
     description: 'Magento 2 Open Source version number'
     required: true
     default: '2.3.3'
+  project_name:
+    description: 'Magento 2 project name'
+    required: true
+    default: 'magento/project-community-edition'
   db-host:
     description: 'Database Host'
     default: 'mysql'

@@ -2,9 +2,8 @@
 
 set -e
 
-test -z "${CE_VERSION}" || MAGENTO_VERSION=$CE_VERSION
-
 test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
+test -z "${MODULE_SOURCE}" && MODULE_SOURCE=$INPUT_MODULE_SOURCE
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
 test -z "${PROJECT_NAME}" && PROJECT_NAME=$INPUT_PROJECT_NAME
@@ -18,7 +17,6 @@ test -z "$PROJECT_NAME" && PROJECT_NAME="magento/project-community-edition"
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set" && exit 1)
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set" && exit 1)
 test -z "${MAGENTO_VERSION}" && (echo "'magento_version' is not set" && exit 1)
-test -z "${PROJECT_NAME}" && (echo "'project_name' is not set" && exit 1)
 
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
