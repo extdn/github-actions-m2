@@ -16,6 +16,10 @@ inputs:
     description: 'Magento 2 Open Source version number'
     required: true
     default: '2.4.3'
+  project_name:
+    description: 'Magento 2 project name'
+    required: true
+    default: 'magento/project-community-edition'
   module_source:
     description: 'Relative path to your module source within your repository. Empty by default.'
   phpunit_file:
@@ -26,6 +30,5 @@ runs:
   using: 'docker'
   image: 'docker://extdn/magento-unit-tests-action:7.4-latest'
 branding:
-  icon: 'code'  
+  icon: 'code'
   color: 'green'
-

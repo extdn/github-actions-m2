@@ -16,6 +16,10 @@ inputs:
     description: 'Magento 2 Open Source version number'
     required: true
     default: '2.4.6-p3'
+  project_name:
+    description: 'Magento 2 project name'
+    required: true
+    default: 'magento/project-community-edition'
   module_source:
     description: 'Relative path to your module source within your repository, like "src/". Empty by default.'
   phpunit_file:

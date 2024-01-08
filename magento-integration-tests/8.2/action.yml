@@ -9,6 +9,8 @@ inputs:
     description: 'Your composer name. Example: foo/magento2-bar'
     required: true
   ce_version:
+    description: 'Deprecated. Please use "magento_version" instead.'
+  magento_version:
     description: 'Magento 2 Open Source version number'
     required: true
     default: '2.4.6-p3'
@@ -42,10 +44,6 @@ runs:
   using: 'docker'
   image: 'docker://extdn/magento-integration-tests-action:8.2-latest'
   env:
-    MODULE_NAME: ${{ inputs.module_name }}
-    COMPOSER_NAME: ${{ inputs.composer_name }}
-    MAGENTO_VERSION: ${{ inputs.ce_version }}
-    PROJECT_NAME: ${{ inputs.project_name }}
     COMPOSER_MEMORY_LIMIT: -1
 
 branding:

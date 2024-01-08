@@ -1,12 +1,14 @@
 #!/bin/bash
 set -e
 
+test -z "${MODULE_SOURCE}" && MODULE_SOURCE=$INPUT_MODULE_SOURCE
+test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${COMPOSER_VERSION}" && COMPOSER_VERSION=$INPUT_COMPOSER_VERSION
+
 if [ -z "$COMPOSER_VERSION" ] ; then
    COMPOSER_VERSION=2
 fi
 
-test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 EXTENSION_BRANCH=${GITHUB_REF#refs/heads/}
 
 MAGENTO_ROOT=/m2
@@ -55,4 +57,3 @@ php $MAGENTO_ROOT/vendor/bin/phpstan analyse \
     --memory-limit=4G \
     --configuration ${CONFIGURATION_FILE} \
     ${GITHUB_WORKSPACE}/${MODULE_SOURCE}
-

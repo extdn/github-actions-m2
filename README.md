@@ -4,13 +4,13 @@ This repository's aim is to provide a set of open sourced GitHub actions to writ
 
 # Available Actions
 ## Magento Coding Standard
-Provides an action that can be used in your GitHub workflow to execute the latest [Magento Coding Standard](https://github.com/magento/magento-coding-standard). 
+Provides an action that can be used in your GitHub workflow to execute the latest [Magento Coding Standard](https://github.com/magento/magento-coding-standard).
 
 #### Screenshot
 ![Screenshot Coding Style Action](magento-coding-standard/screenshot.png?raw=true")
 
 #### How to use it
-In your GitHub repository add the below as 
+In your GitHub repository add the below as
 `.github/workflows/coding-standard.yml`
 
 ```
@@ -37,7 +37,7 @@ Run your Magento 2 integration tests via this Github Action. All you need is to 
 #### Screenshot
 ![Screenshot Mess Detector Action](magento-integration-tests/screenshot.png?raw=true")
 #### How to use it
-In your GitHub repository add the below as 
+In your GitHub repository add the below as
 `.github/workflows/integration.yml`
 
 ```
@@ -76,7 +76,7 @@ jobs:
         with:
           module_name: Foo_Bar
           composer_name: foo/magento2-foobar
-          ce_version: '2.4.0'
+          magento_version: '2.4.0'
 ```
 
 The following images are provided for use
@@ -92,7 +92,7 @@ The following inputs are required:
 |---|---|
 | module_name   | Your Magento module name. Example: Foo_Bar   |
 | composer_name   | Your composer name. Example: foo/magento2-bar   |
-| ce_version  | Magento 2 Open Source version number. Example: 2.4.0  |
+| magento_version | Magento 2 Open Source version number. Example: 2.4.0  |
 
 
 
@@ -105,25 +105,25 @@ The default [phpunit.xml](https://github.com/extdn/github-actions-m2/blob/master
 
 If this phpunit file does not work for you can provide a relative path to your own PHPUnit file via phpunit_file
 
-``` 
+```
       - name: M2 Integration Tests with Magento 2 (Php7.4)
         uses: extdn/github-actions-m2/magento-integration-tests/7.4@master
         with:
           module_name: Foo_Bar
           composer_name: foo/magento2-foobar
-          ce_version: '2.4.0'
+          magento_version: '2.4.0'
           phpunit_file: './path/to/phpunit.xml'
 ```
 
 Sometimes it may be needed to run additional commands before tests can run. For example to add or remove additional dependencies. Use the input magento_pre_install_script to provide a relative path to this script. Example
 
-``` 
+```
       - name: M2 Integration Tests with Magento 2 (Php7.4)
         uses: extdn/github-actions-m2/magento-integration-tests/7.4@master
         with:
           module_name: Foo_Bar
           composer_name: foo/magento2-foobar
-          ce_version: '2.4.0'
+          magento_version: '2.4.0'
           magento_pre_install_script: './.github/integration-test-setup.sh'
 ```
 
@@ -135,7 +135,7 @@ Provides an action that can be used in your GitHub workflow to execute the PHP M
 #### Screenshot
 ![Screenshot Mess Detector Action](magento-mess-detector/screenshot.png?raw=true")
 #### How to use it
-In your GitHub repository add the below as 
+In your GitHub repository add the below as
 `.github/workflows/mess-detector.yml`
 
 ```
@@ -161,7 +161,7 @@ jobs:
 Provides an action that can be used in your GitHub workflow to execute the PHP Copy Paste Detector rules included in Magento 2 ([link](https://github.com/magento/magento2/blob/2.3.4/dev/tests/static/framework/Magento/TestFramework/CodingStandard/Tool/CopyPasteDetector.php)).
 
 #### How to use it
-In your GitHub repository add the below as 
+In your GitHub repository add the below as
 `.github/workflows/copy-paste-detector.yml`
 
 ```
@@ -190,7 +190,7 @@ Provides an action that can be used in your GitHub workflow to execute the PHPSt
 ![Screenshot PHPStan Action](magento-phpstan/screenshot.png?raw=true")
 
 #### How to use it
-In your GitHub repository add the below as 
+In your GitHub repository add the below as
 `.github/workflows/phpstan.yml`
 
 ```
@@ -216,7 +216,7 @@ jobs:
 Provides an action that can be used in your GitHub workflow to execute blackfire.io profiling before and after installing extension code.
 
 #### How to use it
-In your GitHub repository add the below as 
+In your GitHub repository add the below as
 `.github/workflows/performance.yml`
 
 ```
@@ -350,4 +350,3 @@ jobs:
       MAGENTO_MARKETPLACE_USERNAME: foo
       MAGENTO_MARKETPLACE_PASSWORD: bar
 ```
-

@@ -2,9 +2,8 @@
 
 set -e
 
-test -z "${CE_VERSION}" || MAGENTO_VERSION=$CE_VERSION
-
 test -z "${MODULE_NAME}" && MODULE_NAME=$INPUT_MODULE_NAME
+test -z "${MODULE_SOURCE}" && MODULE_SOURCE=$INPUT_MODULE_SOURCE
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
 test -z "${PROJECT_NAME}" && PROJECT_NAME=$INPUT_PROJECT_NAME
@@ -12,6 +11,10 @@ test -z "${ELASTICSEARCH}" && ELASTICSEARCH=$INPUT_ELASTICSEARCH
 test -z "${PHPUNIT_FILE}" && PHPUNIT_FILE=$INPUT_PHPUNIT_FILE
 test -z "${COMPOSER_VERSION}" && COMPOSER_VERSION=$INPUT_COMPOSER_VERSION
 test -z "${REPOSITORY_URL}" && REPOSITORY_URL=$INPUT_REPOSITORY_URL
+
+# Maintain backwards-compatibility with old 'ce_version' input.
+test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_CE_VERSION
+test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$CE_VERSION
 
 test -z "$MAGENTO_VERSION" && MAGENTO_VERSION="2.4.3-p1"
 test -z "$COMPOSER_VERSION" && [[ "$MAGENTO_VERSION" =~ ^2.4.* ]] && COMPOSER_VERSION=2
@@ -25,8 +28,6 @@ fi
 
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set")
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set" && exit 1)
-test -z "${MAGENTO_VERSION}" && (echo "'ce_version' is not set" && exit 1)
-test -z "${PROJECT_NAME}" && (echo "'project_name' is not set" && exit 1)
 
 MAGENTO_ROOT=/tmp/m2
 PROJECT_PATH=$GITHUB_WORKSPACE
@@ -156,4 +157,3 @@ php -r "echo ini_get('memory_limit').PHP_EOL;"
 
 echo "Run the integration tests"
 cd $MAGENTO_ROOT/dev/tests/integration && ../../../vendor/bin/phpunit -c phpunit.xml
-

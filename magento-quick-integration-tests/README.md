@@ -28,7 +28,7 @@ jobs:
         env:
             MODULE_NAME: Foo_Bar
             COMPOSER_NAME: foo/magento2-foobar
-            CE_VERSION: 2.3.5
+            MAGENTO_VERSION: 2.3.5
 ```
 
 Make sure to modify the following values:

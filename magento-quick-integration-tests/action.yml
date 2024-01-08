@@ -9,9 +9,15 @@ inputs:
     description: 'Your composer name. Example: foo/magento2-bar'
     required: true
   ce_version:
+    description: 'Deprecated. Please use "magento_version" instead.'
+  magento_version:
     description: 'Magento 2 Open Source version number'
     required: true
     default: '2.3.5'
+  project_name:
+    description: 'Magento 2 project name'
+    required: true
+    default: 'magento/project-community-edition'
   module_source:
     description: 'Relative path to your module source within your repository. Empty by default.'
   phpunit_file:
@@ -22,6 +28,5 @@ runs:
   using: 'docker'
   image: 'docker://yireo/github-actions-magento-quick-integration-tests:latest'
 branding:
-  icon: 'code'  
+  icon: 'code'
   color: 'green'
-

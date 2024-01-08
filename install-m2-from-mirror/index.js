@@ -2,17 +2,18 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 
 async function run() {
-try { 
-    const ceversion = core.getInput('ce-version');
+try {
+    const magento_version = core.getInput('magento_version') || core.getInput('ce-version');
+    const project_name = core.getInput('project_name');
     const options = {};
     await exec.exec(`sudo composer self-update 1.10.16`);
-    await exec.exec(`composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-plugins magento/project-community-edition m2-folder ${ceversion}`);
+    await exec.exec(`composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-install --no-progress --no-plugins ${project_name} m2-folder ${magento_version}`);
     options.cwd = './m2-folder';
     await exec.exec('composer', ['config', '--unset', 'repo.0'], options);
     await exec.exec('composer', ['config', 'repositories.foomanmirror', 'composer', 'https://repo-magento-mirror.fooman.co.nz/'], options);
     await exec.exec('composer', ['install', '--prefer-dist'], options);
 
-    await exec.exec('bin/magento', 
+    await exec.exec('bin/magento',
         [
           'setup:install',
           '--db-host=' + core.getInput('db-host') +':'+ core.getInput('db-port'),
@@ -30,7 +31,7 @@ try {
           '--timezone=America/New_York',
           '--use-rewrites=1'
         ], options);
-    } 
+    }
     catch (error) {
         core.setFailed(error.message);
     }
