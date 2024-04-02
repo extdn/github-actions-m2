@@ -36,7 +36,7 @@ echo "Using composer ${COMPOSER_VERSION}"
 ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
 echo "Pre Project Script [pre_project_script]: $INPUT_PRE_PROJECT_SCRIPT"
-if [[ ! -z "$INPUT_PRE_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_PRE_PROJECT_SCRIPT" ]] ; then
+if [[ -n "$INPUT_PRE_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_PRE_PROJECT_SCRIPT" ]] ; then
     echo "Running custom pre_project_script: ${INPUT_PRE_PROJECT_SCRIPT}"
     . ${GITHUB_WORKSPACE}/$INPUT_PRE_PROJECT_SCRIPT
 fi
@@ -60,7 +60,7 @@ cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} $GITHUB_ACTION
 cd $MAGENTO_ROOT
 
 echo "Post Project Script [post_project_script]: $INPUT_POST_PROJECT_SCRIPT"
-if [[ ! -z "$INPUT_POST_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_POST_PROJECT_SCRIPT" ]] ; then
+if [[ -n "$INPUT_POST_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_POST_PROJECT_SCRIPT" ]] ; then
     echo "Running custom post_project_script: ${INPUT_POST_PROJECT_SCRIPT}"
     . ${GITHUB_WORKSPACE}/$INPUT_POST_PROJECT_SCRIPT
 fi
@@ -72,7 +72,7 @@ composer config repositories.magento composer $REPOSITORY_URL
 composer require $COMPOSER_NAME:@dev --no-update --no-interaction
 
 echo "Pre Install Script [magento_pre_install_script]: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
-if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ]] ; then
+if [[ -n "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ]] ; then
     echo "Running custom magento_pre_install_script: ${INPUT_MAGENTO_PRE_INSTALL_SCRIPT}"
     . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT
 fi
@@ -112,6 +112,11 @@ if bin/magento setup:install --help | grep -q '\-\-search\-engine='; then
     SETUP_ARGS="$SETUP_ARGS --search-engine=elasticsearch7"
 fi
 
+if [[ -n "$INPUT_MAGENTO_ENCRYPTION_KEY" ]]; then
+    echo "Adding static encryption key"
+    SETUP_ARGS="$SETUP_ARGS --key=$INPUT_MAGENTO_ENCRYPTION_KEY"
+fi
+
 if [[ "$ELASTICSEARCH" == "1" ]]; then
     SETUP_ARGS="$SETUP_ARGS --elasticsearch-host=es --elasticsearch-port=9200 --elasticsearch-enable-auth=0 --elasticsearch-timeout=60"
 fi
@@ -120,13 +125,13 @@ echo "Run Magento setup: $SETUP_ARGS"
 php bin/magento setup:install $SETUP_ARGS
 
 echo "Post Install Script [magento_post_install_script]: $INPUT_MAGENTO_POST_INSTALL_SCRIPT"
-if [[ ! -z "$INPUT_MAGENTO_POST_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_POST_INSTALL_SCRIPT" ]] ; then
+if [[ -n "$INPUT_MAGENTO_POST_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_POST_INSTALL_SCRIPT" ]] ; then
     echo "Running custom magento_post_install_script: ${INPUT_MAGENTO_POST_INSTALL_SCRIPT}"
     . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_POST_INSTALL_SCRIPT
 fi
 
 echo "Trying phpunit.xml file $PHPUNIT_FILE"
-if [[ ! -z "$PHPUNIT_FILE" ]] ; then
+if [[ -n "$PHPUNIT_FILE" ]] ; then
     PHPUNIT_FILE=${GITHUB_WORKSPACE}/${PHPUNIT_FILE}
 fi
 
@@ -140,6 +145,11 @@ cd $MAGENTO_ROOT
 cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
 if [[ "$ELASTICSEARCH" == "1" ]]; then
     cp /docker-files/install-config-mysql-with-es.php dev/tests/integration/etc/install-config-mysql.php
+fi
+
+if [[ -n "$INPUT_MAGENTO_ENCRYPTION_KEY" ]]; then
+    key_install_config="\    'key' => '$INPUT_MAGENTO_ENCRYPTION_KEY',";
+    sed -i "/]/i $key_install_config" dev/tests/integration/etc/install-config-mysql.php
 fi
 
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $PHPUNIT_FILE > dev/tests/integration/phpunit.xml
