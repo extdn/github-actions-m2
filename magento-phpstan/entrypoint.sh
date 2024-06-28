@@ -39,10 +39,10 @@ if [ -n "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] && [ -f "${GITHUB_WORKSPACE}"/"$IN
 fi;
 
 echo "Run installation"
-COMPOSER_MIRROR_PATH_REPOS=1 composer install
+COMPOSER_MIRROR_PATH_REPOS=1 COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-progress || exit
 
 echo "Installing module"
-COMPOSER_MIRROR_PATH_REPOS=1 composer require $COMPOSER_NAME:@dev --no-interaction --dev
+COMPOSER_MIRROR_PATH_REPOS=1 composer require $COMPOSER_NAME:@dev --no-interaction --dev || exit
 
 CONFIGURATION_FILE=dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon
 test -f vendor/${COMPOSER_NAME}/phpstan.neon && CONFIGURATION_FILE=vendor/${COMPOSER_NAME}/phpstan.neon
