@@ -16,19 +16,18 @@ echo "Using composer ${COMPOSER_VERSION}"
 ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
 echo "Fix"
+cd $MAGENTO_ROOT
 cat composer.json
 ls
 rm -rf vendor/
 composer install
 
 echo "Setup extension source folder within Magento root"
-cd $MAGENTO_ROOT
 mkdir -p local-source/
 cd local-source/
 cp -R "${GITHUB_WORKSPACE}"/"${MODULE_SOURCE}" "$GITHUB_ACTION"
 
 echo "Configure extension source in composer"
-cd $MAGENTO_ROOT
 composer config repositories.local-source path local-source/\*
 
 echo "Pre Install Script [magento_pre_install_script]: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
