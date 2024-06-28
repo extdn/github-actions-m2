@@ -15,6 +15,10 @@ test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub A
 echo "Using composer ${COMPOSER_VERSION}"
 ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
+echo "Fix"
+rm -rf vendor/
+composer install
+
 echo "Setup extension source folder within Magento root"
 cd $MAGENTO_ROOT
 mkdir -p local-source/
