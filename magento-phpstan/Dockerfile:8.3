@@ -15,5 +15,6 @@ RUN composer2 install --prefer-dist
 #RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
 
 COPY entrypoint.sh /entrypoint.sh
+RUN mv /var/www/magento2ce/ /m2/
 
 ENTRYPOINT ["/entrypoint.sh"]
