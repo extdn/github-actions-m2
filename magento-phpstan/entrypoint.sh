@@ -17,14 +17,13 @@ ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
 echo "Fix issue 115"
 cd $MAGENTO_ROOT
-#rm -rf vendor/
+rm -rf vendor/
 composer install
 
 echo "Setup extension source folder within Magento root"
 mkdir -p $MAGENTO_ROOT/local-source/
 cd $MAGENTO_ROOT/local-source/
 cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} .
-ls
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
