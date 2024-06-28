@@ -21,12 +21,14 @@ cd $MAGENTO_ROOT
 composer install
 
 echo "Setup extension source folder within Magento root"
-mkdir -p local-source/
-cd local-source/
+mkdir -p $MAGENTO_ROOT/local-source/
+cd $MAGENTO_ROOT/local-source/
 cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} .
+ls
 
 echo "Configure extension source in composer"
-composer config repositories.local-source path local-source/\*
+cd $MAGENTO_ROOT
+composer config repositories.local-source path $MAGENTO_ROOT/local-source/\*
 
 echo "Pre Install Script [magento_pre_install_script]: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
 if [ -n "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] && [ -f "${GITHUB_WORKSPACE}"/"$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] ; then
