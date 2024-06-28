@@ -26,6 +26,8 @@ echo "Setup extension source folder within Magento root"
 mkdir -p $MAGENTO_ROOT/local-source/
 cd $MAGENTO_ROOT/local-source/
 cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} .
+ls $MAGENTO_ROOT
+ls $MAGENTO_ROOT/local-source/
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
