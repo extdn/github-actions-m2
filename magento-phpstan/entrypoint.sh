@@ -25,7 +25,7 @@ composer install
 echo "Setup extension source folder within Magento root"
 mkdir -p local-source/
 cd local-source/
-cp -R "${GITHUB_WORKSPACE}"/"${MODULE_SOURCE}" "$GITHUB_ACTION"
+cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} .
 
 echo "Configure extension source in composer"
 composer config repositories.local-source path local-source/\*
