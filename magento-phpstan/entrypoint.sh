@@ -10,15 +10,17 @@ if [ -z "$COMPOSER_VERSION" ] ; then
 fi
 
 MAGENTO_ROOT=/m2
+!test -d "${MAGENTO_ROOT}" && test -d /var/www/magento2ce && MAGENTO_ROOT=/var/www/magento2ce
+
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
 
 echo "Using composer ${COMPOSER_VERSION}"
 ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
-echo "Fix issue 115"
-cd $MAGENTO_ROOT
-rm -rf vendor/
-composer install
+#echo "Fix issue 115"
+#cd $MAGENTO_ROOT
+#rm -rf vendor/
+#composer install
 
 echo "Setup extension source folder within Magento root"
 mkdir -p $MAGENTO_ROOT/local-source/
