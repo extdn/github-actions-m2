@@ -9,38 +9,23 @@ if [ -z "$COMPOSER_VERSION" ] ; then
    COMPOSER_VERSION=2
 fi
 
-MAGENTO_ROOT=/m2
-test -d "${MAGENTO_ROOT}" || (test -d /var/www/magento2ce && MAGENTO_ROOT=/var/www/magento2ce)
+MAGENTO_ROOT=/var/www/magento2ce
+test -d "${MAGENTO_ROOT}" || (test -d /var/www/magento2ce && MAGENTO_ROOT=/m2)
 
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
 
 echo "Using composer ${COMPOSER_VERSION}"
 ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
-#echo "Fix issue 115"
-#cd $MAGENTO_ROOT
-#rm -rf vendor/
-#composer install
+echo "Fix issue 115"
+cd $MAGENTO_ROOT
+rm -rf vendor/
+composer install
 
 echo "Setup extension source folder within Magento root"
 mkdir -p $MAGENTO_ROOT/local-source/
 cd $MAGENTO_ROOT/local-source/
 cp -R ${GITHUB_WORKSPACE}/${MODULE_SOURCE} .
-
-echo "ls /var/www/magento2ce"
-ls /var/www/magento2ce
-
-echo "MAGENTO_ROOT: $MAGENTO_ROOT"
-ls $MAGENTO_ROOT
-
-echo "ls $MAGENTO_ROOT/local-source/"
-ls $MAGENTO_ROOT/local-source/
-
-echo "ls ${GITHUB_WORKSPACE}"
-ls ${GITHUB_WORKSPACE}
-
-echo "ls ${GITHUB_WORKSPACE}/${MODULE_SOURCE}"
-ls ${GITHUB_WORKSPACE}/${MODULE_SOURCE}
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
