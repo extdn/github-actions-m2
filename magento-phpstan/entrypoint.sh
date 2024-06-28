@@ -10,7 +10,7 @@ if [ -z "$COMPOSER_VERSION" ] ; then
 fi
 
 MAGENTO_ROOT=/m2
-!test -d "${MAGENTO_ROOT}" && test -d /var/www/magento2ce && MAGENTO_ROOT=/var/www/magento2ce
+test -d "${MAGENTO_ROOT}" || (test -d /var/www/magento2ce && MAGENTO_ROOT=/var/www/magento2ce)
 
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
 
