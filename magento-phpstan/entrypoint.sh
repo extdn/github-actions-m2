@@ -9,8 +9,6 @@ if [ -z "$COMPOSER_VERSION" ] ; then
    COMPOSER_VERSION=2
 fi
 
-EXTENSION_BRANCH=${GITHUB_REF#refs/heads/}
-
 MAGENTO_ROOT=/m2
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
 
@@ -46,17 +44,16 @@ COMPOSER_MIRROR_PATH_REPOS=1 composer install
 echo "Installing module"
 COMPOSER_MIRROR_PATH_REPOS=1 composer require $COMPOSER_NAME:@dev --no-interaction --dev
 
-CONFIGURATION_FILE=$MAGENTO_ROOT/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon
-test -f $GITHUB_WORKSPACE/${MODULE_SOURCE}/phpstan.neon && CONFIGURATION_FILE=$GITHUB_WORKSPACE/${MODULE_SOURCE}/phpstan.neon
+CONFIGURATION_FILE=dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon
+test -f vendor/${COMPOSER_NAME}/phpstan.neon && CONFIGURATION_FILE=vendor/${COMPOSER_NAME}/phpstan.neon
 
 echo "Configuration file: $CONFIGURATION_FILE"
 echo "Level: $INPUT_PHPSTAN_LEVEL"
 
 echo "Running PHPStan"
-cd ${GITHUB_WORKSPACE}/${MODULE_SOURCE}
-php $MAGENTO_ROOT/vendor/bin/phpstan analyse \
+php vendor/bin/phpstan analyse \
     --level $INPUT_PHPSTAN_LEVEL \
     --no-progress \
     --memory-limit=4G \
     --configuration ${CONFIGURATION_FILE} \
-    ${GITHUB_WORKSPACE}/${MODULE_SOURCE}
+    vendor/${COMPOSER_NAME}
