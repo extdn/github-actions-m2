@@ -10,7 +10,7 @@ RUN composer2 config --no-plugins allow-plugins true
 RUN composer2 require hoa/regex --no-update
 RUN composer2 install --prefer-dist
 
-FROM extdn/magento-integration-tests-action:8.3-latest
+#FROM extdn/magento-integration-tests-action:8.3-latest
 COPY --from=builder /var/www/magento2ce/ /m2/
 RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
 
