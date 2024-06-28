@@ -16,6 +16,8 @@ echo "Using composer ${COMPOSER_VERSION}"
 ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
 echo "Fix"
+cat composer.json
+ls
 rm -rf vendor/
 composer install
 
