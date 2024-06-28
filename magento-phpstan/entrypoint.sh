@@ -23,23 +23,13 @@ cp -R "${GITHUB_WORKSPACE}"/"${MODULE_SOURCE}" "$GITHUB_ACTION"
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
-composer config --unset repo.0
 composer config repositories.local-source path local-source/\*
-composer config repositories.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
-
-if [[ "$COMPOSER_VERSION" -eq "2" ]] ; then
-    echo "Allow composer plugins"
-    composer config --no-plugins allow-plugins true
-fi
 
 echo "Pre Install Script [magento_pre_install_script]: $INPUT_MAGENTO_PRE_INSTALL_SCRIPT"
 if [ -n "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] && [ -f "${GITHUB_WORKSPACE}"/"$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] ; then
     echo "Running custom pre-installation script: ${INPUT_MAGENTO_PRE_INSTALL_SCRIPT}"
     . "${GITHUB_WORKSPACE}"/"$INPUT_MAGENTO_PRE_INSTALL_SCRIPT";
 fi;
-
-echo "Run installation"
-COMPOSER_MIRROR_PATH_REPOS=1 COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-progress || exit
 
 echo "Installing module"
 COMPOSER_MIRROR_PATH_REPOS=1 composer require $COMPOSER_NAME:@dev --no-interaction --dev || exit
