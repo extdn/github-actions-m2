@@ -43,6 +43,7 @@ COMPOSER_MIRROR_PATH_REPOS=1 composer require $COMPOSER_NAME:@dev --no-interacti
 CONFIGURATION_FILE=dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon
 test -f vendor/${COMPOSER_NAME}/phpstan.neon && CONFIGURATION_FILE=vendor/${COMPOSER_NAME}/phpstan.neon
 
+echo "PHPStan version: `vendor/bin/phpstan -V`"
 echo "Configuration file: $CONFIGURATION_FILE"
 echo "Level: $INPUT_PHPSTAN_LEVEL"
 
