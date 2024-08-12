@@ -20,10 +20,12 @@ ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 echo "Fix issue 115"
 cd $MAGENTO_ROOT
 rm -rf vendor/
+composer install
+
+echo "Installing PHPStan dependencies"
 composer config allow-plugins.phpstan/extension-installer true
 composer require --dev phpstan/extension-installer --no-update
 composer require --dev bitexpert/phpstan-magento --no-update
-composer install
 
 echo "Setup extension source folder within Magento root"
 mkdir -p $MAGENTO_ROOT/local-source/
