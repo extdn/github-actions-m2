@@ -22,11 +22,6 @@ cd $MAGENTO_ROOT
 rm -rf vendor/
 composer install
 
-echo "Installing PHPStan dependencies"
-composer config allow-plugins.phpstan/extension-installer true
-composer require --dev phpstan/extension-installer --no-update
-composer require --dev bitexpert/phpstan-magento --no-update
-
 echo "Setup extension source folder within Magento root"
 mkdir -p $MAGENTO_ROOT/local-source/
 cd $MAGENTO_ROOT/local-source/
