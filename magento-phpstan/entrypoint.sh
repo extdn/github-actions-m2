@@ -3,11 +3,9 @@ set -e
 
 test -z "${MODULE_SOURCE}" && MODULE_SOURCE=$INPUT_MODULE_SOURCE
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
+test -z "${PHPSTAN_LEVEL}" && PHPSTAN_LEVEL=$INPUT_PHPSTAN_LEVEL
 test -z "${COMPOSER_VERSION}" && COMPOSER_VERSION=$INPUT_COMPOSER_VERSION
-
-if [ -z "$COMPOSER_VERSION" ] ; then
-   COMPOSER_VERSION=2
-fi
+test -z "${COMPOSER_VERSION}" && COMPOSER_VERSION=2
 
 MAGENTO_ROOT=/var/www/magento2ce
 test -d "${MAGENTO_ROOT}" || (test -d /var/www/magento2ce && MAGENTO_ROOT=/tmp/m2)
@@ -17,11 +15,6 @@ test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub A
 
 echo "Using composer ${COMPOSER_VERSION}"
 ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
-
-#echo "Fix issue 115"
-#cd $MAGENTO_ROOT
-#rm -rf vendor/
-#composer install
 
 echo "Setup extension source folder within Magento root"
 mkdir -p $MAGENTO_ROOT/local-source/
@@ -46,11 +39,11 @@ test -f vendor/${COMPOSER_NAME}/phpstan.neon && CONFIGURATION_FILE=vendor/${COMP
 
 echo "PHPStan diagnose: `vendor/bin/phpstan diagnose -l 1`"
 echo "Configuration file: $CONFIGURATION_FILE"
-echo "Level: $INPUT_PHPSTAN_LEVEL"
+echo "Level: $PHPSTAN_LEVEL"
 
 echo "Running PHPStan"
 php vendor/bin/phpstan analyse \
-    --level $INPUT_PHPSTAN_LEVEL \
+    --level $PHPSTAN_LEVEL \
     --no-progress \
     --memory-limit=4G \
     --configuration ${CONFIGURATION_FILE} \
