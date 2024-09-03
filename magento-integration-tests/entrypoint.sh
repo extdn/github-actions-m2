@@ -33,6 +33,7 @@ test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set" && exit 1)
 MAGENTO_ROOT=/var/www/magento2ce
 PROJECT_PATH=$GITHUB_WORKSPACE
 
+echo "Using Magento root ${MAGENTO_ROOT}"
 echo "Using composer ${COMPOSER_VERSION}"
 ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
