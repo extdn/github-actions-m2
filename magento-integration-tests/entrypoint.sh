@@ -29,7 +29,8 @@ fi
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set")
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set" && exit 1)
 
-MAGENTO_ROOT=/tmp/m2
+#MAGENTO_ROOT=/tmp/m2
+MAGENTO_ROOT=/var/www/magento2ce
 PROJECT_PATH=$GITHUB_WORKSPACE
 
 echo "Using composer ${COMPOSER_VERSION}"
