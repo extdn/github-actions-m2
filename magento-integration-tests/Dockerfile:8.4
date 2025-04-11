@@ -1,4 +1,4 @@
-FROM php:8.2-cli
+FROM php:8.4-cli
 
 COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer1
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer2
