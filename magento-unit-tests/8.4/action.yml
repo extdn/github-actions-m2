@@ -1,0 +1,34 @@
+name: 'Magento 2 unit tests'
+author: 'ExtDN'
+description: 'runs unit tests for given Magento 2 open source version'
+inputs:
+  module_name:
+    description: 'Your Magento module name. Example: Foo_Bar'
+    required: true
+  composer_name:
+    description: 'Your composer name. Example: foo/magento2-bar'
+    required: true
+  php_version:
+    description: 'PHP version'
+    required: true
+    default: '8.4'
+  magento_version:
+    description: 'Magento 2 Open Source version number'
+    required: true
+    default: '2.4.8'
+  project_name:
+    description: 'Magento 2 project name'
+    required: true
+    default: 'magento/project-community-edition'
+  module_source:
+    description: 'Relative path to your module source within your repository, like "src/". Empty by default.'
+  phpunit_file:
+    description: 'Relative path to your own PHPUnit file. Leave empty to use the default.'
+  magento_pre_install_script:
+    description: 'Relative path to an optional script before Magento installation is run. Leave empty to use the default.'
+runs:
+  using: 'docker'
+  image: 'docker://extdn/magento-unit-tests-action:8.4-latest'
+branding:
+  icon: 'code'
+  color: 'green'

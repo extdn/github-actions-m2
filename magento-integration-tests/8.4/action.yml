@@ -1,0 +1,51 @@
+name: 'Magento 2 integration tests'
+author: 'ExtDN'
+description: 'runs integration tests for given Magento 2 open source version'
+inputs:
+  module_name:
+    description: 'Your Magento module name. Example: Foo_Bar'
+    required: true
+  composer_name:
+    description: 'Your composer name. Example: foo/magento2-bar'
+    required: true
+  ce_version:
+    description: 'Deprecated. Please use "magento_version" instead.'
+  magento_version:
+    description: 'Magento 2 Open Source version number'
+    required: true
+    default: '2.4.8'
+  project_name:
+    description: 'Magento 2 project name'
+    required: true
+    default: 'magento/project-community-edition'
+  module_source:
+    description: 'Relative path to your module source within your repository. Empty by default.'
+    required: false
+  phpunit_file:
+    description: 'Relative path to your own PHPUnit file. Leave empty to use the default.'
+    required: false
+  pre_project_script:
+    description: 'Relative path to an optional script before Composer create-project is run. Leave empty to use the default.'
+    required: false
+  post_project_script:
+    description: 'Relative path to an optional script after Composer create-project is run. Leave empty to use the default.'
+    required: false
+  magento_pre_install_script:
+    description: 'Relative path to an optional script before Magento installation is run. Leave empty to use the default.'
+    required: false
+  magento_post_install_script:
+    description: 'Relative path to an optional script after Magento installation is run. Leave empty to use the default.'
+    required: false
+  composer_version:
+    description: 'The composer version to use. Can be either 1 or 2.'
+    required: false
+    default: '2'
+runs:
+  using: 'docker'
+  image: 'docker://extdn/magento-integration-tests-action:8.4-latest'
+  env:
+    COMPOSER_MEMORY_LIMIT: -1
+
+branding:
+  icon: 'code'
+  color: 'green'
