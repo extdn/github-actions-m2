@@ -7,6 +7,13 @@ on:
       - master
     paths:
       - 'magento-phpstan/**'
+  workflow_run:
+    workflows:
+      - Build Integration Images
+    types:
+      - completed
+    branches:
+      - master
 
 jobs:
   build:
