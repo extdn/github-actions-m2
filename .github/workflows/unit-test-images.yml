@@ -2,6 +2,8 @@ name: Build Unit Testing Images
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 0" # 6 AM Weekly
   push:
     branches:
       - master
