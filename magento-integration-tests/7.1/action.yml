@@ -36,6 +36,9 @@ inputs:
   magento_post_install_script:
     description: 'Relative path to an optional script after Magento installation is run. Leave empty to use the default.'
     required: false
+  magento_encryption_key:
+    description: 'Static encryption key to be used during Magento installation.'
+    required: false
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-integration-tests-action:7.1-latest'
