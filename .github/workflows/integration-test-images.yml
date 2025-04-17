@@ -8,6 +8,7 @@ on:
     branches:
       - master
     paths:
+      - .github/workflows/integration-test-images.yml
       - 'magento-integration-tests/**'
 
 jobs:
