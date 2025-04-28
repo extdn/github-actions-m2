@@ -110,7 +110,7 @@ SETUP_ARGS="--base-url=http://magento2.test/ \
 --use-rewrites=1"
 
 SEARCH_ENGINE_VERSION="elasticsearch7"
-if [[ "$MAGE_VERSION" == 2.4.8* ]]; then
+if [[ "$MAGENTO_VERSION" == 2.4.8* ]]; then
   SEARCH_ENGINE_VERSION="elasticsearch8"
 fi
 
