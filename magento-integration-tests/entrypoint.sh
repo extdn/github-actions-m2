@@ -109,9 +109,14 @@ SETUP_ARGS="--base-url=http://magento2.test/ \
 --sales-order-increment-prefix=ORD_ --session-save=db \
 --use-rewrites=1"
 
+SEARCH_ENGINE_VERSION="elasticsearch7"
+if [[ "$MAGE_VERSION" == 2.4.8* ]]; then
+  SEARCH_ENGINE_VERSION="elasticsearch8"
+fi
+
 # only add the --search-engine param if it is supported
 if bin/magento setup:install --help | grep -q '\-\-search\-engine='; then
-    SETUP_ARGS="$SETUP_ARGS --search-engine=elasticsearch7"
+    SETUP_ARGS="$SETUP_ARGS --search-engine=$SEARCH_ENGINE_VERSION"
 fi
 
 if [[ "$ELASTICSEARCH" == "1" ]]; then
