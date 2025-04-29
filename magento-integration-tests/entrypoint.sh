@@ -9,7 +9,6 @@ test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
 test -z "${PROJECT_NAME}" && PROJECT_NAME=$INPUT_PROJECT_NAME
 test -z "${ELASTICSEARCH}" && ELASTICSEARCH=$INPUT_ELASTICSEARCH
 test -z "${PHPUNIT_FILE}" && PHPUNIT_FILE=$INPUT_PHPUNIT_FILE
-test -z "${COMPOSER_VERSION}" && COMPOSER_VERSION=$INPUT_COMPOSER_VERSION
 test -z "${REPOSITORY_URL}" && REPOSITORY_URL=$INPUT_REPOSITORY_URL
 
 # Maintain backwards-compatibility with old 'ce_version' input.
@@ -17,8 +16,6 @@ test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_CE_VERSION
 test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$CE_VERSION
 
 test -z "$MAGENTO_VERSION" && MAGENTO_VERSION="2.4.3-p1"
-test -z "$COMPOSER_VERSION" && [[ "$MAGENTO_VERSION" =~ ^2.4.* ]] && COMPOSER_VERSION=2
-test -z "$COMPOSER_VERSION" && COMPOSER_VERSION=2
 test -z "$PROJECT_NAME" && PROJECT_NAME="magento/project-community-edition"
 test -z "${REPOSITORY_URL}" && REPOSITORY_URL="https://repo-magento-mirror.fooman.co.nz/"
 
@@ -34,8 +31,6 @@ MAGENTO_ROOT=/var/www/magento2ce
 PROJECT_PATH=$GITHUB_WORKSPACE
 
 echo "Using Magento root ${MAGENTO_ROOT}"
-echo "Using composer ${COMPOSER_VERSION}"
-ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
 echo "Pre Project Script [pre_project_script]: $INPUT_PRE_PROJECT_SCRIPT"
 if [[ ! -z "$INPUT_PRE_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_PRE_PROJECT_SCRIPT" ]] ; then
@@ -79,10 +74,8 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
     . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT
 fi
 
-if [[ "$COMPOSER_VERSION" -eq "2" ]] ; then
-    echo "Allow composer plugins"
-    composer config --no-plugins allow-plugins true
-fi
+echo "Allow composer plugins"
+composer config --no-plugins allow-plugins true
 
 if [[ "$MAGENTO_VERSION" == "2.4.4" ]]; then
     echo "Quick fix for Magento 2.4.4"

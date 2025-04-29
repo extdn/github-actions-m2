@@ -1,7 +1,6 @@
 FROM php:7.3
 
-COPY --from=composer:1 /usr/bin/composer /usr/local/bin/composer
-COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer2
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 RUN apt-get update && apt-get -y install \
     mariadb-client \
@@ -36,4 +35,3 @@ RUN chmod 755 /entrypoint.sh
 COPY docker-files /docker-files
 
 ENTRYPOINT ["bash", "/entrypoint.sh"]
-

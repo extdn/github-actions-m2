@@ -37,7 +37,7 @@ inputs:
     description: 'Relative path to an optional script after Magento installation is run. Leave empty to use the default.'
     required: false
   composer_version:
-    description: 'The composer version to use. Can be either 1 or 2.'
+    description: 'DEPREACATED. Composer v2 is now always used.'
     required: false
     default: '1'
 runs:

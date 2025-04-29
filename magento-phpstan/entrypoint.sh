@@ -4,17 +4,12 @@ set -e
 test -z "${MODULE_SOURCE}" && MODULE_SOURCE=$INPUT_MODULE_SOURCE
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${PHPSTAN_LEVEL}" && PHPSTAN_LEVEL=$INPUT_PHPSTAN_LEVEL
-test -z "${COMPOSER_VERSION}" && COMPOSER_VERSION=$INPUT_COMPOSER_VERSION
-test -z "${COMPOSER_VERSION}" && COMPOSER_VERSION=2
 
 MAGENTO_ROOT=/var/www/magento2ce
 test -d "${MAGENTO_ROOT}" || (test -d /var/www/magento2ce && MAGENTO_ROOT=/tmp/m2)
 echo "Using Magento root ${MAGENTO_ROOT}"
 
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set in your GitHub Actions YAML file" && exit 1)
-
-echo "Using composer ${COMPOSER_VERSION}"
-ln -s /usr/local/bin/composer$COMPOSER_VERSION /usr/local/bin/composer
 
 echo "Setup extension source folder within Magento root"
 mkdir -p $MAGENTO_ROOT/local-source/
