@@ -29,7 +29,6 @@ echo "Setup Magento credentials"
 test -z "${MAGENTO_MARKETPLACE_USERNAME}" || composer global config http-basic.repo.magento.com $MAGENTO_MARKETPLACE_USERNAME $MAGENTO_MARKETPLACE_PASSWORD
 
 echo "Prepare composer installation"
-composer global require hirak/prestissimo
 composer create-project --repository="$REPOSITORY_URL" "${PROJECT_NAME}:${MAGENTO_VERSION}" $MAGENTO_ROOT --no-install --no-interaction --no-progress
 
 echo "Setup extension source folder within Magento root"

@@ -19,16 +19,12 @@ jobs:
       - uses: extdn/github-actions-m2/magento-unit-tests/8.1@master
         env:
           MAGENTO_VERSION: '2.4.4'
-          COMPOSER_VERSION: '2'
       - uses: extdn/github-actions-m2/magento-unit-tests/8.2@master
         env:
           MAGENTO_VERSION: '2.4.6-p3'
-          COMPOSER_VERSION: '2'
       - uses: extdn/github-actions-m2/magento-unit-tests/8.3@master
         env:
           MAGENTO_VERSION: '2.4.7'
-          COMPOSER_VERSION: '2'
       - uses: extdn/github-actions-m2/magento-unit-tests/8.4@master
         env:
           MAGENTO_VERSION: '2.4.8'
-          COMPOSER_VERSION: '2'

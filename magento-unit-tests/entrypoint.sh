@@ -10,8 +10,6 @@ test -z "${PROJECT_NAME}" && PROJECT_NAME=$INPUT_PROJECT_NAME
 test -z "${PHPUNIT_FILE}" && PHPUNIT_FILE=$INPUT_PHPUNIT_FILE
 
 test -z "$MAGENTO_VERSION" && MAGENTO_VERSION="2.4.4"
-test -z "$COMPOSER_VERSION" && [[ "$MAGENTO_VERSION" =~ ^2.4.* ]] && COMPOSER_VERSION=2
-test -z "$COMPOSER_VERSION" && COMPOSER_VERSION=1
 test -z "$PROJECT_NAME" && PROJECT_NAME="magento/project-community-edition"
 
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set" && exit 1)
@@ -47,10 +45,8 @@ if [[ ! -z "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT
     . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_PRE_INSTALL_SCRIPT
 fi
 
-if [[ "$COMPOSER_VERSION" -eq "2" ]] ; then
-    echo "Allow composer plugins"
-    composer config --no-plugins allow-plugins true
-fi
+echo "Allow composer plugins"
+composer config --no-plugins allow-plugins true
 
 echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress
