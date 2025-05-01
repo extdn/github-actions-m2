@@ -139,7 +139,7 @@ echo "Prepare for integration tests"
 cd $MAGENTO_ROOT
 cp /docker-files/install-config-mysql.php dev/tests/integration/etc/install-config-mysql.php
 if [[ "$ELASTICSEARCH" == "1" ]]; then
-    cp /docker-files/install-config-mysql-with-es.php dev/tests/integration/etc/install-config-mysql.php
+    sed -e "s/{{SEARCH_ENGINE_VERSION}}/$SEARCH_ENGINE_VERSION/" < /docker-files/install-config-mysql-with-es.php > dev/tests/integration/etc/install-config-mysql.php
 fi
 
 sed "s#%COMPOSER_NAME%#$COMPOSER_NAME#g" $PHPUNIT_FILE > dev/tests/integration/phpunit.xml
