@@ -35,10 +35,6 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v4"
 
-      - name: "Grab version number"
-        uses: "olegtarasov/get-tag@v2.1"
-        id: "tagName"
-
       - name: "Build Docker image"
         run: "docker build --tag extdn/${{ matrix.actions-with-docker-image }}-action:${{ matrix.php-version }}-latest ${{ matrix.actions-with-docker-image }}/. -f ${{ matrix.actions-with-docker-image }}/Dockerfile:${{ matrix.php-version }}"
 
@@ -47,12 +43,6 @@ jobs:
 
       - name: "Push Docker image (latest)"
         run: "docker push extdn/${{ matrix.actions-with-docker-image }}-action:${{ matrix.php-version }}-latest"
-
-      #- name: "Tag Docker image (versioned)"
-      #  run: "docker tag extdn/${{ matrix.actions-with-docker-image }}-action extdn/${{ matrix.actions-with-docker-image }}-action:${{ steps.tagName.outputs.tag }}"
-
-      #- name: "Push Docker image (versioned)"
-      #  run: "docker push extdn/${{ matrix.actions-with-docker-image }}-action:${{ steps.tagName.outputs.tag }}"
 
       - name: "Docker Logout"
         run: "docker logout"
