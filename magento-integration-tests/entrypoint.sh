@@ -131,7 +131,11 @@ if [[ ! -z "$PHPUNIT_FILE" ]] ; then
 fi
 
 if [[ ! -f "$PHPUNIT_FILE" ]] ; then
-    PHPUNIT_FILE=/docker-files/phpunit.xml
+    if [[ "$MAGENTO_VERSION" == 2.4.8* ]]; then
+      PHPUNIT_FILE=/docker-files/phpunitv10.xml
+    else
+      PHPUNIT_FILE=/docker-files/phpunit.xml
+    fi
 fi
 echo "Using PHPUnit file: $PHPUNIT_FILE"
 
