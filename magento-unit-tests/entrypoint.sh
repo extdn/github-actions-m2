@@ -54,14 +54,17 @@ COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-pr
 echo "Determine which phpunit.xml file to use"
 
 echo "Trying phpunit.xml file $PHPUNIT_FILE"
-if [[ ! -z "$PHPUNIT_FILE" && ! -f "$PHPUNIT_FILE" ]] ; then
+if [[ ! -z "$PHPUNIT_FILE" ]] ; then
     PHPUNIT_FILE=${GITHUB_WORKSPACE}/${PHPUNIT_FILE}
 fi
 
 if [[ ! -f "$PHPUNIT_FILE" ]] ; then
-    PHPUNIT_FILE=/docker-files/phpunit.xml
+    if [[ "$MAGENTO_VERSION" == 2.4.8* ]]; then
+      PHPUNIT_FILE=/docker-files/phpunitv10.xml
+    else
+      PHPUNIT_FILE=/docker-files/phpunit.xml
+    fi
 fi
-
 echo "Using PHPUnit file: $PHPUNIT_FILE"
 echo "Prepare for unit tests"
 cd $MAGENTO_ROOT
