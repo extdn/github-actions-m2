@@ -18,6 +18,7 @@ test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$CE_VERSION
 test -z "$MAGENTO_VERSION" && MAGENTO_VERSION="2.4.3-p1"
 test -z "$PROJECT_NAME" && PROJECT_NAME="magento/project-community-edition"
 test -z "${REPOSITORY_URL}" && REPOSITORY_URL="https://repo-magento-mirror.fooman.co.nz/"
+test -z "$DISABLE_DATABASE_DUMP" && DISABLE_DATABASE_DUMP="1"
 
 if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
     ELASTICSEARCH=1
@@ -123,6 +124,11 @@ echo "Post Install Script [magento_post_install_script]: $INPUT_MAGENTO_POST_INS
 if [[ ! -z "$INPUT_MAGENTO_POST_INSTALL_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_MAGENTO_POST_INSTALL_SCRIPT" ]] ; then
     echo "Running custom magento_post_install_script: ${INPUT_MAGENTO_POST_INSTALL_SCRIPT}"
     . ${GITHUB_WORKSPACE}/$INPUT_MAGENTO_POST_INSTALL_SCRIPT
+fi
+
+if [[ "$DISABLE_DATABASE_DUMP" == "1" ]]; then
+  echo "Disabling phpunit.xml database dump"
+  sed -i 's/protected \$dumpDb = true;/protected \$dumpDb = false;/' "$MAGENTO_ROOT/dev/tests/integration/framework/Magento/TestFramework/Application.php"
 fi
 
 echo "Trying phpunit.xml file $PHPUNIT_FILE"
