@@ -1,7 +1,7 @@
 FROM extdn/magento-integration-tests-action:8.2-latest AS builder
 
 RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
-RUN composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-plugins --no-install --no-interaction magento/project-community-edition /var/www/magento2ce "2.4.6-p3"
+RUN composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-plugins --no-install --no-interaction magento/project-community-edition /var/www/magento2ce "2.4.8-p3"
 
 WORKDIR "/var/www/magento2ce"
 # https://github.com/composer/composer/issues/12623#issuecomment-3551953185
