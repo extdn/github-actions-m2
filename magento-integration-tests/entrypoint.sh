@@ -64,6 +64,8 @@ if [[ ! -z "$INPUT_POST_PROJECT_SCRIPT" && -f "${GITHUB_WORKSPACE}/$INPUT_POST_P
 fi
 
 echo "Configure extension source in composer"
+# https://github.com/composer/composer/issues/12623#issuecomment-3551953185
+composer config --unset repositories || true
 composer config --unset repo.0
 composer config repositories.local-source path local-source/\*
 composer config repositories.magento composer $REPOSITORY_URL
