@@ -5,6 +5,8 @@ RUN composer create-project --repository=https://repo-magento-mirror.fooman.co.n
 
 WORKDIR "/var/www/magento2ce"
 RUN composer config --no-plugins allow-plugins true
+# https://github.com/composer/composer/issues/12623#issuecomment-3551953185
+RUN composer config --unset repositories || true
 RUN composer config --unset repo.0
 RUN composer config repo.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 RUN composer require hoa/regex --no-update

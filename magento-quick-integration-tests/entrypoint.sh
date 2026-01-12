@@ -42,6 +42,8 @@ composer require yireo/magento2-replace-sample-data --no-update --no-interaction
 
 echo "Configure extension source in composer"
 cd $MAGENTO_ROOT
+# https://github.com/composer/composer/issues/12623#issuecomment-3551953185
+composer config --unset repositories || true
 composer config --unset repo.0
 composer config repositories.local-source path local-source/\*
 composer config repositories.magento composer $REPOSITORY_URL
