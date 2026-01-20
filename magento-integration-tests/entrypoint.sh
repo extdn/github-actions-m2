@@ -106,7 +106,7 @@ SETUP_ARGS="--base-url=http://magento2.test/ \
 --use-rewrites=1"
 
 SEARCH_ENGINE_VERSION="elasticsearch7"
-if [[ "$MAGENTO_VERSION" == 2.4.8* ]]; then
+if [[ "$MAGENTO_VERSION" == 2.4.8* || "$MAGENTO_VERSION" == 2.4.9* ]]; then
   SEARCH_ENGINE_VERSION="elasticsearch8"
 fi
 
@@ -139,7 +139,7 @@ if [[ ! -z "$PHPUNIT_FILE" ]] ; then
 fi
 
 if [[ ! -f "$PHPUNIT_FILE" ]] ; then
-    if [[ "$MAGENTO_VERSION" == 2.4.8* ]]; then
+    if [[ "$MAGENTO_VERSION" == 2.4.8* || "$MAGENTO_VERSION" == 2.4.9* ]]; then
       PHPUNIT_FILE=/docker-files/phpunitv10.xml
     else
       PHPUNIT_FILE=/docker-files/phpunit.xml
