@@ -61,7 +61,7 @@ if [[ ! -z "$PHPUNIT_FILE" ]] ; then
 fi
 
 if [[ ! -f "$PHPUNIT_FILE" ]] ; then
-    if [[ "$MAGENTO_VERSION" == 2.4.8* ]]; then
+    if [[ "$MAGENTO_VERSION" == 2.4.8* || "$MAGENTO_VERSION" == 2.4.9* ]]; then
       PHPUNIT_FILE=/docker-files/phpunitv10.xml
     else
       PHPUNIT_FILE=/docker-files/phpunit.xml
