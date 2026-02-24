@@ -10,6 +10,7 @@ RUN composer config --unset repo.0
 RUN composer config repo.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 RUN composer config --no-plugins allow-plugins true
 RUN composer require hoa/regex --no-update
+RUN composer config --json audit.ignore '{"PKSA-z3gr-8qht-p93v": "Ignored for CI", "PKSA-rkkf-636k-qjb3": "Ignored for CI", "PKSA-wws7-mr54-jsny": "Ignored for CI"}'
 RUN composer install --prefer-dist
 
 FROM extdn/magento-integration-tests-action:7.3-latest
