@@ -10,6 +10,7 @@ test -z "${PROJECT_NAME}" && PROJECT_NAME=$INPUT_PROJECT_NAME
 test -z "${ELASTICSEARCH}" && ELASTICSEARCH=$INPUT_ELASTICSEARCH
 test -z "${PHPUNIT_FILE}" && PHPUNIT_FILE=$INPUT_PHPUNIT_FILE
 test -z "${REPOSITORY_URL}" && REPOSITORY_URL=$INPUT_REPOSITORY_URL
+test -z "${BLOCK_INSECURE}" && BLOCK_INSECURE=$INPUT_BLOCK_INSECURE
 
 # Maintain backwards-compatibility with old 'ce_version' input.
 test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_CE_VERSION
@@ -19,6 +20,7 @@ test -z "$MAGENTO_VERSION" && MAGENTO_VERSION="2.4.3-p1"
 test -z "$PROJECT_NAME" && PROJECT_NAME="magento/project-community-edition"
 test -z "${REPOSITORY_URL}" && REPOSITORY_URL="https://repo-magento-mirror.fooman.co.nz/"
 test -z "$DISABLE_DATABASE_DUMP" && DISABLE_DATABASE_DUMP="1"
+test -z "${BLOCK_INSECURE}" && BLOCK_INSECURE="true"
 
 if [[ "$MAGENTO_VERSION" == "2.4."* ]]; then
     ELASTICSEARCH=1
@@ -85,8 +87,11 @@ if [[ "$MAGENTO_VERSION" == "2.4.4" ]]; then
     composer require monolog/monolog:2.6.0 --no-update
 fi
 
+echo "Configure Composer audit.block-insecure"
+composer config audit.block-insecure "$BLOCK_INSECURE"
+
 echo "Ignore known security advisories"
-composer config --json audit.ignore '{"PKSA-z3gr-8qht-p93v": "Ignored for CI", "PKSA-rkkf-636k-qjb3": "Ignored for CI", "PKSA-wws7-mr54-jsny": "Ignored for CI"}'
+composer config --json audit.ignore '{"PKSA-z3gr-8qht-p93v": "Ignored for CI", "PKSA-rkkf-636k-qjb3": "Ignored for CI", "PKSA-wws7-mr54-jsny": "Ignored for CI", "PKSA-db8d-773v-rd1n": "Ignored for CI"}'
 
 echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-progress

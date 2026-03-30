@@ -36,6 +36,10 @@ inputs:
   magento_post_install_script:
     description: 'Relative path to an optional script after Magento installation is run. Leave empty to use the default.'
     required: false
+  block_insecure:
+    description: 'Whether Composer should block insecure packages during audit. Set to false to allow insecure packages.'
+    required: false
+    default: 'true'
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-integration-tests-action:7.0-latest'

@@ -26,6 +26,10 @@ inputs:
     description: 'Relative path to your own PHPUnit file. Leave empty to use the default.'
   magento_pre_install_script:
     description: 'Relative path to an optional script before Magento installation is run. Leave empty to use the default.'
+  block_insecure:
+    description: 'Whether Composer should block insecure packages during audit. Set to false to allow insecure packages.'
+    required: false
+    default: 'true'
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-unit-tests-action:8.3-latest'
