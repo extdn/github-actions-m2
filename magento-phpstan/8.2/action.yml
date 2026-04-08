@@ -19,6 +19,10 @@ inputs:
   magento_pre_install_script:
     description: 'Relative path to an optional script before Magento installation is run. Leave empty to use the default.'
     required: false
+  block_insecure:
+    description: 'Whether Composer should block insecure packages during audit. Set to false to allow insecure packages.'
+    required: false
+    default: "true"
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-phpstan-action:8.2-latest'

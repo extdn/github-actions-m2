@@ -40,6 +40,10 @@ inputs:
     description: 'DEPREACATED. Composer v2 is now always used.'
     required: false
     default: '2'
+  block_insecure:
+    description: 'Whether Composer should block insecure packages during audit. Set to false to allow insecure packages.'
+    required: false
+    default: 'true'
 runs:
   using: 'docker'
   image: 'docker://extdn/magento-integration-tests-action:8.4-latest'

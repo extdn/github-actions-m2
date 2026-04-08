@@ -4,6 +4,8 @@ set -e
 test -z "${MODULE_SOURCE}" && MODULE_SOURCE=$INPUT_MODULE_SOURCE
 test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${PHPSTAN_LEVEL}" && PHPSTAN_LEVEL=$INPUT_PHPSTAN_LEVEL
+test -z "${BLOCK_INSECURE}" && BLOCK_INSECURE=$INPUT_BLOCK_INSECURE
+test -z "${BLOCK_INSECURE}" && BLOCK_INSECURE="true"
 
 MAGENTO_ROOT=/var/www/magento2ce
 test -d "${MAGENTO_ROOT}" || (test -d /var/www/magento2ce && MAGENTO_ROOT=/tmp/m2)
@@ -25,6 +27,9 @@ if [ -n "$INPUT_MAGENTO_PRE_INSTALL_SCRIPT" ] && [ -f "${GITHUB_WORKSPACE}"/"$IN
     echo "Running custom pre-installation script: ${INPUT_MAGENTO_PRE_INSTALL_SCRIPT}"
     . "${GITHUB_WORKSPACE}"/"$INPUT_MAGENTO_PRE_INSTALL_SCRIPT";
 fi;
+
+echo "Configure Composer audit.block-insecure"
+composer config audit.block-insecure "$BLOCK_INSECURE"
 
 echo "Installing module"
 COMPOSER_MIRROR_PATH_REPOS=1 composer require $COMPOSER_NAME:@dev --no-interaction --dev || exit

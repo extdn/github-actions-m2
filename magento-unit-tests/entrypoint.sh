@@ -8,9 +8,11 @@ test -z "${COMPOSER_NAME}" && COMPOSER_NAME=$INPUT_COMPOSER_NAME
 test -z "${MAGENTO_VERSION}" && MAGENTO_VERSION=$INPUT_MAGENTO_VERSION
 test -z "${PROJECT_NAME}" && PROJECT_NAME=$INPUT_PROJECT_NAME
 test -z "${PHPUNIT_FILE}" && PHPUNIT_FILE=$INPUT_PHPUNIT_FILE
+test -z "${BLOCK_INSECURE}" && BLOCK_INSECURE=$INPUT_BLOCK_INSECURE
 
 test -z "$MAGENTO_VERSION" && MAGENTO_VERSION="2.4.4"
 test -z "$PROJECT_NAME" && PROJECT_NAME="magento/project-community-edition"
+test -z "${BLOCK_INSECURE}" && BLOCK_INSECURE="true"
 
 test -z "${MODULE_NAME}" && (echo "'module_name' is not set" && exit 1)
 test -z "${COMPOSER_NAME}" && (echo "'composer_name' is not set" && exit 1)
@@ -50,8 +52,11 @@ fi
 echo "Allow composer plugins"
 composer config --no-plugins allow-plugins true
 
+echo "Configure Composer audit.block-insecure"
+composer config audit.block-insecure "$BLOCK_INSECURE"
+
 echo "Ignore known security advisories"
-composer config --json audit.ignore '{"PKSA-z3gr-8qht-p93v": "Ignored for CI", "PKSA-rkkf-636k-qjb3": "Ignored for CI", "PKSA-wws7-mr54-jsny": "Ignored for CI"}'
+composer config --json audit.ignore '{"PKSA-z3gr-8qht-p93v": "Ignored for CI", "PKSA-rkkf-636k-qjb3": "Ignored for CI", "PKSA-wws7-mr54-jsny": "Ignored for CI", "PKSA-db8d-773v-rd1n": "Ignored for CI"}'
 
 echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-dist --no-interaction --no-progress
