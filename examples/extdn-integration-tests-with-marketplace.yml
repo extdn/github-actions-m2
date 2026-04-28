@@ -46,3 +46,6 @@ jobs:
       - uses: extdn/github-actions-m2/magento-integration-tests/8.4@master
         env:
           MAGENTO_VERSION: '2.4.8'
+      - uses: extdn/github-actions-m2/magento-integration-tests/8.5@master
+        env:
+          MAGENTO_VERSION: '2.4.9'
