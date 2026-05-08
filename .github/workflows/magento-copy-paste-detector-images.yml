@@ -1,0 +1,48 @@
+name: Build Copy Paste Detector Image
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 0" # 6 AM Weekly
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/magento-copy-paste-detector-images.yml
+      - 'magento-copy-paste-detector/**'
+  workflow_run:
+    workflows:
+      - Build Integration Images
+    types:
+      - completed
+    branches:
+      - master
+     
+jobs:
+  build:
+    name: "Build and deploy"
+
+    runs-on: "ubuntu-latest"
+
+    strategy: 
+      matrix:
+        actions-with-docker-image:
+          - magento-copy-paste-detector
+    env:
+      DOCKER_USERNAME: "extdn"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Build Docker image"
+        run: "docker build --tag extdn/${{ matrix.actions-with-docker-image }}-action:latest ${{ matrix.actions-with-docker-image }}/. -f ${{ matrix.actions-with-docker-image }}/Dockerfile"
+
+      - name: "Docker Login"
+        run: "echo ${{ secrets.DOCKER_PASSWORD }} | $(which docker) login --password-stdin --username ${{ env.DOCKER_USERNAME }}"
+
+      - name: "Push Docker image (latest)"
+        run: "docker push extdn/${{ matrix.actions-with-docker-image }}-action:latest"
+
+      - name: "Docker Logout"
+        run: "docker logout"
