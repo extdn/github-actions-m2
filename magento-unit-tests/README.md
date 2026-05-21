@@ -8,7 +8,7 @@ jobs:
     name: Magento 2 Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: extdn/github-actions-m2/magento-unit-tests/7.3@master
         env:
           MAGENTO_VERSION: '2.3.4'
@@ -29,7 +29,7 @@ jobs:
       MODULE_NAME: Foo_Bar
       COMPOSER_NAME: foo/magento2-foobar
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: extdn/github-actions-m2/magento-unit-tests/7.3@master
         env:
           MAGENTO_VERSION: '2.3.4'

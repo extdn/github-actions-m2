@@ -17,14 +17,14 @@ on:
       - completed
     branches:
       - master
-     
+
 jobs:
   build:
     name: "Build and deploy"
 
     runs-on: "ubuntu-latest"
 
-    strategy: 
+    strategy:
       matrix:
         actions-with-docker-image:
           - magento-copy-paste-detector
@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v4"
+        uses: actions/checkout@v6
 
       - name: "Build Docker image"
         run: "docker build --tag extdn/${{ matrix.actions-with-docker-image }}-action:latest ${{ matrix.actions-with-docker-image }}/. -f ${{ matrix.actions-with-docker-image }}/Dockerfile"
