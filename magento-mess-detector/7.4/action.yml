@@ -1,0 +1,9 @@
+name: 'Magento 2 Mess Detector'
+author: 'ExtDN'
+description: 'performs php static code analysis with the Magento 2 Mess Detector ruleset'
+runs:
+  using: 'docker'
+  image: 'docker://extdn/magento-mess-detector-action:7.4-latest'
+branding:
+  icon: 'code'
+  color: 'green'
