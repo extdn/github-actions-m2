@@ -1,0 +1,24 @@
+FROM extdn/magento-integration-tests-action:7.3-latest AS builder
+
+RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
+RUN composer create-project --repository=https://repo-magento-mirror.fooman.co.nz/ --no-plugins --no-install --no-interaction magento/project-community-edition /var/www/magento2ce "2.4.3-p3"
+
+WORKDIR "/var/www/magento2ce"
+# https://github.com/composer/composer/issues/12623#issuecomment-3551953185
+RUN composer config --unset repositories || true
+RUN composer config --unset repo.0
+RUN composer config repo.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
+RUN composer config --no-plugins allow-plugins true
+RUN composer require hoa/regex --no-update
+RUN composer config --json audit.ignore '{"PKSA-z3gr-8qht-p93v": "Ignored for CI", "PKSA-rkkf-636k-qjb3": "Ignored for CI", "PKSA-wws7-mr54-jsny": "Ignored for CI", "PKSA-db8d-773v-rd1n": "Ignored for CI", "PKSA-xwpn-zs9j-6wy5": "Ignored for CI", "PKSA-sf9j-1gs7-xzvx": "Ignored for CI", "PKSA-7h5p-prw9-w5nr": "Ignored for CI", "PKSA-pwvr-3754-v57r": "Ignored for CI", "PKSA-t5r2-p5q9-mtpn": "Ignored for CI", "PKSA-6bp1-9hfj-2cgv": "Ignored for CI", "PKSA-m1ph-vmbx-2xd3": "Ignored for CI", "PKSA-6zmq-d6mk-r5wm": "Ignored for CI", "PKSA-93hy-9dc1-gbwt": "Ignored for CI", "PKSA-9p8h-97x3-qxpm": "Ignored for CI", "PKSA-4t1p-xpk2-nsss": "Ignored for CI", "PKSA-dxyf-6n16-t87m": "Ignored for CI", "PKSA-n3s6-289w-qtqb": "Ignored for CI", "PKSA-stsw-jsf7-f6vs": "Ignored for CI", "PKSA-b14r-zh1d-vdrc": "Ignored for CI", "PKSA-v5yj-8nmz-sk2q": "Ignored for CI", "PKSA-ft77-7h5f-p3r6": "Ignored for CI", "PKSA-yg4s-vh6g-jnyh": "Ignored for CI", "PKSA-wdyb-c3m7-9v88": "Ignored for CI"}'
+RUN composer install --prefer-dist
+
+FROM extdn/magento-integration-tests-action:7.3-latest
+COPY --from=builder /var/www/magento2ce/ /m2/
+RUN echo memory_limit = -1 >> /usr/local/etc/php/conf.d/custom-memory.ini
+COPY phpunit.phpmd.xml /m2/dev/tests/static/phpunit.phpmd.xml
+COPY PhpmdRunner.php /m2/dev/tests/static/testsuite/Magento/Test/Php/PhpmdRunner.php
+COPY LiveCodePhpmdRunner.php /m2/dev/tests/static/framework/Magento/TestFramework/CodingStandard/Tool/LiveCodePhpmdRunner.php
+
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
