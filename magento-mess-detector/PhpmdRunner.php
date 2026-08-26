@@ -60,7 +60,7 @@ class PhpmdRunner extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals(
-            Command::EXIT_SUCCESS,
+            $this->getSuccessExitCode(),
             $result,
             "PHP Code Mess has found error(s):" . PHP_EOL . $output
         );
@@ -69,6 +69,16 @@ class PhpmdRunner extends \PHPUnit\Framework\TestCase
         if (file_exists($reportFile)) {
             unlink($reportFile);
         }
+    }
+
+    /**
+     * PHPMD 3 renamed Command::EXIT_SUCCESS to Command::SUCCESS.
+     *
+     * @return int
+     */
+    private function getSuccessExitCode(): int
+    {
+        return defined(Command::class . '::EXIT_SUCCESS') ? Command::EXIT_SUCCESS : Command::SUCCESS;
     }
 
 }

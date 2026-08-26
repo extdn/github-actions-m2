@@ -56,6 +56,27 @@ class LiveCodePhpmdRunner implements ToolInterface
      */
     public function run(array $whiteList)
     {
+        $command = $this->createCommand();
+
+        // PHPMD 3 turned the command into a Symfony console command and dropped the array based
+        // CommandLineOptions constructor. Images that build Magento 2.4.7 still install PHPMD 2
+        // (it pins phpmd/phpmd ^2.12), so both APIs have to keep working.
+        if ($command instanceof \Symfony\Component\Console\Command\Command) {
+            $input = new \Symfony\Component\Console\Input\ArrayInput(
+                [
+                    'paths' => explode(',', $this->getSourceCodePath($whiteList)),
+                    '--format' => 'github',
+                    '--ruleset' => [$this->rulesetFile],
+                    '--reportfile-github' => $this->reportFile,
+                    '--suffixes' => ['php'],
+                    '--exclude' => ['vendor/', 'tmp/', 'var/', 'generated/', '.git/', '.idea/'],
+                ],
+                $command->getDefinition()
+            );
+
+            return $command->run($input, new \Symfony\Component\Console\Output\NullOutput());
+        }
+
         $commandLineArguments = [
             'run_file_mock', //emulate script name in console arguments
             $this->getSourceCodePath($whiteList),
@@ -71,9 +92,23 @@ class LiveCodePhpmdRunner implements ToolInterface
 
         $options = new \PHPMD\TextUI\CommandLineOptions($commandLineArguments);
 
-        $command = new \PHPMD\TextUI\Command();
-
         return $command->run($options, new \PHPMD\RuleSetFactory());
+    }
+
+    /**
+     * PHPMD 2.15 made the command require a \PHPMD\Console\Output, PHPMD 3 takes no arguments.
+     *
+     * @return \PHPMD\TextUI\Command
+     */
+    private function createCommand()
+    {
+        $constructor = (new \ReflectionClass(\PHPMD\TextUI\Command::class))->getConstructor();
+
+        if ($constructor !== null && $constructor->getNumberOfRequiredParameters() > 0) {
+            return new \PHPMD\TextUI\Command(new \PHPMD\Console\NullOutput());
+        }
+
+        return new \PHPMD\TextUI\Command();
     }
 
     private function getSourceCodePath($whiteList): string
