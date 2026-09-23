@@ -13,14 +13,14 @@ test -z "${PHPCS_REPORT}" && PHPCS_REPORT=$INPUT_PHPCS_REPORT
 test -z "${PHPCS_EXTENSIONS}" && PHPCS_EXTENSIONS=$INPUT_PHPCS_EXTENSIONS
 
 test -z "${PHPCS_STANDARD}" && PHPCS_STANDARD=Magento2
-test -z "${PHPCS_SEVERITY}" && PHPCS_SEVERITY=5
+test -z "${PHPCS_SEVERITY}" && PHPCS_SEVERITY=8
 test -z "${PHPCS_REPORT}" && PHPCS_REPORT=checkstyle
-test -z "${PHPCS_EXTENSIONS}" && PHPCS_EXTENSIONS=php,phtml
+test -z "${PHPCS_EXTENSIONS}" && PHPCS_EXTENSIONS=php
 
 echo "PHPCS report: ${PHPCS_REPORT}"
 echo "PHPCS standard: ${PHPCS_STANDARD}"
 echo "PHPCS severity: ${PHPCS_SEVERITY}"
-echo "PHPCS extensions: ${PHPCS_EXTENSIONS}"
+echo "PHPCS severity: ${PHPCS_EXTENSIONS}"
 
 sh -c "/root/.composer/vendor/bin/phpcs \
   --report=${PHPCS_REPORT} \
