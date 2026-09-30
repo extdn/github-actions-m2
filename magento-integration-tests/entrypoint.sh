@@ -91,7 +91,7 @@ echo "Configure Composer audit.block-insecure"
 composer config audit.block-insecure "$BLOCK_INSECURE"
 
 echo "Ignore known security advisories"
-composer config --json audit.ignore '{"PKSA-z3gr-8qht-p93v": "Ignored for CI", "PKSA-rkkf-636k-qjb3": "Ignored for CI", "PKSA-wws7-mr54-jsny": "Ignored for CI", "PKSA-db8d-773v-rd1n": "Ignored for CI", "PKSA-qv5y-crcz-9nxw": "Ignored for CI", "PKSA-kbc7-dq62-pt7d": "Ignored for CI"}'
+composer config --json audit.ignore '{"PKSA-z3gr-8qht-p93v": "Ignored for CI", "PKSA-rkkf-636k-qjb3": "Ignored for CI", "PKSA-wws7-mr54-jsny": "Ignored for CI", "PKSA-db8d-773v-rd1n": "Ignored for CI", "PKSA-qv5y-crcz-9nxw": "Ignored for CI", "PKSA-kbc7-dq62-pt7d": "Ignored for CI", "PKSA-w9tt-7782-78jx": "Ignored for CI"}'
 
 echo "Run installation"
 COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-progress
