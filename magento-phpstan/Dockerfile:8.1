@@ -10,6 +10,8 @@ RUN composer config --unset repo.0
 RUN composer config repo.foomanmirror composer https://repo-magento-mirror.fooman.co.nz/
 RUN composer config --no-plugins allow-plugins true
 RUN composer require hoa/regex --no-update
+# flysystem 2.x (required by Magento 2.4.7) has no fixed release for this advisory
+RUN composer config --json audit.ignore '{"PKSA-w9tt-7782-78jx": "Ignored for CI"}'
 RUN composer install --prefer-dist
 
 FROM extdn/magento-integration-tests-action:8.1-latest
